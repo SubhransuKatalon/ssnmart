@@ -39,19 +39,21 @@ export default function Login({ onLogin }) {
       <h2>Login</h2>
       <form onSubmit={handleSubmit}>
         <input 
+          name="Username"
           value={username} 
           onChange={(e) => setUsername(e.target.value)} 
           placeholder="Username" 
           required 
         /><br /><br />
         <input 
-          type="password" 
+          name="Password"
+          type="Password" 
           value={password} 
           onChange={(e) => setPassword(e.target.value)} 
           placeholder="Password" 
           required 
         /><br /><br />
-        <button type="submit">Login</button>
+        <button name="login-button" type="submit">Login</button>
       </form>
       {error && <p style={{ color: 'red' }}>{error}</p>}
     </div>

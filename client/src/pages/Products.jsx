@@ -50,7 +50,7 @@ const addToCart = (productId) => {
         products.map(p => (
           <div key={p._id}>
             <strong>{p.name}</strong> - ₹{p.price}
-            <button onClick={() => addToCart(p._id)}>Add to Cart</button>
+            <button name="add-to-cart-button" onClick={() => addToCart(p._id)}>Add to Cart</button>
           </div>
         ))
       )}

@@ -33,13 +33,15 @@ export default function Register() {
       <h2>Register</h2>
       <form onSubmit={handleRegister}>
         <input
+          name="Username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           placeholder="Username"
           required
         /><br /><br />
         <input
-          type="password"
+          name="Password"
+          type="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Password"

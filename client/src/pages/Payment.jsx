@@ -12,7 +12,7 @@ export default function Payment() {
     <div>
       <h2>Payment</h2>
       <p>This is a dummy payment. Click below to complete your order.</p>
-      <button onClick={handlePayment}>Confirm</button>
+      <button name="confirm-button" onClick={handlePayment}>Confirm</button>
     </div>
   );
 }

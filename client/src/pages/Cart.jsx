@@ -69,18 +69,39 @@ export default function Cart() {
         <p>Cart is empty</p>
       ) : (
         <ul>
-          {cart.map(item => (
-            <li key={item.product._id}>
-              {item.product.name} - ${item.product.price} x {item.qty}
-              <button onClick={() => updateQty(item.product._id, -1)}>-</button>
-              <button onClick={() => updateQty(item.product._id, 1)}>+</button>
-              <button onClick={() => removeItem(item.product._id)}>Remove</button>
-            </li>
-          ))}
+          {cart.map((item, index) => (
+  <li key={item.id}>
+    <strong>{index + 1}.</strong> {item.name} - ${item.price} x {item.qty}
+    <button
+      name={`decrease-qty-${item.id}`}
+      onClick={() => updateQty(item.id, -1)}
+    >
+      -
+    </button>
+    <button
+      name={`increase-qty-${item.id}`}
+      onClick={() => updateQty(item.id, 1)}
+    >
+      +
+    </button>
+    <button
+      name={`remove-item-${item.id}`}
+      onClick={() => removeItem(item.id)}
+    >
+      Remove
+    </button>
+  </li>
+))}
+
+
         </ul>
       )}
-      <h3>Total: ${total}</h3>
-      {cart.length > 0 && <Link to="/payment"><button>Checkout</button></Link>}
+      <h3 name="cart-total">Total: ${total}</h3>
+{cart.length > 0 && (
+  <Link to="/payment">
+    <button name="checkout-button">Checkout</button>
+  </Link>
+)}
     </div>
   );
 }
