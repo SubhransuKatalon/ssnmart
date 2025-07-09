@@ -71,7 +71,7 @@ export default function Cart() {
         <ul style={{ listStyle: 'none', paddingLeft: 0 }}>
           {cart.map((item, index) => (
   <li key={item.id}>
-    <strong>{index + 1}.</strong> {item.name} - ${item.price} x {item.qty}
+    <strong>{index + 1}.</strong> {item.product.name} - ${item.product.price} x {item.qty}
     <button
       name={`decrease-qty-${item.id}`}
       onClick={() => updateQty(item.id, -1)}
