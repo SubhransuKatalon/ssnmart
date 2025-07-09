@@ -68,7 +68,7 @@ export default function Cart() {
       {cart.length === 0 ? (
         <p>Cart is empty</p>
       ) : (
-        <ul>
+        <ul style={{ listStyle: 'none', paddingLeft: 0 }}>
           {cart.map((item, index) => (
   <li key={item.id}>
     <strong>{index + 1}.</strong> {item.name} - ${item.price} x {item.qty}
