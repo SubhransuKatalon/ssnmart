@@ -1,0 +1,32 @@
+## ✅ `.gitignore`
+
+```gitignore
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# dotenv environment variables
+.env
+
+# Node
+node_modules/
+
+# Build output
+client/dist
+server/build
+client/.vite
+
+# IDEs
+.vscode/
+.idea/
+.DS_Store
+
+# OS files
+Thumbs.db
