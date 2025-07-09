@@ -14,7 +14,7 @@ export default function Products() {
 
   useEffect(() => {
     axios
-      .get('${import.meta.env.VITE_API_URL}/api/products')
+      .get(`${import.meta.env.VITE_API_URL}/api/products`)
       .then(res => {
         setProducts(res.data);
         setLoading(false);
@@ -28,7 +28,7 @@ export default function Products() {
 
 const user = JSON.parse(localStorage.getItem('user'));
 const addToCart = (productId) => {
-  axios.post('${import.meta.env.VITE_API_URL}/api/cart', {
+  axios.post(`${import.meta.env.VITE_API_URL}/api/cart`, {
     productId,
     qty: 1,
     userId: user.username  // or user._id if available
