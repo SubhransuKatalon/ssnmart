@@ -1,0 +1,98 @@
+const express = require('express');
+const cors = require('cors');
+const app = express();
+require('dotenv').config();
+require('./db');
+
+const Product = require('./models/Product');
+const CartItem = require('./models/CartItem');
+const User = require('./models/User');
+
+app.use(cors());
+app.use(express.json());
+
+// Simple login (for demo; production should use hashed passwords + sessions)
+
+app.post('/api/auth/register', async (req, res) => {
+  const { username, password } = req.body;
+  const existing = await User.findOne({ username });
+  if (existing) {
+    return res.status(409).json({ message: 'User exists' });
+  }
+  const user = new User({ username, password });
+  await user.save();
+  res.json({ message: 'User registered', user: { username: user.username } });
+});
+
+
+app.post('/api/auth/login', async (req, res) => {
+  console.log("Login attempt:", req.body);  // Add this
+  const { username, password } = req.body;
+  const user = await User.findOne({ username, password });
+  if (!user) {
+    return res.status(401).json({ message: 'Invalid credentials' });
+  }
+  res.json({ message: 'Login successful', user: { username: user.username } });
+});
+
+app.get('/api/products', async (req, res) => {
+  try {
+    const products = await Product.find();
+    res.json(products);
+  } catch (err) {
+    console.error('Product fetch error:', err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+
+app.get('/api/cart', async (req, res) => {
+  const { userId } = req.query;
+  if (!userId) return res.status(400).json({ message: 'Missing userId' });
+
+  const cartItems = await CartItem.find({ userId }).populate('productId');
+
+  const validItems = cartItems.filter(item => item.productId !== null);
+
+  const formattedItems = validItems.map(item => ({
+    product: {
+      _id: item.productId._id,
+      name: item.productId.name,
+      price: item.productId.price
+    },
+    qty: item.qty
+  }));
+
+  const total = formattedItems.reduce(
+    (sum, item) => sum + item.product.price * item.qty,
+    0
+  );
+
+  res.json({ items: formattedItems, total });
+});
+
+
+app.post('/api/cart', async (req, res) => {
+  const { productId, qty, userId } = req.body;
+
+  if (!userId) {
+    return res.status(400).json({ message: 'Missing userId' });
+  }
+
+  if (qty === 0) {
+    await CartItem.deleteOne({ userId, productId });
+  } else {
+    await CartItem.findOneAndUpdate(
+      { userId, productId },
+      { $set: { qty } },
+      { upsert: true }
+    );
+  }
+
+  res.json({ success: true });
+});
+
+
+app.listen(5050, () => {
+  console.log('Server running on http://localhost:5050');
+});
