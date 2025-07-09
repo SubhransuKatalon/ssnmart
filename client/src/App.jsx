@@ -2,7 +2,7 @@ import { Routes, Route, Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
 import Navbar from './components/Navbar';
-import TopToolbar from './components/TopToolbar';
+import TopToolbar from './components/TopToolBar';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Home from './pages/Home';

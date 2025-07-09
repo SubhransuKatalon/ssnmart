@@ -1,8 +1,8 @@
 import { Link, useLocation } from 'react-router-dom';
 import { FaHome, FaBoxOpen, FaShoppingCart } from 'react-icons/fa';
-import './TopToolbar.css';
+import './TopToolBar.css';
 
-export default function TopToolbar() {
+export default function TopToolBar() {
   const location = useLocation();
 
   return (
