@@ -1,9 +1,15 @@
 import { Link, useLocation } from 'react-router-dom';
-import { FaHome, FaBoxOpen, FaShoppingCart } from 'react-icons/fa';
-import './TopToolBar.css';
+import { FaHome, FaBoxOpen, FaShoppingCart, FaSignInAlt, FaUserPlus, FaSignOutAlt } from 'react-icons/fa';
+import './TopToolbar.css';
 
-export default function TopToolBar() {
+export default function TopToolbar() {
   const location = useLocation();
+  const user = localStorage.getItem('user');
+
+  const handleLogout = () => {
+    localStorage.removeItem('user');
+    window.location.href = '/login';
+  };
 
   return (
     <div className="top-toolbar">
@@ -16,6 +22,24 @@ export default function TopToolBar() {
       <Link to="/cart" className={location.pathname === '/cart' ? 'active' : ''}>
         <FaShoppingCart /> <span>Cart</span>
       </Link>
+
+      {/* Right-side Links */}
+      <div className="auth-links">
+        {user ? (
+          <button onClick={handleLogout} className="logout-button">
+            <FaSignOutAlt /> <span>Logout</span>
+          </button>
+        ) : (
+          <>
+            <Link to="/login" className={location.pathname === '/login' ? 'active' : ''}>
+              <FaSignInAlt /> <span>Login</span>
+            </Link>
+            <Link to="/register" className={location.pathname === '/register' ? 'active' : ''}>
+              <FaUserPlus /> <span>Register</span>
+            </Link>
+          </>
+        )}
+      </div>
     </div>
   );
 }

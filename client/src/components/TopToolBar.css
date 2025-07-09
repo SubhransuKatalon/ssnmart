@@ -1,13 +1,15 @@
 .top-toolbar {
   display: flex;
-  justify-content: center;
-  gap: 40px;
+  justify-content: space-between;
+  align-items: center;
   background-color: #f8f8f8;
-  padding: 10px 0;
+  padding: 10px 30px;
   border-bottom: 1px solid #ddd;
+  flex-wrap: wrap;
 }
 
-.top-toolbar a {
+.top-toolbar a,
+.top-toolbar button {
   text-decoration: none;
   color: #333;
   font-weight: 500;
@@ -15,9 +17,22 @@
   display: flex;
   align-items: center;
   gap: 6px;
+  margin: 5px 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
 }
 
 .top-toolbar a.active {
   color: #007bff;
   font-weight: bold;
+}
+
+.auth-links {
+  display: flex;
+  gap: 15px;
+}
+
+.logout-button {
+  color: #d9534f;
 }
