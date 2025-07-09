@@ -1,23 +1,40 @@
-// client/src/components/Navbar.jsx
 import { Link } from 'react-router-dom';
+import './Navbar.css'; // custom styling
 
 export default function Navbar({ onLogout }) {
-  const isLoggedIn = localStorage.getItem('user');
+  const isLoggedIn = !!localStorage.getItem('user');
 
   return (
-    <nav>
-      <Link to="/">Home</Link> | <Link to="/products">Products</Link> | <Link to="/cart">Cart</Link>
-      {isLoggedIn ? (
-        <>
-          {' | '}
-          <button onClick={onLogout}>Logout</button>
-        </>
-      ) : (
-        <>
-          {' | '}
-          <Link to="/login">Login</Link> | <Link to="/register">Register</Link>
-        </>
-      )}
+    <nav className="navbar">
+      {/* Left side: Logo + Site Name */}
+      <div className="nav-left">
+        <img src="/favicon.png" alt="SSN Mart Logo" height="40" />
+        <span className="brand">SSN Mart</span>
+        <Link to="/" className="nav-link">Home</Link>
+        <Link to="/products" className="nav-link">Products</Link>
+        <Link to="/cart" className="nav-link">Cart</Link>
+      </div>
+
+      {/* Right side: Auth links */}
+      <div className="nav-right">
+        {isLoggedIn ? (
+          <button
+            className="logout-btn"
+            onClick={() => {
+              localStorage.removeItem('user');
+              if (onLogout) onLogout();
+              window.location.href = '/login';
+            }}
+          >
+            Logout
+          </button>
+        ) : (
+          <>
+            <Link to="/login" className="nav-link">Login</Link>
+            <Link to="/register" className="nav-link">Register</Link>
+          </>
+        )}
+      </div>
     </nav>
   );
 }
