@@ -2,10 +2,23 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 12px 24px;
   background-color: #f8f8f8;
-  padding: 10px 30px;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #ccc;
   flex-wrap: wrap;
+}
+
+/* Left-aligned nav */
+.nav-left {
+  display: flex;
+  gap: 20px;
+}
+
+/* Right-aligned auth links */
+.nav-right {
+  display: flex;
+  gap: 15px;
+  align-items: center;
 }
 
 .top-toolbar a,
@@ -17,7 +30,6 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  margin: 5px 10px;
   background: none;
   border: none;
   cursor: pointer;
@@ -26,11 +38,6 @@
 .top-toolbar a.active {
   color: #007bff;
   font-weight: bold;
-}
-
-.auth-links {
-  display: flex;
-  gap: 15px;
 }
 
 .logout-button {

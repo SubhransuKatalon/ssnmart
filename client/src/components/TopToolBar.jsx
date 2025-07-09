@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import { FaHome, FaBoxOpen, FaShoppingCart, FaSignInAlt, FaUserPlus, FaSignOutAlt } from 'react-icons/fa';
-import './TopToolbar.css';
+import './TopToolBar.css';
 
 export default function TopToolbar() {
   const location = useLocation();
@@ -13,18 +13,21 @@ export default function TopToolbar() {
 
   return (
     <div className="top-toolbar">
-      <Link to="/" className={location.pathname === '/' ? 'active' : ''}>
-        <FaHome /> <span>Home</span>
-      </Link>
-      <Link to="/products" className={location.pathname === '/products' ? 'active' : ''}>
-        <FaBoxOpen /> <span>Products</span>
-      </Link>
-      <Link to="/cart" className={location.pathname === '/cart' ? 'active' : ''}>
-        <FaShoppingCart /> <span>Cart</span>
-      </Link>
+      {/* LEFT: Main nav */}
+      <div className="nav-left">
+        <Link to="/" className={location.pathname === '/' ? 'active' : ''}>
+          <FaHome /> <span>Home</span>
+        </Link>
+        <Link to="/products" className={location.pathname === '/products' ? 'active' : ''}>
+          <FaBoxOpen /> <span>Products</span>
+        </Link>
+        <Link to="/cart" className={location.pathname === '/cart' ? 'active' : ''}>
+          <FaShoppingCart /> <span>Cart</span>
+        </Link>
+      </div>
 
-      {/* Right-side Links */}
-      <div className="auth-links">
+      {/* RIGHT: Auth */}
+      <div className="nav-right">
         {user ? (
           <button onClick={handleLogout} className="logout-button">
             <FaSignOutAlt /> <span>Logout</span>
