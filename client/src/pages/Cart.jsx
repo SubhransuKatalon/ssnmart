@@ -24,6 +24,7 @@ export default function Cart() {
 
   const updateQty = (productId, delta) => {
     const item = cart.find(p => p.product._id === productId);
+    if (!item) return; // prevent crashing if not found
     const newQty = Math.max(1, item.qty + delta);
     axios
       .post(`${import.meta.env.VITE_API_URL}/api/cart`, {
@@ -73,27 +74,25 @@ export default function Cart() {
   <li key={item.id}>
     <strong>{index + 1}.</strong> {item.product.name} - ${item.product.price} x {item.qty}
     <button
-      name={`decrease-qty-${item.id}`}
-      onClick={() => updateQty(item.id, -1)}
-    >
-      -
-    </button>
-    <button
-      name={`increase-qty-${item.id}`}
-      onClick={() => updateQty(item.id, 1)}
-    >
-      +
-    </button>
-    <button
-      name={`remove-item-${item.id}`}
-      onClick={() => removeItem(item.id)}
-    >
-      Remove
-    </button>
+  name={`decrease-qty-${item.product._id}`}
+  onClick={() => updateQty(item.product._id, -1)}
+>
+  -
+</button>
+<button
+  name={`increase-qty-${item.product._id}`}
+  onClick={() => updateQty(item.product._id, 1)}
+>
+  +
+</button>
+<button
+  name={`remove-item-${item.product._id}`}
+  onClick={() => removeItem(item.product._id)}
+>
+  Remove
+</button>
   </li>
 ))}
-
-
         </ul>
       )}
       <h3 name="cart-total">Total: ${total}</h3>
