@@ -15,7 +15,7 @@ export default function Cart() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5050/api/cart?userId=${user.username}`)
+      .get('${import.meta.env.VITE_API_URL}/api/cart?userId=${user.username}')
       .then((res) => {
         setCart(res.data.items);
         setTotal(res.data.total);
@@ -26,7 +26,7 @@ export default function Cart() {
     const item = cart.find(p => p.product._id === productId);
     const newQty = Math.max(1, item.qty + delta);
     axios
-      .post('http://localhost:5050/api/cart', {
+      .post('${import.meta.env.VITE_API_URL}/api/cart', {
         productId,
         qty: newQty,
         userId: user.username
@@ -48,7 +48,7 @@ export default function Cart() {
 
   const removeItem = (productId) => {
     axios
-      .post('http://localhost:5050/api/cart', {
+      .post('${import.meta.env.VITE_API_URL}/api/cart', {
         productId,
         qty: 0,
         userId: user.username
