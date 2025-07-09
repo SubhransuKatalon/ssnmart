@@ -8,13 +8,11 @@
   flex-wrap: wrap;
 }
 
-/* Left-aligned nav */
 .nav-left {
   display: flex;
   gap: 20px;
 }
 
-/* Right-aligned auth links */
 .nav-right {
   display: flex;
   gap: 15px;
