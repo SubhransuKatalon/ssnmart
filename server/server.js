@@ -7,12 +7,17 @@ require('./db');
 const Product = require('./models/Product');
 const CartItem = require('./models/CartItem');
 const User = require('./models/User');
+const PORT = process.env.PORT || 5050;
 
 app.use(cors());
 app.use(express.json());
 
-// Simple login (for demo; production should use hashed passwords + sessions)
+// Verifying backend API
+app.get('/', (req, res) => {
+  res.send('🛒 SSNMart API is running.');
+});
 
+// Simple login (for demo; production should use hashed passwords + sessions)
 app.post('/api/auth/register', async (req, res) => {
   const { username, password } = req.body;
   const existing = await User.findOne({ username });
@@ -92,7 +97,10 @@ app.post('/api/cart', async (req, res) => {
   res.json({ success: true });
 });
 
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'ok' });
+});
 
-app.listen(5050, () => {
-  console.log('Server running on http://localhost:5050');
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
