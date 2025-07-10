@@ -5,7 +5,7 @@ import './Products.css';
 
 export default function CategoryProducts() {
   const { category: rawCategory } = useParams();
-  const category = decodeURIComponent(rawCategory);
+  const category = decodeURIComponent(rawCategory.replace(/\+/g, ' '));
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
