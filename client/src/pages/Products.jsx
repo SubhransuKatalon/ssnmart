@@ -4,6 +4,7 @@ import './Products.css';
 
 export default function Products() {
   const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true); // ✅ Add loading state
 
   const user = JSON.parse(localStorage.getItem('user'));
   if (!user) {
@@ -12,9 +13,17 @@ export default function Products() {
   }
 
   useEffect(() => {
+    setLoading(true); // Start loading
     axios
       .get(`${import.meta.env.VITE_API_URL}/api/products`)
-      .then(res => setProducts(res.data));
+      .then(res => {
+        setProducts(res.data);
+        setLoading(false); // Stop loading
+      })
+      .catch(err => {
+        console.error('Failed to fetch products', err);
+        setLoading(false);
+      });
   }, []);
 
   const addToCart = (productId) => {
@@ -28,17 +37,26 @@ export default function Products() {
   return (
     <div>
       <h2>All Products</h2>
-      <div className="product-grid">
-        {products.map(p => (
-          <div key={p._id} className="product-card">
-            <img src={p.image} alt={p.name} />
-            <h4>{p.name}</h4>
-            <p>₹{p.price}</p>
-            <p>{p.description}</p>
-            <button onClick={() => addToCart(p._id)}>Add to Cart</button>
-          </div>
-        ))}
-      </div>
+
+      {loading ? (
+        <p>Loading products...</p> // ✅ Show while loading
+      ) : (
+        <div className="product-grid">
+          {products.map(p => (
+            <div key={p._id} className="product-card">
+              <img
+                src={p.image || '/fallback.jpg'}
+                alt={p.name}
+                onError={(e) => { e.target.src = '/fallback.jpg'; }}
+              />
+              <h4>{p.name}</h4>
+              <p>₹{p.price}</p>
+              <p>{p.description}</p>
+              <button onClick={() => addToCart(p._id)}>Add to Cart</button>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

@@ -38,7 +38,7 @@ export default function CategoryProducts() {
   return (
     <div>
       <img
-        src={bannerMap[category]}
+        src={bannerMap[category] || '/banners/default.jpg'}
         alt={category}
         className="category-banner"
       />
