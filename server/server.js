@@ -43,8 +43,13 @@ app.post('/api/auth/login', async (req, res) => {
 app.get('/api/products', async (req, res) => {
   try {
     const category = req.query.category;
+    console.log('📥 Requested category:', category);
+
+    const escapeRegExp = (str) =>
+      str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
     const filter = category
-      ? { category: new RegExp('^' + category + '$', 'i') } // 👈 This makes it case-insensitive
+      ? { category: new RegExp('^' + escapeRegExp(category) + '$', 'i') }
       : {};
 
     const products = await Product.find(filter);
