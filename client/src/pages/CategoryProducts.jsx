@@ -4,7 +4,7 @@ import axios from 'axios';
 import './Products.css';
 
 export default function CategoryProducts() {
-  const { category: rawCategory } = useParams();
+  const { name: rawCategory } = useParams();
   const category = decodeURIComponent(rawCategory);
   const [products, setProducts] = useState([]);
 
