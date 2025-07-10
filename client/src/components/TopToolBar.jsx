@@ -1,6 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useState } from 'react';
-
 import {
   FaHome,
   FaBoxOpen,
@@ -15,6 +14,14 @@ export default function TopToolBar({ onLogout }) {
   const location = useLocation();
   const user = localStorage.getItem('user');
   const [showDropdown, setShowDropdown] = useState(false);
+
+  const categories = [
+    'Electronics',
+    'Fashion',
+    'Home & Furniture',
+    'Beauty & Personal care',
+    'Grocery'
+  ];
 
   return (
     <div className="top-toolbar">
@@ -34,11 +41,15 @@ export default function TopToolBar({ onLogout }) {
           </button>
           {showDropdown && (
             <div className="dropdown-content">
-              <Link to="/category/Electronics" onClick={() => setShowDropdown(false)}>Electronics</Link>
-              <Link to="/category/Fashion" onClick={() => setShowDropdown(false)}>Fashion</Link>
-              <Link to="/category/Home%20%26%20Furniture" onClick={() => setShowDropdown(false)}>Home & Furniture</Link>
-              <Link to="/category/Beauty%20%26%20Personal%20care" onClick={() => setShowDropdown(false)}>Beauty & Personal Care</Link>
-              <Link to="/category/Grocery" onClick={() => setShowDropdown(false)}>Grocery</Link>
+              {categories.map((cat) => (
+                <Link
+                  key={cat}
+                  to={`/category/${encodeURIComponent(cat)}`} // ✅ auto-encode
+                  onClick={() => setShowDropdown(false)}
+                >
+                  {cat}
+                </Link>
+              ))}
             </div>
           )}
         </div>
