@@ -43,7 +43,7 @@ app.post('/api/auth/login', async (req, res) => {
 app.get('/api/products', async (req, res) => {
   try {
     const category = req.query.category;
-    const filter = category ? { category } : {};
+    const filter = category ? { category: new RegExp('^' + category + '$', 'i') } : {};
     const products = await Product.find(filter);
     res.json(products);
   } catch (err) {

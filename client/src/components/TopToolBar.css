@@ -85,3 +85,23 @@ body.dark .top-toolbar a.active {
   background-color: #333;
   color: #00aaff;
 }
+
+.dropdown-content {
+  position: absolute;
+  background-color: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  min-width: 180px;
+}
+
+.dropdown {
+  position: relative;
+  margin-right: 10px;
+}
+
+body.dark .dropdown-content a:hover {
+  background-color: #222;
+}

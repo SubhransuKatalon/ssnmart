@@ -1,4 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
+import { useState } from 'react';
+
 import {
   FaHome,
   FaBoxOpen,
@@ -12,6 +14,7 @@ import './TopToolBar.css';
 export default function TopToolBar({ onLogout }) {
   const location = useLocation();
   const user = localStorage.getItem('user');
+  const [showDropdown, setShowDropdown] = useState(false);
 
   return (
     <div className="top-toolbar">
@@ -23,17 +26,22 @@ export default function TopToolBar({ onLogout }) {
 
         {/* Dropdown Menu for Products */}
         <div className="dropdown">
-          <span className={location.pathname.includes('/category') ? 'active' : ''}>
-            <FaBoxOpen /> <span>Products ▾</span>
-          </span>
-          <div className="dropdown-content">
-            <Link to="/category/Electronics">Electronics</Link>
-            <Link to="/category/Fashion">Fashion</Link>
-            <Link to="/category/Home & Furniture">Home & Furniture</Link>
-            <Link to="/category/Beauty & Personal care">Beauty & Personal Care</Link>
-            <Link to="/category/Grocery">Grocery</Link>
-          </div>
-        </div>
+  <button
+    className={location.pathname.includes('/category') ? 'active' : ''}
+    onClick={() => setShowDropdown(!showDropdown)}
+  >
+    <FaBoxOpen /> <span>Products ▾</span>
+  </button>
+  {showDropdown && (
+    <div className="dropdown-content">
+      <Link to="/category/Electronics" onClick={() => setShowDropdown(false)}>Electronics</Link>
+      <Link to="/category/Fashion" onClick={() => setShowDropdown(false)}>Fashion</Link>
+      <Link to="/category/Home & Furniture" onClick={() => setShowDropdown(false)}>Home & Furniture</Link>
+      <Link to="/category/Beauty & Personal care" onClick={() => setShowDropdown(false)}>Beauty & Personal Care</Link>
+      <Link to="/category/Grocery" onClick={() => setShowDropdown(false)}>Grocery</Link>
+    </div>
+  )}
+</div>
 
         <Link to="/cart" className={location.pathname === '/cart' ? 'active' : ''}>
           <FaShoppingCart /> <span>Cart</span>
