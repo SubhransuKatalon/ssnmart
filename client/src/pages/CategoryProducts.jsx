@@ -9,18 +9,18 @@ export default function CategoryProducts() {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-  console.log('🚀 Category param received:', category); // ✅ DEBUG
+    console.log('🚀 Category param received:', category);
 
-  axios
-    .get(`${import.meta.env.VITE_API_URL}/api/products?category=${category}`)
-    .then(res => {
-      console.log('📦 Products from API:', res.data); // ✅ DEBUG
-      setProducts(res.data);
-    })
-    .catch(err => {
-      console.error('❌ API error:', err);
-    });
-}, [category]);
+    axios
+      .get(`${import.meta.env.VITE_API_URL}/api/products?category=${encodeURIComponent(category)}`) // ✅ FIXED
+      .then(res => {
+        console.log('📦 Products from API:', res.data);
+        setProducts(res.data);
+      })
+      .catch(err => {
+        console.error('❌ API error:', err);
+      });
+  }, [category]);
 
   const bannerMap = {
     Electronics: '/banners/electronics.jpg',
