@@ -4,23 +4,23 @@ import axios from 'axios';
 import './Products.css';
 
 export default function CategoryProducts() {
-  const { name: rawCategory } = useParams();
-  const category = decodeURIComponent(rawCategory);
+  const { category: rawCategory } = useParams();              // ✅ FIXED
+  const category = decodeURIComponent(rawCategory);           // ✅ decode it
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-  console.log('🚀 Category param received:', category); // ✅ DEBUG
+    console.log('🚀 Category param received:', category);     // ✅ should now be correct
 
-  axios
-    .get(`${import.meta.env.VITE_API_URL}/api/products?category=${category}`)
-    .then(res => {
-      console.log('📦 Products from API:', res.data); // ✅ DEBUG
-      setProducts(res.data);
-    })
-    .catch(err => {
-      console.error('❌ API error:', err);
-    });
-}, [category]);
+    axios
+      .get(`${import.meta.env.VITE_API_URL}/api/products?category=${category}`)
+      .then(res => {
+        console.log('📦 Products from API:', res.data);       // ✅ products array
+        setProducts(res.data);
+      })
+      .catch(err => {
+        console.error('❌ API error:', err);
+      });
+  }, [category]);
 
   const bannerMap = {
     Electronics: '/banners/electronics.jpg',
