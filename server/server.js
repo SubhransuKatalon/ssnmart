@@ -42,7 +42,9 @@ app.post('/api/auth/login', async (req, res) => {
 
 app.get('/api/products', async (req, res) => {
   try {
-    const products = await Product.find();
+    const category = req.query.category;
+    const filter = category ? { category } : {};
+    const products = await Product.find(filter);
     res.json(products);
   } catch (err) {
     console.error('Product fetch error:', err);

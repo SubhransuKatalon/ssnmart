@@ -10,6 +10,8 @@ import Home from './pages/Home';
 import Products from './pages/Products';
 import Cart from './pages/Cart';
 import Payment from './pages/Payment';
+import CategoryProducts from './pages/CategoryProducts';
+
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('user'));
@@ -36,6 +38,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/" element={<Home />} />
         <Route path="/products" element={<Products />} />
+        <Route path="/category/:categoryName" element={<CategoryProducts />} />
         <Route
           path="/cart"
           element={
