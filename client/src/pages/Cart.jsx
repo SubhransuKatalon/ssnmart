@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import './Cart.css'; // You can define styles here
 
 export default function Cart() {
   const [cart, setCart] = useState([]);
   const [total, setTotal] = useState(0);
 
   const user = JSON.parse(localStorage.getItem('user'));
-
   if (!user) {
     window.location.href = '/login';
     return null;
@@ -24,7 +24,7 @@ export default function Cart() {
 
   const updateQty = (productId, delta) => {
     const item = cart.find(p => p.product._id === productId);
-    if (!item) return; // prevent crashing if not found
+    if (!item) return;
     const newQty = Math.max(1, item.qty + delta);
     axios
       .post(`${import.meta.env.VITE_API_URL}/api/cart`, {
@@ -33,16 +33,12 @@ export default function Cart() {
         userId: user.username
       })
       .then(() => {
-        setCart(cart.map(p =>
+        const updatedCart = cart.map(p =>
           p.product._id === productId ? { ...p, qty: newQty } : p
-        ));
+        );
+        setCart(updatedCart);
         setTotal(
-          cart.reduce((sum, item) =>
-            item.product._id === productId
-              ? sum + item.product.price * newQty
-              : sum + item.product.price * item.qty,
-            0
-          ).toFixed(2)
+          updatedCart.reduce((sum, item) => sum + item.product.price * item.qty, 0).toFixed(2)
         );
       });
   };
@@ -64,43 +60,35 @@ export default function Cart() {
   };
 
   return (
-    <div>
+    <div className="cart-container">
       <h2>Your Cart</h2>
       {cart.length === 0 ? (
         <p>Cart is empty</p>
       ) : (
-        <ul style={{ listStyle: 'none', paddingLeft: 0 }}>
+        <div className="cart-items">
           {cart.map((item, index) => (
-  <li key={item.id}>
-    <strong>{index + 1}.</strong> {item.product.name} - ${item.product.price} x {item.qty}
-    <button
-  name={`decrease-qty-${item.product._id}`}
-  onClick={() => updateQty(item.product._id, -1)}
->
-  -
-</button>
-<button
-  name={`increase-qty-${item.product._id}`}
-  onClick={() => updateQty(item.product._id, 1)}
->
-  +
-</button>
-<button
-  name={`remove-item-${item.product._id}`}
-  onClick={() => removeItem(item.product._id)}
->
-  Remove
-</button>
-  </li>
-))}
-        </ul>
+            <div key={item.product._id} className="cart-item">
+              <img src={item.product.image} alt={item.product.name} />
+              <div className="cart-item-info">
+                <h4>{item.product.name}</h4>
+                <p>Price: ₹{item.product.price}</p>
+                <div className="qty-control">
+                  <button onClick={() => updateQty(item.product._id, -1)}>-</button>
+                  <span>{item.qty}</span>
+                  <button onClick={() => updateQty(item.product._id, 1)}>+</button>
+                </div>
+                <button onClick={() => removeItem(item.product._id)} className="remove-btn">Remove</button>
+              </div>
+            </div>
+          ))}
+        </div>
       )}
-      <h3 name="cart-total">Total: ${total}</h3>
-{cart.length > 0 && (
-  <Link to="/payment">
-    <button name="checkout-button">Checkout</button>
-  </Link>
-)}
+      <h3>Total: ₹{total}</h3>
+      {cart.length > 0 && (
+        <Link to="/payment">
+          <button className="checkout-btn">Checkout</button>
+        </Link>
+      )}
     </div>
   );
 }
