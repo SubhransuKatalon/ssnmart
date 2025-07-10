@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import {
   FaHome,
@@ -9,18 +10,19 @@ import {
 } from 'react-icons/fa';
 import './TopToolBar.css';
 
-export default function TopToolBar() {
+export default function TopToolBar({ onLogout }) {
   const location = useLocation();
   const user = localStorage.getItem('user');
 
-  const handleLogout = () => {
-    localStorage.removeItem('user');
-    window.location.href = '/login';
-  };
+  const [isDark, setIsDark] = useState(() => localStorage.getItem('theme') === 'dark');
+
+  useEffect(() => {
+    document.body.classList.toggle('dark', isDark);
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+  }, [isDark]);
 
   return (
     <div className="top-toolbar">
-      {/* Left nav items */}
       <div className="nav-left">
         <Link to="/" className={location.pathname === '/' ? 'active' : ''}>
           <FaHome /> <span>Home</span>
@@ -33,10 +35,13 @@ export default function TopToolBar() {
         </Link>
       </div>
 
-      {/* Right auth links */}
       <div className="nav-right">
+        <button onClick={() => setIsDark(!isDark)}>
+          {isDark ? '🌞 Light Mode' : '🌙 Dark Mode'}
+        </button>
+
         {user ? (
-          <button onClick={handleLogout} className="logout-button">
+          <button onClick={onLogout} className="logout-button">
             <FaSignOutAlt /> <span>Logout</span>
           </button>
         ) : (
