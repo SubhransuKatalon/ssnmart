@@ -34,6 +34,7 @@ export default function TopToolBar({ onLogout }) {
         {/* Dropdown Menu for Products */}
         <div className="dropdown">
           <button
+            name="product-dropdown"
             className={location.pathname.includes('/category') ? 'active' : ''}
             onClick={() => setShowDropdown(!showDropdown)}
           >
