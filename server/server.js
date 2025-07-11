@@ -72,8 +72,10 @@ app.get('/api/cart', async (req, res) => {
   const formattedItems = validItems.map(item => ({
     product: {
       _id: item.productId._id,
-      name: item.productId.name,
-      price: item.productId.price
+    name: item.productId.name,
+    price: item.productId.price,
+    image: item.productId.image,              // Add image
+    description: item.productId.description
     },
     qty: item.qty
   }));
