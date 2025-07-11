@@ -7,10 +7,11 @@ import {
   FaSignInAlt,
   FaUserPlus,
   FaSignOutAlt,
+  FaTools
 } from 'react-icons/fa';
 import './TopToolBar.css';
 
-export default function TopToolBar({ onLogout }) {
+export default function TopToolBar({ onLogout, isAdmin }) {
   const location = useLocation();
   const user = localStorage.getItem('user');
   const [showDropdown, setShowDropdown] = useState(false);
@@ -70,6 +71,13 @@ export default function TopToolBar({ onLogout }) {
         <Link to="/cart" className={location.pathname === '/cart' ? 'active' : ''}>
           <FaShoppingCart /> <span>Cart</span>
         </Link>
+
+        {/* ✅ Admin Link */}
+        {isAdmin && (
+          <Link to="/admin" className={location.pathname === '/admin' ? 'active' : ''}>
+            <FaTools /> <span>Admin</span>
+          </Link>
+        )}
       </div>
 
       {/* Right auth links */}
