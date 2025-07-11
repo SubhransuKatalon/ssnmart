@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import {
   FaHome,
   FaBoxOpen,
@@ -14,6 +14,7 @@ export default function TopToolBar({ onLogout }) {
   const location = useLocation();
   const user = localStorage.getItem('user');
   const [showDropdown, setShowDropdown] = useState(false);
+  const dropdownRef = useRef(null);
 
   const categories = [
     'Electronics',
@@ -22,6 +23,17 @@ export default function TopToolBar({ onLogout }) {
     'Beauty & Personal care',
     'Grocery'
   ];
+
+  // ✅ Hide dropdown on outside click
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setShowDropdown(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   return (
     <div className="top-toolbar">
@@ -32,7 +44,7 @@ export default function TopToolBar({ onLogout }) {
         </Link>
 
         {/* Dropdown Menu for Products */}
-        <div className="dropdown">
+        <div className="dropdown" ref={dropdownRef}>
           <button
             name="product-dropdown"
             className={location.pathname.includes('/category') ? 'active' : ''}
@@ -45,7 +57,7 @@ export default function TopToolBar({ onLogout }) {
               {categories.map((cat) => (
                 <Link
                   key={cat}
-                  to={`/category/${encodeURIComponent(cat)}`} // ✅ auto-encode
+                  to={`/category/${encodeURIComponent(cat)}`}
                   onClick={() => setShowDropdown(false)}
                 >
                   {cat}
