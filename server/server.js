@@ -60,6 +60,25 @@ app.get('/api/products', async (req, res) => {
   }
 });
 
+// Create a new product (admin only - no auth check here for demo)
+app.post('/api/products', async (req, res) => {
+  try {
+    const { name, price, image, description, category } = req.body;
+
+    if (!name || !price || !image || !category) {
+      return res.status(400).json({ message: 'Missing required fields' });
+    }
+
+    const product = new Product({ name, price, image, description, category });
+    await product.save();
+
+    res.status(201).json({ message: 'Product created', product });
+  } catch (err) {
+    console.error('❌ Product creation error:', err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
 
 app.get('/api/cart', async (req, res) => {
   const { userId } = req.query;
