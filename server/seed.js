@@ -163,6 +163,76 @@ const seed = async () => {
         description: 'Iodized salt for a healthy family.',
         category: 'Grocery',
       },
+      {
+  name: 'Dell XPS 13 Laptop',
+  price: 98999,
+  image: 'https://raw.githubusercontent.com/SubhransuKatalon/ssnmart/main/client/public/assets/dell-xps-13.jpg',
+  description: '13.3-inch ultra-slim laptop with Intel Evo i7.',
+  category: 'Electronics',
+},
+{
+  name: 'Apple MacBook Air M2',
+  price: 114999,
+  image: 'https://raw.githubusercontent.com/SubhransuKatalon/ssnmart/main/client/public/assets/macbook-air-m2.jpg',
+  description: 'Lightweight laptop with Apple M2 chip.',
+  category: 'Electronics',
+},
+{
+  name: 'iPad Air (5th Gen)',
+  price: 58999,
+  image: 'https://raw.githubusercontent.com/SubhransuKatalon/ssnmart/main/client/public/assets/ipad-air.jpg',
+  description: '10.9-inch display with Apple Pencil support.',
+  category: 'Electronics',
+},
+{
+  name: 'Canon EOS 1500D DSLR',
+  price: 41999,
+  image: 'https://raw.githubusercontent.com/SubhransuKatalon/ssnmart/main/client/public/assets/canon-dslr.jpg',
+  description: '24.1 MP DSLR with Wi-Fi & Full HD recording.',
+  category: 'Electronics',
+},
+{
+  name: 'Logitech MX Master 3 Mouse',
+  price: 7990,
+  image: 'https://raw.githubusercontent.com/SubhransuKatalon/ssnmart/main/client/public/assets/logitech-mx3.jpg',
+  description: 'Ergonomic mouse for productivity.',
+  category: 'Electronics',
+},
+{
+  name: 'HP Ink Tank 419 Printer',
+  price: 13999,
+  image: 'https://raw.githubusercontent.com/SubhransuKatalon/ssnmart/main/client/public/assets/hp-printer.jpg',
+  description: 'Wireless all-in-one ink tank printer.',
+  category: 'Electronics',
+},
+{
+  name: 'Google Pixel Buds A-Series',
+  price: 7999,
+  image: 'https://raw.githubusercontent.com/SubhransuKatalon/ssnmart/main/client/public/assets/pixel-buds.jpg',
+  description: 'Truly wireless earbuds with adaptive sound.',
+  category: 'Electronics',
+},
+{
+  name: 'Samsung Galaxy Watch 6',
+  price: 32999,
+  image: 'https://raw.githubusercontent.com/SubhransuKatalon/ssnmart/main/client/public/assets/galaxy-watch.jpg',
+  description: 'Smartwatch with health monitoring features.',
+  category: 'Electronics',
+},
+{
+  name: 'Mi Air Purifier 4',
+  price: 12999,
+  image: 'https://raw.githubusercontent.com/SubhransuKatalon/ssnmart/main/client/public/assets/mi-air-purifier.jpg',
+  description: 'Smart HEPA filter air purifier for home.',
+  category: 'Electronics',
+},
+{
+  name: 'Amazon Echo Dot (5th Gen)',
+  price: 4499,
+  image: 'https://raw.githubusercontent.com/SubhransuKatalon/ssnmart/main/client/public/assets/echo-dot.jpg',
+  description: 'Smart speaker with Alexa voice control.',
+  category: 'Electronics',
+}
     ]);
 
     console.log(`✅ Inserted ${result.length} products successfully.`);
