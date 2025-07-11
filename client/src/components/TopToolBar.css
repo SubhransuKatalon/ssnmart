@@ -1,3 +1,4 @@
+/* Toolbar Container */
 .top-toolbar {
   display: flex;
   justify-content: space-between;
@@ -5,15 +6,16 @@
   padding: 12px 24px;
   background-color: #f8f8f8;
   border-bottom: 1px solid #ccc;
-  flex-wrap: wrap;
-  min-width: 100%;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  background-color: rgba(255, 0, 0, 0.1); /* Light red for debugging layout */
+  width: 100%;
+  box-sizing: border-box;
 }
 
+/* Left and Right Sections */
 .nav-left {
   display: flex;
   gap: 20px;
+  align-items: center;
 }
 
 .nav-right {
@@ -22,6 +24,7 @@
   align-items: center;
 }
 
+/* Common Link and Button Styles */
 .top-toolbar a,
 .top-toolbar button {
   text-decoration: none;
@@ -38,6 +41,7 @@
   transition: color 0.2s ease, background-color 0.2s ease;
 }
 
+/* Active Link Styling */
 .top-toolbar a.active {
   color: #007bff;
   font-weight: bold;
@@ -46,15 +50,18 @@
   border-radius: 4px;
 }
 
+/* Logout Button Color */
 .logout-button {
   color: #d9534f;
 }
 
+/* Hover Effects */
 .top-toolbar a:hover,
 .top-toolbar button:hover {
   color: #0056b3;
 }
 
+/* Mobile Responsiveness */
 @media (max-width: 600px) {
   .top-toolbar {
     flex-direction: column;
@@ -69,6 +76,7 @@
   }
 }
 
+/* Dark Mode Support */
 body.dark {
   background-color: #121212;
   color: #f0f0f0;
@@ -89,26 +97,22 @@ body.dark .top-toolbar a.active {
   color: #00aaff;
 }
 
+/* Dropdown Menu */
+.dropdown {
+  position: relative;
+}
+
 .dropdown-content {
   position: absolute;
-  top: 100%; 
+  top: 100%;
+  left: 0;
   background-color: white;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  z-index: 10;
+  z-index: 1000;
   padding: 10px;
   display: flex;
   flex-direction: column;
   min-width: 180px;
-}
-
-.dropdown {
-  position: relative;
-  min-width: 180px;
-  margin-right: 10px;
-}
-
-body.dark .dropdown-content a:hover {
-  background-color: #333;
 }
 
 .dropdown-content a {
@@ -121,4 +125,8 @@ body.dark .dropdown-content a:hover {
 .dropdown-content a:hover {
   background-color: #f0f0f0;
   border-radius: 4px;
+}
+
+body.dark .dropdown-content a:hover {
+  background-color: #222;
 }
