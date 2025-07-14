@@ -1,5 +1,5 @@
 // In Admin.jsx
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import './Admin.css';
 
@@ -16,6 +16,7 @@ export default function Admin() {
   const [specifications, setSpecifications] = useState([]);
   const [defaultCard, setDefaultCard] = useState({ name: '', number: '', expiry: '', cvv: '' });
   const [defaultUPI, setDefaultUPI] = useState('');
+  const [transactions, setTransactions] = useState([]);
 
   const categories = [
     'Electronics',
@@ -24,6 +25,12 @@ export default function Admin() {
     'Beauty & Personal care',
     'Grocery'
   ];
+
+  useEffect(() => {
+    axios.get(`${import.meta.env.VITE_API_URL}/api/transactions`)
+      .then(res => setTransactions(res.data))
+      .catch(err => console.error('Failed to fetch transactions:', err));
+  }, []);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -114,15 +121,43 @@ export default function Admin() {
         <label>CVV:</label>
         <input value={defaultCard.cvv} onChange={e => setDefaultCard({ ...defaultCard, cvv: e.target.value })} />
         <label>Card Holder Name:</label>
-        <input
-          value={defaultCard.name}
-          onChange={e => setDefaultCard({ ...defaultCard, name: e.target.value })}
-        />
-        
+        <input value={defaultCard.name} onChange={e => setDefaultCard({ ...defaultCard, name: e.target.value })} />
+
         <label>Valid UPI ID:</label>
         <input value={defaultUPI} onChange={e => setDefaultUPI(e.target.value)} />
 
         <button onClick={savePaymentDefaults} style={{ marginTop: '10px' }}>Save Payment Defaults</button>
+      </div>
+
+      <hr />
+      <h3>🧾 Transaction Logs</h3>
+      <div className="transaction-log">
+        {transactions.length === 0 ? (
+          <p>No transactions yet.</p>
+        ) : (
+          <table>
+            <thead>
+              <tr>
+                <th>User</th>
+                <th>Method</th>
+                <th>Status</th>
+                <th>Amount</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              {transactions.map(txn => (
+                <tr key={txn._id}>
+                  <td>{txn.user}</td>
+                  <td>{txn.method}</td>
+                  <td style={{ color: txn.status === 'success' ? 'green' : 'red' }}>{txn.status}</td>
+                  <td>₹{txn.amount}</td>
+                  <td>{new Date(txn.createdAt).toLocaleString()}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
     </div>
   );

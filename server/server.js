@@ -8,7 +8,7 @@ const Product = require('./models/Product');
 const CartItem = require('./models/CartItem');
 const User = require('./models/User');
 const PaymentConfig = require('./models/PaymentConfig');
-const Transaction = require('./models/Transaction'); // ✅ Added transaction model
+const Transaction = require('./models/Transaction');
 
 const PORT = process.env.PORT || 5050;
 
@@ -93,6 +93,16 @@ app.get('/api/cart', async (req, res) => {
   res.json({ items: formattedItems, total });
 });
 
+// Clear Cart after payment
+app.delete('/api/cart/clear/:userId', async (req, res) => {
+  try {
+    await CartItem.deleteMany({ userId: req.params.userId });
+    res.json({ message: 'Cart cleared' });
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to clear cart' });
+  }
+});
+
 // Get Product by ID
 app.get('/api/products/:id', async (req, res) => {
   try {
@@ -152,6 +162,16 @@ app.post('/api/transactions', async (req, res) => {
   } catch (err) {
     console.error('Transaction logging error:', err);
     res.status(500).json({ message: 'Failed to log transaction' });
+  }
+});
+
+// ✅ Admin View All Transactions
+app.get('/api/transactions', async (req, res) => {
+  try {
+    const txns = await Transaction.find().sort({ createdAt: -1 });
+    res.json(txns);
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to fetch transactions' });
   }
 });
 
