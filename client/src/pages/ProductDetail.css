@@ -74,8 +74,8 @@
 .spec-toggle-btn {
   background-color: transparent;
   border: none;
-  color: #007bff;
-  font-weight: 600;
+  color: #333;
+  font-weight: 500;
   cursor: pointer;
   padding: 4px 0;
   font-size: 15px;
@@ -83,6 +83,7 @@
 }
 
 .spec-toggle-btn:hover {
+  color: #007bff;
   text-decoration: underline;
 }
 
@@ -96,4 +97,18 @@
 
 .spec-list li {
   margin-bottom: 4px;
+}
+
+/* ✅ Responsive adjustments */
+@media (max-width: 600px) {
+  .product-detail {
+    flex-direction: column;
+    gap: 20px;
+    padding: 16px;
+  }
+
+  .left img {
+    width: 100%;
+    max-width: 100%;
+  }
 }

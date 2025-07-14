@@ -45,3 +45,14 @@
   margin-bottom: 20px;
   border-radius: 8px;
 }
+
+@media (max-width: 600px) {
+  .product-grid {
+    padding: 10px;
+    grid-template-columns: 1fr;
+  }
+
+  .product-card {
+    padding: 12px;
+  }
+}
