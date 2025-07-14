@@ -77,7 +77,13 @@ export default function Admin() {
             value={specInput}
             onChange={(e) => setSpecInput(e.target.value)}
           />
-          <button type="button" className="add-spec-btn" onClick={addSpec}>Add Spec</button>
+          <button
+            type="button"
+            className="add-spec-btn"
+            onClick={addSpec}
+            >
+            {`Add Spec ${specifications.length + 1}`}
+          </button>
         </div>
 
         <ul className="spec-list">

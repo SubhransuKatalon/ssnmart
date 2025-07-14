@@ -22,6 +22,8 @@
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 14px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .admin-container button[type="submit"] {
@@ -38,23 +40,28 @@
   background-color: #0056b3;
 }
 
+/* Updated Spec Input Row */
 .spec-section {
+  display: flex;
+  gap: 10px;
   margin-top: 10px;
 }
 
 .spec-section input {
-  width: calc(100% - 90px);
-  display: inline-block;
+  flex: 1;
+  padding: 8px;
+  font-size: 14px;
 }
 
 .add-spec-btn {
-  margin-left: 8px;
   padding: 8px 12px;
   background-color: #28a745;
   border: none;
   color: white;
   border-radius: 4px;
   cursor: pointer;
+  font-size: 14px;
+  white-space: nowrap;
 }
 
 .add-spec-btn:hover {
@@ -80,4 +87,5 @@
   color: red;
   cursor: pointer;
   margin-left: 10px;
+  font-size: 16px;
 }
