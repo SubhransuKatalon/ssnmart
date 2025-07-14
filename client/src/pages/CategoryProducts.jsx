@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 import './Products.css';
 
@@ -12,7 +12,7 @@ export default function CategoryProducts() {
     console.log('🚀 Category param received:', category);
 
     axios
-      .get(`${import.meta.env.VITE_API_URL}/api/products?category=${encodeURIComponent(category)}`) // ✅ FIXED
+      .get(`${import.meta.env.VITE_API_URL}/api/products?category=${encodeURIComponent(category)}`)
       .then(res => {
         console.log('📦 Products from API:', res.data);
         setProducts(res.data);
@@ -58,8 +58,11 @@ export default function CategoryProducts() {
         <div className="product-grid">
           {products.map(p => (
             <div key={p._id} className="product-card">
-              <img src={p.image} alt={p.name} />
-              <h4>{p.name}</h4>
+              {/* ✅ Wrap image and name with Link */}
+              <Link to={`/product/${p._id}`}>
+                <img src={p.image} alt={p.name} />
+                <h4>{p.name}</h4>
+              </Link>
               <p>₹{p.price}</p>
               <p>{p.description}</p>
               <button onClick={() => addToCart(p._id)}>Add to Cart</button>

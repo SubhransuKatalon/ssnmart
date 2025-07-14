@@ -12,6 +12,7 @@ import Products from './pages/Products';
 import Cart from './pages/Cart';
 import Payment from './pages/Payment';
 import CategoryProducts from './pages/CategoryProducts';
+import ProductDetail from './pages/ProductDetail';
 
 // ✅ Admin route wrapper
 function AdminRoute({ children }) {
@@ -58,6 +59,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/products" element={<Products />} />
         <Route path="/category/:category" element={<CategoryProducts />} />
+        <Route path="/product/:id" element={<ProductDetail />} />
         <Route
           path="/cart"
           element={
