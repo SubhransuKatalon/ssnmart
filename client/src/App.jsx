@@ -1,5 +1,6 @@
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import './App.css';
 
 import TopToolBar from './components/TopToolBar';
 import PrivateRoute from './components/PrivateRoute';
@@ -40,7 +41,7 @@ function App() {
   };
 
   return (
-    <div style={{ paddingBottom: '50px', textAlign: 'center' }}>
+    <div className="app-wrapper">
       <img src="/logo.png" alt="SSN Mart" height="60" />
       {/* 🔽 Pass isAdmin to TopToolBar */}
       <TopToolBar onLogout={handleLogout} isAdmin={isLoggedIn && JSON.parse(localStorage.getItem('user'))?.username === 'admin'} />

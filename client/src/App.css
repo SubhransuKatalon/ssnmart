@@ -1,13 +1,20 @@
 /* App.css */
 
 /* General layout */
-body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: #fff8e1; /* ✅ very light orange */
+html, body, #root {
+  height: 100%;
   margin: 0;
-  overflow-x: hidden;
   padding: 0;
-  color: #333;
+  background-color: #f3c9c9; /* very light orange */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Wrapper that centers logo + content */
+.app-wrapper {
+  text-align: center;
+  min-height: 100%;
+  background-color: #f3c9c9; /* same as body to ensure coverage */
+  padding-bottom: 50px;
 }
 
 /* Dark mode support */
