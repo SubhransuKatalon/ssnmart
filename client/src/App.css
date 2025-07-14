@@ -5,7 +5,7 @@ html, body, #root {
   height: 100%;
   margin: 0;
   padding: 0;
-  background-color: #f3c9c9; /* very light orange */
+  background-color: #f6e1e1; /* very light orange */
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
@@ -13,7 +13,7 @@ html, body, #root {
 .app-wrapper {
   text-align: center;
   min-height: 100%;
-  background-color: #f3c9c9; /* same as body to ensure coverage */
+  background-color: #f6e1e1; /* same as body to ensure coverage */
   padding-bottom: 50px;
 }
 

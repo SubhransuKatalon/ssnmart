@@ -45,9 +45,8 @@
 .top-toolbar a.active {
   color: #007bff;
   font-weight: bold;
-  background-color: #e6f0ff;
-  padding: 6px 10px;
-  border-radius: 4px;
+  padding-bottom: 2px;
+  background-color: transparent;
 }
 
 /* Logout Button Color */
