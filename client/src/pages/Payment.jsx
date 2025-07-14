@@ -12,6 +12,7 @@ export default function Payment() {
   const [status, setStatus] = useState('');
   const [amount, setAmount] = useState(0);
   const [user, setUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem('user'));
@@ -29,6 +30,7 @@ export default function Payment() {
 
   const handlePayment = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
 
     try {
       const configRes = await axios.get(`${import.meta.env.VITE_API_URL}/api/payment-config`);
@@ -69,10 +71,7 @@ export default function Payment() {
         await axios.delete(`${import.meta.env.VITE_API_URL}/api/cart/clear/${user.username}`);
         setStatus('success');
         setMessage(`✅ Payment of ₹${amount} successful!`);
-
-        setTimeout(() => {
-          navigate('/');
-        }, 2500);
+        setTimeout(() => navigate('/'), 2500);
       } else {
         setStatus('error');
         setMessage('❌ Transaction failed. Invalid payment details.');
@@ -81,12 +80,20 @@ export default function Payment() {
       console.error(err);
       setStatus('error');
       setMessage('❌ Something went wrong during payment.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <div className="payment-container">
       <h2>Checkout</h2>
+
+      <div className="order-summary">
+        <p><strong>User:</strong> {user?.username}</p>
+        <p><strong>Total Amount:</strong> ₹{amount}</p>
+        <p><strong>Payment Method:</strong> {paymentMethod === 'card' ? 'Card' : paymentMethod.toUpperCase()}</p>
+      </div>
 
       <form onSubmit={handlePayment} className="payment-form">
         <label>Choose Payment Method:</label>
@@ -113,7 +120,9 @@ export default function Payment() {
 
         {paymentMethod === 'cod' && <p>Pay with cash when your order is delivered.</p>}
 
-        <button type="submit" className="pay-btn">Pay ₹{amount}</button>
+        <button type="submit" className="pay-btn" disabled={isLoading}>
+          {isLoading ? 'Processing...' : `Pay ₹${amount}`}
+        </button>
       </form>
 
       {message && <div className={`payment-msg ${status}`}>{message}</div>}

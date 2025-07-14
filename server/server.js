@@ -166,12 +166,14 @@ app.post('/api/transactions', async (req, res) => {
 });
 
 // ✅ Admin View All Transactions
-app.get('/api/transactions', async (req, res) => {
+app.post('/api/transactions', async (req, res) => {
   try {
-    const txns = await Transaction.find().sort({ createdAt: -1 });
-    res.json(txns);
+    const { user, method, status, amount, details } = req.body;
+    const txn = new Transaction({ user, method, status, amount, details });
+    await txn.save();
+    res.json({ success: true });
   } catch (err) {
-    res.status(500).json({ message: 'Failed to fetch transactions' });
+    res.status(500).json({ message: 'Failed to log transaction' });
   }
 });
 
