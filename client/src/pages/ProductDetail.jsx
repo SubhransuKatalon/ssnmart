@@ -42,7 +42,19 @@ export default function ProductDetail() {
           <h2>{product.name}</h2>
           <p className="price">₹{product.price}</p>
           <p className="desc">{product.description}</p>
-          <p className="spec">Specification: Lorem ipsum dolor sit amet.</p>
+
+          {/* ✅ Render specifications */}
+          {product.specifications?.length > 0 && (
+            <div className="specs">
+              <h4>Specifications:</h4>
+              <ul>
+                {product.specifications.map((spec, idx) => (
+                  <li key={idx}>{spec}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+
           <button className="add-btn" onClick={addToCart}>Add to Cart</button>
         </div>
       </div>

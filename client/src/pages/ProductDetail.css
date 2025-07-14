@@ -48,3 +48,52 @@
   margin-top: 10px;
   border-radius: 4px;
 }
+
+.specs {
+  margin-top: 16px;
+  text-align: left;
+}
+
+.specs h4 {
+  margin-bottom: 6px;
+  color: #333;
+}
+
+.specs ul {
+  padding-left: 18px;
+  list-style-type: disc;
+  margin: 0;
+}
+
+.specs li {
+  margin-bottom: 4px;
+  font-size: 14px;
+  color: #555;
+}
+
+.spec-toggle-btn {
+  background-color: transparent;
+  border: none;
+  color: #007bff;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 4px 0;
+  font-size: 15px;
+  text-align: left;
+}
+
+.spec-toggle-btn:hover {
+  text-decoration: underline;
+}
+
+.spec-list {
+  padding-left: 20px;
+  margin-top: 8px;
+  list-style-type: disc;
+  font-size: 14px;
+  color: #444;
+}
+
+.spec-list li {
+  margin-bottom: 4px;
+}
