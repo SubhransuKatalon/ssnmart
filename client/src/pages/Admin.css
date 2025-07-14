@@ -1,0 +1,83 @@
+.admin-container {
+  padding: 20px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.admin-container h2 {
+  margin-bottom: 20px;
+  text-align: center;
+  color: #333;
+}
+
+.admin-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.admin-container input,
+.admin-container select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.admin-container button[type="submit"] {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px;
+  font-size: 15px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.admin-container button[type="submit"]:hover {
+  background-color: #0056b3;
+}
+
+.spec-section {
+  margin-top: 10px;
+}
+
+.spec-section input {
+  width: calc(100% - 90px);
+  display: inline-block;
+}
+
+.add-spec-btn {
+  margin-left: 8px;
+  padding: 8px 12px;
+  background-color: #28a745;
+  border: none;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.add-spec-btn:hover {
+  background-color: #218838;
+}
+
+.spec-list {
+  margin-top: 10px;
+  padding-left: 20px;
+}
+
+.spec-list li {
+  margin-bottom: 6px;
+  font-size: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.remove-spec-btn {
+  background: none;
+  border: none;
+  color: red;
+  cursor: pointer;
+  margin-left: 10px;
+}

@@ -1,47 +1,37 @@
-import { useState } from 'react';
-import axios from 'axios';
+import './Admin.css'; // 👈 Add this at the top
 
-export default function Admin() {
-  const [form, setForm] = useState({
-    name: '',
-    price: '',
-    image: '',
-    description: '',
-    category: 'Electronics'
-  });
+return (
+  <div className="admin-container">
+    <h2>Add Product (Admin)</h2>
+    <form onSubmit={handleSubmit}>
+      <input name="name" placeholder="Name" value={form.name} onChange={handleChange} required />
+      <input name="price" type="number" placeholder="Price" value={form.price} onChange={handleChange} required />
+      <input name="image" placeholder="Image URL" value={form.image} onChange={handleChange} required />
+      <input name="description" placeholder="Description" value={form.description} onChange={handleChange} required />
+      <select name="category" onChange={handleChange} value={form.category}>
+        {categories.map(c => <option key={c}>{c}</option>)}
+      </select>
 
-  const categories = [
-    'Electronics',
-    'Fashion',
-    'Home & Furniture',
-    'Beauty & Personal care',
-    'Grocery'
-  ];
+      <div className="spec-section">
+        <input
+          type="text"
+          placeholder="Add Specification"
+          value={specInput}
+          onChange={(e) => setSpecInput(e.target.value)}
+        />
+        <button type="button" className="add-spec-btn" onClick={addSpec}>Add Spec</button>
+      </div>
 
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
+      <ul className="spec-list">
+        {specifications.map((spec, idx) => (
+          <li key={idx}>
+            {spec}
+            <button type="button" className="remove-spec-btn" onClick={() => removeSpec(idx)}>❌</button>
+          </li>
+        ))}
+      </ul>
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    axios.post(`${import.meta.env.VITE_API_URL}/api/products`, form)
-      .then(() => alert('✅ Product added!'))
-      .catch(() => alert('❌ Failed to add product'));
-  };
-
-  return (
-    <div style={{ padding: 20, maxWidth: 500, margin: 'auto' }}>
-      <h2>Add Product (Admin)</h2>
-      <form onSubmit={handleSubmit}>
-        <input name="name" placeholder="Name" onChange={handleChange} required />
-        <input name="price" type="number" placeholder="Price" onChange={handleChange} required />
-        <input name="image" placeholder="Image URL" onChange={handleChange} required />
-        <input name="description" placeholder="Description" onChange={handleChange} required />
-        <select name="category" onChange={handleChange} value={form.category}>
-          {categories.map(c => <option key={c}>{c}</option>)}
-        </select>
-        <button type="submit">Add Product</button>
-      </form>
-    </div>
-  );
-}
+      <button type="submit">Add Product</button>
+    </form>
+  </div>
+);
