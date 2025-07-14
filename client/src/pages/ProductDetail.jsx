@@ -7,13 +7,17 @@ export default function ProductDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [product, setProduct] = useState(null);
+  const [showSpecs, setShowSpecs] = useState(false); // 👈 collapse toggle
 
-  useEffect(() => {
-    axios
-      .get(`${import.meta.env.VITE_API_URL}/api/products/${id}`)
-      .then(res => setProduct(res.data))
-      .catch(err => console.error('Error fetching product:', err));
-  }, [id]);
+ useEffect(() => {
+  axios
+    .get(`${import.meta.env.VITE_API_URL}/api/products/${id}`)
+    .then(res => {
+      console.log('🔍 Loaded Product:', res.data); // 👈 Log here
+      setProduct(res.data);
+    })
+    .catch(err => console.error('Error fetching product:', err));
+}, [id]);
 
   const user = JSON.parse(localStorage.getItem('user'));
   if (!user) {
@@ -43,15 +47,19 @@ export default function ProductDetail() {
           <p className="price">₹{product.price}</p>
           <p className="desc">{product.description}</p>
 
-          {/* ✅ Render specifications */}
           {product.specifications?.length > 0 && (
             <div className="specs">
-              <h4>Specifications:</h4>
-              <ul>
-                {product.specifications.map((spec, idx) => (
-                  <li key={idx}>{spec}</li>
-                ))}
-              </ul>
+              <button className="spec-toggle-btn" onClick={() => setShowSpecs(!showSpecs)}>
+                {showSpecs ? 'Hide Specifications ▲' : 'Show Specifications ▼'}
+              </button>
+
+              {showSpecs && (
+                <ul className="spec-list">
+                  {product.specifications.map((spec, idx) => (
+                    <li key={idx}>{spec}</li>
+                  ))}
+                </ul>
+              )}
             </div>
           )}
 
