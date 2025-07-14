@@ -3,9 +3,9 @@
 /* General layout */
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: #f3cfc4;
+  background: #fff8e1; /* ✅ very light orange */
   margin: 0;
-  overflow-x: hidden; /* ✅ disables horizontal scroll */
+  overflow-x: hidden;
   padding: 0;
   color: #333;
 }
