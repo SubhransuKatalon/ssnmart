@@ -1,6 +1,7 @@
-import './Admin.css';
+// In Admin.jsx
 import { useState } from 'react';
 import axios from 'axios';
+import './Admin.css';
 
 export default function Admin() {
   const [form, setForm] = useState({
@@ -13,6 +14,8 @@ export default function Admin() {
 
   const [specInput, setSpecInput] = useState('');
   const [specifications, setSpecifications] = useState([]);
+  const [defaultCard, setDefaultCard] = useState({ number: '', expiry: '', cvv: '' });
+  const [defaultUPI, setDefaultUPI] = useState('');
 
   const categories = [
     'Electronics',
@@ -46,16 +49,16 @@ export default function Admin() {
     })
       .then(() => {
         alert('✅ Product added!');
-        setForm({
-          name: '',
-          price: '',
-          image: '',
-          description: '',
-          category: 'Electronics'
-        });
+        setForm({ name: '', price: '', image: '', description: '', category: 'Electronics' });
         setSpecifications([]);
       })
       .catch(() => alert('❌ Failed to add product'));
+  };
+
+  const savePaymentDefaults = () => {
+    localStorage.setItem('defaultCard', JSON.stringify(defaultCard));
+    localStorage.setItem('defaultUPI', defaultUPI);
+    alert('✅ Payment validation data saved.');
   };
 
   return (
@@ -77,12 +80,8 @@ export default function Admin() {
             value={specInput}
             onChange={(e) => setSpecInput(e.target.value)}
           />
-          <button
-            type="button"
-            className="add-spec-btn"
-            onClick={addSpec}
-            >
-            {`Add Spec ${specifications.length + 1}`}
+          <button type="button" className="add-spec-btn" onClick={addSpec}>
+            Add Spec {specifications.length + 1}
           </button>
         </div>
 
@@ -97,6 +96,22 @@ export default function Admin() {
 
         <button type="submit">Add Product</button>
       </form>
+
+      <hr />
+      <h3>Set Valid Payment Details</h3>
+      <div className="payment-defaults">
+        <label>Card Number:</label>
+        <input value={defaultCard.number} onChange={e => setDefaultCard({ ...defaultCard, number: e.target.value })} />
+        <label>Expiry (MM/YY):</label>
+        <input value={defaultCard.expiry} onChange={e => setDefaultCard({ ...defaultCard, expiry: e.target.value })} />
+        <label>CVV:</label>
+        <input value={defaultCard.cvv} onChange={e => setDefaultCard({ ...defaultCard, cvv: e.target.value })} />
+
+        <label>Valid UPI ID:</label>
+        <input value={defaultUPI} onChange={e => setDefaultUPI(e.target.value)} />
+
+        <button onClick={savePaymentDefaults} style={{ marginTop: '10px' }}>Save Payment Defaults</button>
+      </div>
     </div>
   );
 }

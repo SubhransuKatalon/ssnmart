@@ -1,0 +1,73 @@
+/* Payment.css */
+
+.payment-container {
+  max-width: 500px;
+  margin: 30px auto;
+  padding: 20px;
+  background-color: #fdf0e6;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.payment-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.payment-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.payment-form label {
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.payment-form select,
+.payment-form input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.card-details {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.card-row {
+  display: flex;
+  gap: 12px;
+}
+
+.card-row input {
+  flex: 1;
+}
+
+.pay-btn {
+  padding: 12px;
+  background-color: #28a745;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 12px;
+}
+
+.pay-btn:hover {
+  background-color: #218838;
+}
+
+/* Responsive */
+@media (max-width: 500px) {
+  .card-row {
+    flex-direction: column;
+  }
+}
