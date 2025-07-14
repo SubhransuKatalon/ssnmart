@@ -56,9 +56,16 @@ export default function Admin() {
   };
 
   const savePaymentDefaults = () => {
-    localStorage.setItem('defaultCard', JSON.stringify(defaultCard));
-    localStorage.setItem('defaultUPI', defaultUPI);
-    alert('✅ Payment validation data saved.');
+    axios.post(`${import.meta.env.VITE_API_URL}/api/payment-config`, {
+      card: defaultCard,
+      upi: defaultUPI
+    })
+      .then(() => {
+        alert('✅ Payment validation data saved to server.');
+      })
+      .catch(() => {
+        alert('❌ Failed to save payment config to server.');
+      });
   };
 
   return (

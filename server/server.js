@@ -18,7 +18,7 @@ app.get('/', (req, res) => {
   res.send('🛒 SSNMart API is running.');
 });
 
-// Simple login (for demo; production should use hashed passwords + sessions)
+// User Registration
 app.post('/api/auth/register', async (req, res) => {
   const { username, password } = req.body;
   const existing = await User.findOne({ username });
@@ -30,9 +30,9 @@ app.post('/api/auth/register', async (req, res) => {
   res.json({ message: 'User registered', user: { username: user.username } });
 });
 
-
+// User Login
 app.post('/api/auth/login', async (req, res) => {
-  console.log("Login attempt:", req.body);  // Add this
+  console.log("Login attempt:", req.body);
   const { username, password } = req.body;
   const user = await User.findOne({ username, password });
   if (!user) {
@@ -41,90 +41,71 @@ app.post('/api/auth/login', async (req, res) => {
   res.json({ message: 'Login successful', user: { username: user.username } });
 });
 
+// Fetch Products
 app.get('/api/products', async (req, res) => {
   try {
     const category = req.query.category;
-    console.log('📥 Requested category:', category);
-
-    const escapeRegExp = (str) =>
-      str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-
-    const filter = category
-      ? { category: new RegExp('^' + escapeRegExp(category) + '$', 'i') }
-      : {};
-
+    const escapeRegExp = (str) => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const filter = category ? { category: new RegExp('^' + escapeRegExp(category) + '$', 'i') } : {};
     const products = await Product.find(filter);
     res.json(products);
   } catch (err) {
-    console.error('Product fetch error:', err);
     res.status(500).json({ message: 'Server error' });
   }
 });
 
-// Create a new product (admin only - no auth check here for demo)
+// Create Product
 app.post('/api/products', async (req, res) => {
   try {
-    const { name, price, image, description, category } = req.body;
-
+    const { name, price, image, description, category, specifications } = req.body;
     if (!name || !price || !image || !category) {
       return res.status(400).json({ message: 'Missing required fields' });
     }
-
-    const product = new Product({ name, price, image, description, category });
+    const product = new Product({ name, price, image, description, category, specifications });
     await product.save();
-
     res.status(201).json({ message: 'Product created', product });
   } catch (err) {
-    console.error('❌ Product creation error:', err);
     res.status(500).json({ message: 'Server error' });
   }
 });
 
-
+// Get Cart
 app.get('/api/cart', async (req, res) => {
   const { userId } = req.query;
   if (!userId) return res.status(400).json({ message: 'Missing userId' });
 
   const cartItems = await CartItem.find({ userId }).populate('productId');
-
   const validItems = cartItems.filter(item => item.productId !== null);
-
   const formattedItems = validItems.map(item => ({
     product: {
       _id: item.productId._id,
-    name: item.productId.name,
-    price: item.productId.price,
-    image: item.productId.image,              // Add image
-    description: item.productId.description
+      name: item.productId.name,
+      price: item.productId.price,
+      image: item.productId.image,
+      description: item.productId.description
     },
     qty: item.qty
   }));
 
-  const total = formattedItems.reduce(
-    (sum, item) => sum + item.product.price * item.qty,
-    0
-  );
-
+  const total = formattedItems.reduce((sum, item) => sum + item.product.price * item.qty, 0);
   res.json({ items: formattedItems, total });
 });
 
+// Get Product by ID
 app.get('/api/products/:id', async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
     if (!product) return res.status(404).json({ message: 'Product not found' });
     res.json(product);
   } catch (err) {
-    console.error('Product fetch error:', err);
     res.status(500).json({ message: 'Server error' });
   }
 });
 
+// Add to Cart
 app.post('/api/cart', async (req, res) => {
   const { productId, qty, userId } = req.body;
-
-  if (!userId) {
-    return res.status(400).json({ message: 'Missing userId' });
-  }
+  if (!userId) return res.status(400).json({ message: 'Missing userId' });
 
   if (qty === 0) {
     await CartItem.deleteOne({ userId, productId });
@@ -135,13 +116,13 @@ app.post('/api/cart', async (req, res) => {
       { upsert: true }
     );
   }
-
   res.json({ success: true });
 });
 
+// Save Payment Config
 app.post('/api/payment-config', async (req, res) => {
   try {
-    await PaymentConfig.deleteMany(); // Only one config allowed
+    await PaymentConfig.deleteMany();
     const config = new PaymentConfig(req.body);
     await config.save();
     res.json({ success: true });
@@ -150,6 +131,7 @@ app.post('/api/payment-config', async (req, res) => {
   }
 });
 
+// Get Payment Config
 app.get('/api/payment-config', async (req, res) => {
   try {
     const config = await PaymentConfig.findOne();
@@ -159,10 +141,12 @@ app.get('/api/payment-config', async (req, res) => {
   }
 });
 
+// Health Check
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok' });
 });
 
+// Start Server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
