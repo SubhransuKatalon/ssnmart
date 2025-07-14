@@ -7,6 +7,7 @@ require('./db');
 const Product = require('./models/Product');
 const CartItem = require('./models/CartItem');
 const User = require('./models/User');
+const PaymentConfig = require('./models/PaymentConfig');
 const PORT = process.env.PORT || 5050;
 
 app.use(cors());
@@ -136,6 +137,26 @@ app.post('/api/cart', async (req, res) => {
   }
 
   res.json({ success: true });
+});
+
+app.post('/api/payment-config', async (req, res) => {
+  try {
+    await PaymentConfig.deleteMany(); // Only one config allowed
+    const config = new PaymentConfig(req.body);
+    await config.save();
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to save payment config' });
+  }
+});
+
+app.get('/api/payment-config', async (req, res) => {
+  try {
+    const config = await PaymentConfig.findOne();
+    res.json(config);
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to fetch payment config' });
+  }
 });
 
 app.get('/api/health', (req, res) => {
