@@ -1,10 +1,11 @@
 const mongoose = require('mongoose');
 
 const transactionSchema = new mongoose.Schema({
+  user: String,
   method: String,
-  details: Object,
   status: String,
-  timestamp: String
-});
+  amount: Number,
+  details: mongoose.Schema.Types.Mixed
+}, { timestamps: true }); // ✅ THIS enables createdAt
 
 module.exports = mongoose.model('Transaction', transactionSchema);

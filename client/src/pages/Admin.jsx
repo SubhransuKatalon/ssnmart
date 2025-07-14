@@ -152,7 +152,7 @@ export default function Admin() {
                   <td>{txn.method}</td>
                   <td style={{ color: txn.status === 'success' ? 'green' : 'red' }}>{txn.status}</td>
                   <td>₹{txn.amount}</td>
-                  <td>{new Date(txn.createdAt).toLocaleString()}</td>
+                  <td>{txn.createdAt ? new Date(txn.createdAt).toLocaleString() : 'N/A'}</td>
                 </tr>
               ))}
             </tbody>
