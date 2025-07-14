@@ -8,6 +8,8 @@ const Product = require('./models/Product');
 const CartItem = require('./models/CartItem');
 const User = require('./models/User');
 const PaymentConfig = require('./models/PaymentConfig');
+const Transaction = require('./models/Transaction'); // ✅ Added transaction model
+
 const PORT = process.env.PORT || 5050;
 
 app.use(cors());
@@ -138,6 +140,18 @@ app.get('/api/payment-config', async (req, res) => {
     res.json(config);
   } catch (err) {
     res.status(500).json({ message: 'Failed to fetch payment config' });
+  }
+});
+
+// ✅ Log Transaction
+app.post('/api/transactions', async (req, res) => {
+  try {
+    const txn = new Transaction(req.body);
+    await txn.save();
+    res.json({ success: true });
+  } catch (err) {
+    console.error('Transaction logging error:', err);
+    res.status(500).json({ message: 'Failed to log transaction' });
   }
 });
 

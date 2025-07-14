@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 const PaymentConfigSchema = new mongoose.Schema({
   card: {
+    name: String,
     number: String,
     expiry: String,
     cvv: String

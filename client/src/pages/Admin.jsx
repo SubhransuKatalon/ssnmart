@@ -14,7 +14,7 @@ export default function Admin() {
 
   const [specInput, setSpecInput] = useState('');
   const [specifications, setSpecifications] = useState([]);
-  const [defaultCard, setDefaultCard] = useState({ number: '', expiry: '', cvv: '' });
+  const [defaultCard, setDefaultCard] = useState({ name: '', number: '', expiry: '', cvv: '' });
   const [defaultUPI, setDefaultUPI] = useState('');
 
   const categories = [
@@ -113,7 +113,12 @@ export default function Admin() {
         <input value={defaultCard.expiry} onChange={e => setDefaultCard({ ...defaultCard, expiry: e.target.value })} />
         <label>CVV:</label>
         <input value={defaultCard.cvv} onChange={e => setDefaultCard({ ...defaultCard, cvv: e.target.value })} />
-
+        <label>Card Holder Name:</label>
+        <input
+          value={defaultCard.name}
+          onChange={e => setDefaultCard({ ...defaultCard, name: e.target.value })}
+        />
+        
         <label>Valid UPI ID:</label>
         <input value={defaultUPI} onChange={e => setDefaultUPI(e.target.value)} />
 
