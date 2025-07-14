@@ -156,6 +156,7 @@ app.get('/api/payment-config', async (req, res) => {
 // ✅ Log Transaction
 app.post('/api/transactions', async (req, res) => {
   try {
+    console.log('Transaction payload received:', req.body); // 🐛 log it
     const txn = new Transaction(req.body);
     await txn.save();
     res.json({ success: true });
@@ -166,15 +167,12 @@ app.post('/api/transactions', async (req, res) => {
 });
 
 // ✅ Admin View All Transactions
-app.post('/api/transactions', async (req, res) => {
+app.get('/api/transactions', async (req, res) => {
   try {
-    console.log('Transaction payload received:', req.body); // 🐛 log it
-    const txn = new Transaction(req.body);
-    await txn.save();
-    res.json({ success: true });
+    const txns = await Transaction.find().sort({ createdAt: -1 });
+    res.json(txns);
   } catch (err) {
-    console.error('Transaction logging error:', err);
-    res.status(500).json({ message: 'Failed to log transaction' });
+    res.status(500).json({ message: 'Failed to fetch transactions' });
   }
 });
 
