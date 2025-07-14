@@ -148,7 +148,7 @@ export default function Admin() {
             <tbody>
               {transactions.map(txn => (
                 <tr key={txn._id}>
-                  <td>{txn.user}</td>
+                  <td>{txn.user || 'Anonymous'}</td>
                   <td>{txn.method}</td>
                   <td style={{ color: txn.status === 'success' ? 'green' : 'red' }}>{txn.status}</td>
                   <td>₹{txn.amount}</td>

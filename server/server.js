@@ -168,11 +168,12 @@ app.post('/api/transactions', async (req, res) => {
 // ✅ Admin View All Transactions
 app.post('/api/transactions', async (req, res) => {
   try {
-    const { user, method, status, amount, details } = req.body;
-    const txn = new Transaction({ user, method, status, amount, details });
+    console.log('Transaction payload received:', req.body); // 🐛 log it
+    const txn = new Transaction(req.body);
     await txn.save();
     res.json({ success: true });
   } catch (err) {
+    console.error('Transaction logging error:', err);
     res.status(500).json({ message: 'Failed to log transaction' });
   }
 });
