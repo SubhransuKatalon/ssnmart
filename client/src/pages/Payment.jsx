@@ -25,7 +25,21 @@ export default function Payment() {
   }, []);
 
   const handleInputChange = (e) => {
-    setCardDetails({ ...cardDetails, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+
+    if (name === 'number') {
+      const raw = value.replace(/\D/g, '').slice(0, 16);
+      const formatted = raw.replace(/(.{4})/g, '$1-').replace(/-$/, '');
+      setCardDetails(prev => ({ ...prev, number: formatted }));
+    } else if (name === 'expiry') {
+      let raw = value.replace(/\D/g, '').slice(0, 4);
+      if (raw.length >= 3) {
+        raw = raw.slice(0, 2) + '/' + raw.slice(2);
+      }
+      setCardDetails(prev => ({ ...prev, expiry: raw }));
+    } else {
+      setCardDetails(prev => ({ ...prev, [name]: value }));
+    }
   };
 
   const handlePayment = async (e) => {
@@ -105,17 +119,52 @@ export default function Payment() {
 
         {paymentMethod === 'card' && (
           <div className="card-details">
-            <input type="text" name="name" placeholder="Name on Card" value={cardDetails.name} onChange={handleInputChange} required />
-            <input type="text" name="number" placeholder="Card Number" value={cardDetails.number} onChange={handleInputChange} maxLength={16} required />
+            <input
+              type="text"
+              name="name"
+              placeholder="Name on Card"
+              value={cardDetails.name}
+              onChange={handleInputChange}
+              required
+            />
+            <input
+              type="text"
+              name="number"
+              placeholder="Card Number (XXXX-XXXX-XXXX-XXXX)"
+              value={cardDetails.number}
+              onChange={handleInputChange}
+              required
+            />
             <div className="card-row">
-              <input type="text" name="expiry" placeholder="MM/YY" value={cardDetails.expiry} onChange={handleInputChange} maxLength={5} required />
-              <input type="password" name="cvv" placeholder="CVV" value={cardDetails.cvv} onChange={handleInputChange} maxLength={3} required />
+              <input
+                type="text"
+                name="expiry"
+                placeholder="MM/YY"
+                value={cardDetails.expiry}
+                onChange={handleInputChange}
+                required
+              />
+              <input
+                type="password"
+                name="cvv"
+                placeholder="CVV"
+                value={cardDetails.cvv}
+                onChange={handleInputChange}
+                maxLength={3}
+                required
+              />
             </div>
           </div>
         )}
 
         {paymentMethod === 'upi' && (
-          <input type="text" placeholder="Enter UPI ID" value={upiId} onChange={(e) => setUpiId(e.target.value)} required />
+          <input
+            type="text"
+            placeholder="Enter UPI ID"
+            value={upiId}
+            onChange={(e) => setUpiId(e.target.value)}
+            required
+          />
         )}
 
         {paymentMethod === 'cod' && <p>Pay with cash when your order is delivered.</p>}

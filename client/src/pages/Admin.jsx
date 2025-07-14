@@ -133,9 +133,23 @@ export default function Admin() {
       {activeTab === 'payment' && (
         <div key="payment" className="admin-section fade-in payment-defaults">
           <label>Card Number:</label>
-          <input value={defaultCard.number} onChange={e => setDefaultCard({ ...defaultCard, number: e.target.value })} />
+          <input value={defaultCard.number} onChange={e => {
+            const raw = e.target.value.replace(/\D/g, '').slice(0, 16);
+            const formatted = raw.replace(/(.{4})/g, '$1-').replace(/-$/, '');
+            setDefaultCard({ ...defaultCard, number: formatted });
+          }}
+          placeholder="1234-5678-9012-3456"
+        />
           <label>Expiry (MM/YY):</label>
-          <input value={defaultCard.expiry} onChange={e => setDefaultCard({ ...defaultCard, expiry: e.target.value })} />
+          <input value={defaultCard.expiry} onChange={e => {
+            let val = e.target.value.replace(/\D/g, '').slice(0, 4);
+            if (val.length >= 3) {
+              val = val.slice(0, 2) + '/' + val.slice(2);
+            }
+            setDefaultCard({ ...defaultCard, expiry: val });
+            }}
+            placeholder="MM/YY"
+          />
           <label>CVV:</label>
           <input value={defaultCard.cvv} onChange={e => setDefaultCard({ ...defaultCard, cvv: e.target.value })} />
           <label>Card Holder Name:</label>
