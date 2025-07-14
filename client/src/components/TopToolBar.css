@@ -105,8 +105,8 @@ body.dark .top-toolbar a.active {
   position: absolute;
   top: 100%;
   left: 0;
-  background-color: white;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: #f6e1e1;
+  box-shadow: 0 4px 6px rgb(246, 2, 2);
   z-index: 1000;
   padding: 10px;
   display: flex;
