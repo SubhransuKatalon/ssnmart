@@ -112,3 +112,35 @@
 .transaction-log th {
   background-color: #f0f0f0;
 }
+
+.admin-tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.admin-tabs button {
+  background-color: #eee;
+  border: 1px solid #ccc;
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.admin-tabs button.active {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+/* Fade-in animation */
+.admin-section {
+  opacity: 0;
+  animation: fadeIn 0.4s ease forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
