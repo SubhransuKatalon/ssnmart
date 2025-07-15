@@ -34,14 +34,14 @@ app.post('/api/auth/register', async (req, res) => {
 
 // User Login
 app.post('/api/auth/login', async (req, res) => {
-  console.log("Login attempt:", req.body);
   const { username, password } = req.body;
   const user = await User.findOne({ username, password });
-  if (!user) {
-    return res.status(401).json({ message: 'Invalid credentials' });
-  }
+  if (!user) return res.status(401).json({ message: 'Invalid credentials' });
+  if (!user.approved) return res.status(403).json({ message: 'User not approved by admin' });
+
   res.json({ message: 'Login successful', user: { username: user.username } });
 });
+
 
 // Fetch Products
 app.get('/api/products', async (req, res) => {
