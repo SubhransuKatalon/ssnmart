@@ -43,10 +43,10 @@ app.post('/api/auth/login', async (req, res) => {
   if (!user) return res.status(401).json({ message: 'Invalid credentials' });
 
   if (user.declined)
-    return res.status(403).json({ message: 'Admin has declined your registration. Contact admin@ssnmart.com' });
+    return res.status(403).json({ message: 'declined by admin.' });
 
   if (!user.approved)
-    return res.status(403).json({ message: 'Your account is pending approval by admin.' });
+    return res.status(403).json({ message: 'pending approval by admin.' });
 
   res.json({ message: 'Login successful', user: { username: user.username } });
 });
