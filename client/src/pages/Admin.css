@@ -196,3 +196,50 @@
   color: white;
   font-weight: bold;
 }
+
+/* Approve button */
+.approve-btn {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.approve-btn:hover {
+  background-color: #218838;
+}
+
+/* Decline button */
+.decline-btn {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.decline-btn:hover {
+  background-color: #c82333;
+}
+
+/* Delete button */
+.delete-btn {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.delete-btn:hover {
+  background-color: #5a6268;
+}
