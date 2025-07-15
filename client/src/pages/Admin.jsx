@@ -128,6 +128,7 @@ export default function Admin() {
 
       {activeTab === 'product' && (
         <div className="admin-section fade-in">
+          <h3>Add Product</h3>
           <form onSubmit={handleSubmit}>
             <input name="name" value={form.name} onChange={handleChange} placeholder="Name" required />
             <input name="price" type="number" value={form.price} onChange={handleChange} placeholder="Price" required />
@@ -152,6 +153,7 @@ export default function Admin() {
 
       {activeTab === 'payment' && (
         <div className="admin-section fade-in payment-defaults">
+          <h3>Payment Configuration</h3>
           {['number', 'expiry', 'cvv', 'name'].map(field => (
             <>
               <label>{field === 'number' ? 'Card Number' : field === 'expiry' ? 'Expiry (MM/YY)' : field === 'cvv' ? 'CVV' : 'Card Holder Name'}</label>

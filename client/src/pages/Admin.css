@@ -1,28 +1,31 @@
 .admin-container {
   padding: 20px;
-  max-width: 1000px;
+  max-width: 700px;
   margin: 0 auto;
 }
 
 .admin-container h2 {
-  margin-bottom: 20px;
   text-align: center;
+  margin-bottom: 25px;
   color: #333;
 }
 
 .admin-tabs {
   display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
+  justify-content: center;
   flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 30px;
 }
 
 .admin-tabs button {
   background-color: #eee;
   border: 1px solid #ccc;
   padding: 8px 16px;
+  font-size: 14px;
   cursor: pointer;
   border-radius: 4px;
+  transition: background-color 0.3s;
 }
 
 .admin-tabs button.active {
@@ -31,9 +34,15 @@
   border-color: #007bff;
 }
 
+.admin-section h3 {
+  margin-bottom: 15px;
+  color: #333;
+  text-align: center;
+}
+
 .admin-section {
-  opacity: 0;
   animation: fadeIn 0.4s ease forwards;
+  opacity: 0;
 }
 
 @keyframes fadeIn {
@@ -49,7 +58,8 @@
 }
 
 .admin-container input,
-.admin-container select {
+.admin-container select,
+.admin-container textarea {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -58,7 +68,9 @@
   box-sizing: border-box;
 }
 
-.admin-container button[type="submit"] {
+.admin-container button[type="submit"],
+.payment-defaults button,
+.transaction-log button {
   background-color: #007bff;
   color: white;
   border: none;
@@ -66,13 +78,15 @@
   font-size: 15px;
   border-radius: 4px;
   cursor: pointer;
+  transition: background-color 0.2s;
 }
 
-.admin-container button[type="submit"]:hover {
+.admin-container button[type="submit"]:hover,
+.payment-defaults button:hover,
+.transaction-log button:hover {
   background-color: #0056b3;
 }
 
-/* Spec Input Row */
 .spec-section {
   display: flex;
   gap: 10px;
@@ -81,19 +95,15 @@
 
 .spec-section input {
   flex: 1;
-  padding: 8px;
-  font-size: 14px;
 }
 
 .add-spec-btn {
-  padding: 8px 12px;
   background-color: #28a745;
-  border: none;
   color: white;
+  border: none;
   border-radius: 4px;
+  padding: 10px 12px;
   cursor: pointer;
-  font-size: 14px;
-  white-space: nowrap;
 }
 
 .add-spec-btn:hover {
@@ -101,25 +111,48 @@
 }
 
 .spec-list {
+  list-style: none;
+  padding-left: 0;
   margin-top: 10px;
-  padding-left: 20px;
 }
 
 .spec-list li {
-  margin-bottom: 6px;
-  font-size: 14px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 6px;
 }
 
 .remove-spec-btn {
   background: none;
-  border: none;
   color: red;
+  border: none;
   cursor: pointer;
-  margin-left: 10px;
   font-size: 16px;
+}
+
+.payment-defaults label {
+  margin-top: 10px;
+  font-weight: 500;
+}
+
+.payment-defaults input {
+  margin-bottom: 10px;
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 10px 0;
+}
+
+.filters input,
+.filters select {
+  padding: 6px;
+  font-size: 14px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
 }
 
 .transaction-log {
@@ -130,47 +163,31 @@
 .transaction-log table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 10px;
 }
 
 .transaction-log th,
 .transaction-log td {
   padding: 8px 10px;
   border: 1px solid #ccc;
-  text-align: left;
   font-size: 14px;
 }
 
 .transaction-log th {
-  background-color: #f0f0f0;
-}
-
-.filters {
-  display: flex;
-  gap: 12px;
-  margin: 10px 0;
-  flex-wrap: wrap;
-}
-
-.filters input,
-.filters select {
-  padding: 6px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  background-color: #f8f8f8;
 }
 
 .pagination {
-  margin-top: 12px;
   display: flex;
-  gap: 6px;
   justify-content: center;
+  gap: 6px;
+  margin-top: 12px;
 }
 
 .pagination button {
   padding: 6px 10px;
-  border: none;
   background-color: #eee;
   border-radius: 4px;
+  border: none;
   cursor: pointer;
 }
 
@@ -178,12 +195,4 @@
   background-color: #007bff;
   color: white;
   font-weight: bold;
-}
-
-.transaction-log button {
-  padding: 4px 8px;
-  border: none;
-  background: none;
-  font-weight: bold;
-  cursor: pointer;
 }
