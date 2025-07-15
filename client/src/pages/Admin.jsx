@@ -5,6 +5,8 @@ import './Admin.css';
 export default function Admin() {
   const [activeTab, setActiveTab] = useState('product');
   const [userSubTab, setUserSubTab] = useState('new');
+  const [darkMode, setDarkMode] = useState(false);
+
   const [form, setForm] = useState({ name: '', price: '', image: '', description: '', category: 'Electronics' });
   const [specInput, setSpecInput] = useState('');
   const [specifications, setSpecifications] = useState([]);
@@ -14,11 +16,14 @@ export default function Admin() {
   const [filters, setFilters] = useState({ status: '', user: '', date: '' });
   const [pagination, setPagination] = useState({ currentPage: 1, perPage: 10 });
   const [loading, setLoading] = useState(false);
-
   const [newUsers, setNewUsers] = useState([]);
   const [declinedUsers, setDeclinedUsers] = useState([]);
 
   const categories = ['Electronics', 'Fashion', 'Home & Furniture', 'Beauty & Personal care', 'Grocery'];
+
+  useEffect(() => {
+    document.body.classList.toggle('dark-mode', darkMode);
+  }, [darkMode]);
 
   useEffect(() => {
     if (activeTab === 'transactions') {
@@ -117,18 +122,20 @@ export default function Admin() {
   return (
     <div className="admin-container">
       <h2>Admin Dashboard</h2>
-
       <div className="admin-tabs">
         {['product', 'payment', 'transactions', 'users'].map(tab => (
           <button key={tab} className={activeTab === tab ? 'active' : ''} onClick={() => setActiveTab(tab)}>
             {tab === 'product' ? 'Add Product' : tab === 'payment' ? 'Payment Config' : tab === 'transactions' ? 'Transaction Logs' : 'Users Registration'}
           </button>
         ))}
+        <button className="toggle-mode" onClick={() => setDarkMode(!darkMode)}>
+          {darkMode ? '🌙 Dark Mode ON' : '☀️ Dark Mode OFF'}
+        </button>
       </div>
 
       {activeTab === 'product' && (
         <div className="admin-section fade-in">
-          <h3>Add Product</h3>
+          <h3 className="section-title">➕ Add New Product</h3>
           <form onSubmit={handleSubmit}>
             <input name="name" value={form.name} onChange={handleChange} placeholder="Name" required />
             <input name="price" type="number" value={form.price} onChange={handleChange} placeholder="Price" required />
@@ -153,7 +160,7 @@ export default function Admin() {
 
       {activeTab === 'payment' && (
         <div className="admin-section fade-in payment-defaults">
-          <h3>Payment Configuration</h3>
+          <h3 className="section-title">💳 Payment Configuration</h3>
           {['number', 'expiry', 'cvv', 'name'].map(field => (
             <>
               <label>{field === 'number' ? 'Card Number' : field === 'expiry' ? 'Expiry (MM/YY)' : field === 'cvv' ? 'CVV' : 'Card Holder Name'}</label>
@@ -222,7 +229,7 @@ export default function Admin() {
       {activeTab === 'users' && (
         <div className="admin-section fade-in transaction-log">
           <h3>👥 Users Registration</h3>
-          <div className="admin-tabs">
+          <div className="admin-tabs inner-tabs">
             <button className={userSubTab === 'new' ? 'active' : ''} onClick={() => setUserSubTab('new')}>New Registrations</button>
             <button className={userSubTab === 'declined' ? 'active' : ''} onClick={() => setUserSubTab('declined')}>Declined</button>
           </div>
