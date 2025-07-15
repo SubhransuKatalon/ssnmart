@@ -21,16 +21,18 @@ export default function Login({ onLogin }) {
       if (res.status === 200 && res.data.user) {
         localStorage.setItem('user', JSON.stringify(res.data.user));
         alert('✅ Login successful');
-        onLogin(); // e.g. update navbar or redirect
+        onLogin(); // trigger parent update
       } else {
         setError('❌ Login failed');
       }
     } catch (err) {
+      const msg = err.response?.data?.message;
+
       if (err.response?.status === 401) {
         setError('❌ Invalid username or password');
-      } else if (err.response?.data.message === 'declined by admin.') {
+      } else if (msg === 'Admin has declined your registration. Contact admin@ssnmart.com') {
         setError('❌ Admin has declined your registration. Contact admin@ssnmart.com');
-      } else if (err.response?.data.message === 'pending approval by admin.') {
+      } else if (msg === 'Your account is pending approval by admin.') {
         setError('❌ Your account is pending approval by admin.');
       } else {
         setError('❌ Server error. Try again later.');
