@@ -187,3 +187,24 @@
     opacity: 1;
   }
 }
+
+/* Sub-tabs inside Users Registration */
+.user-sub-tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.user-sub-tabs button {
+  background-color: #ddd;
+  border: 1px solid #ccc;
+  padding: 6px 14px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.user-sub-tabs button.active {
+  background-color: #28a745;
+  color: white;
+  font-weight: bold;
+}

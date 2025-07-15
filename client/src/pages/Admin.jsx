@@ -17,8 +17,10 @@ export default function Admin() {
   const [defaultUPI, setDefaultUPI] = useState('');
   const [transactions, setTransactions] = useState([]);
   const [pendingUsers, setPendingUsers] = useState([]);
+  const [declinedUsers, setDeclinedUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [filters, setFilters] = useState({ status: '', user: '', date: '' });
+  const [userTab, setUserTab] = useState('new');
 
   const categories = [
     'Electronics',
@@ -41,6 +43,10 @@ export default function Admin() {
       axios.get(`${import.meta.env.VITE_API_URL}/api/users/pending`)
         .then(res => setPendingUsers(res.data))
         .catch(err => console.error('Failed to fetch users:', err));
+
+      axios.get(`${import.meta.env.VITE_API_URL}/api/users/declined`)
+        .then(res => setDeclinedUsers(res.data))
+        .catch(err => console.error('Failed to fetch declined users:', err));
     }
   }, [activeTab]);
 
@@ -93,6 +99,10 @@ export default function Admin() {
       .then(() => {
         alert(`User ${approve ? 'approved' : 'declined'}!`);
         setPendingUsers(prev => prev.filter(u => u.username !== username));
+        setDeclinedUsers(prev =>
+          approve ? prev.filter(u => u.username !== username)
+                  : [...prev, { username }]
+        );
       })
       .catch(() => alert('❌ Failed to update user status.'));
   };
@@ -109,7 +119,7 @@ export default function Admin() {
     <div className="admin-container">
       <h2>Admin Dashboard</h2>
 
-      {/* Tabs */}
+      {/* Main Tabs */}
       <div className="admin-tabs">
         <button className={activeTab === 'product' ? 'active' : ''} onClick={() => setActiveTab('product')}>Add Product</button>
         <button className={activeTab === 'payment' ? 'active' : ''} onClick={() => setActiveTab('payment')}>Payment Config</button>
@@ -235,30 +245,58 @@ export default function Admin() {
 
       {/* Users Registration Tab */}
       {activeTab === 'users' && (
-        <div className="admin-section fade-in transaction-log">
+        <div className="admin-section fade-in">
           <h3>👥 Users Registration</h3>
-          {pendingUsers.length === 0 ? (
-            <p>No pending users.</p>
-          ) : (
-            <table>
-              <thead>
-                <tr>
-                  <th>Username</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {pendingUsers.map(user => (
-                  <tr key={user._id}>
-                    <td>{user.username}</td>
-                    <td>
-                      <button onClick={() => handleUserApproval(user.username, true)} style={{ color: 'green' }}>Approve</button>
-                      <button onClick={() => handleUserApproval(user.username, false)} style={{ color: 'red', marginLeft: '10px' }}>Decline</button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+
+          <div className="user-subtabs">
+            <button className={userTab === 'new' ? 'active' : ''} onClick={() => setUserTab('new')}>New Registrations</button>
+            <button className={userTab === 'declined' ? 'active' : ''} onClick={() => setUserTab('declined')}>Declined</button>
+          </div>
+
+          {userTab === 'new' && (
+            pendingUsers.length === 0 ? (
+              <p>No pending users.</p>
+            ) : (
+              <table>
+                <thead>
+                  <tr><th>Username</th><th>Action</th></tr>
+                </thead>
+                <tbody>
+                  {pendingUsers.map(user => (
+                    <tr key={user._id}>
+                      <td>{user.username}</td>
+                      <td>
+                        <button onClick={() => handleUserApproval(user.username, true)} style={{ color: 'green' }}>Approve</button>
+                        <button onClick={() => handleUserApproval(user.username, false)} style={{ color: 'red', marginLeft: '10px' }}>Decline</button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )
+          )}
+
+          {userTab === 'declined' && (
+            declinedUsers.length === 0 ? (
+              <p>No declined users.</p>
+            ) : (
+              <table>
+                <thead>
+                  <tr><th>Username</th><th>Action</th></tr>
+                </thead>
+                <tbody>
+                  {declinedUsers.map(user => (
+                    <tr key={user._id}>
+                      <td>{user.username}</td>
+                      <td>
+                        <button onClick={() => handleUserApproval(user.username, true)} style={{ color: 'green' }}>Approve</button>
+                        <button onClick={() => handleUserApproval(user.username, false)} style={{ color: 'red', marginLeft: '10px' }}>Decline</button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )
           )}
         </div>
       )}
