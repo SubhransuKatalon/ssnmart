@@ -1,6 +1,6 @@
 .admin-container {
   padding: 20px;
-  max-width: 500px;
+  max-width: 1000px;
   margin: 0 auto;
 }
 
@@ -8,6 +8,38 @@
   margin-bottom: 20px;
   text-align: center;
   color: #333;
+}
+
+.admin-tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.admin-tabs button {
+  background-color: #eee;
+  border: 1px solid #ccc;
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.admin-tabs button.active {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+.admin-section {
+  opacity: 0;
+  animation: fadeIn 0.4s ease forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
 }
 
 .admin-container form {
@@ -40,7 +72,7 @@
   background-color: #0056b3;
 }
 
-/* Updated Spec Input Row */
+/* Spec Input Row */
 .spec-section {
   display: flex;
   gap: 10px;
@@ -113,32 +145,6 @@
   background-color: #f0f0f0;
 }
 
-.admin-tabs {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
-}
-
-.admin-tabs button {
-  background-color: #eee;
-  border: 1px solid #ccc;
-  padding: 8px 16px;
-  cursor: pointer;
-  border-radius: 4px;
-}
-
-.admin-tabs button.active {
-  background-color: #007bff;
-  color: white;
-  border-color: #007bff;
-}
-
-/* Fade-in animation */
-.admin-section {
-  opacity: 0;
-  animation: fadeIn 0.4s ease forwards;
-}
-
 .filters {
   display: flex;
   gap: 12px;
@@ -180,31 +186,4 @@
   background: none;
   font-weight: bold;
   cursor: pointer;
-}
-
-@keyframes fadeIn {
-  to {
-    opacity: 1;
-  }
-}
-
-/* Sub-tabs inside Users Registration */
-.user-sub-tabs {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 12px;
-}
-
-.user-sub-tabs button {
-  background-color: #ddd;
-  border: 1px solid #ccc;
-  padding: 6px 14px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.user-sub-tabs button.active {
-  background-color: #28a745;
-  color: white;
-  font-weight: bold;
 }

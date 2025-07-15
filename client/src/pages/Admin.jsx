@@ -4,31 +4,21 @@ import './Admin.css';
 
 export default function Admin() {
   const [activeTab, setActiveTab] = useState('product');
-  const [form, setForm] = useState({
-    name: '',
-    price: '',
-    image: '',
-    description: '',
-    category: 'Electronics'
-  });
+  const [userSubTab, setUserSubTab] = useState('new');
+  const [form, setForm] = useState({ name: '', price: '', image: '', description: '', category: 'Electronics' });
   const [specInput, setSpecInput] = useState('');
   const [specifications, setSpecifications] = useState([]);
   const [defaultCard, setDefaultCard] = useState({ name: '', number: '', expiry: '', cvv: '' });
   const [defaultUPI, setDefaultUPI] = useState('');
   const [transactions, setTransactions] = useState([]);
-  const [pendingUsers, setPendingUsers] = useState([]);
-  const [declinedUsers, setDeclinedUsers] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [filters, setFilters] = useState({ status: '', user: '', date: '' });
-  const [userTab, setUserTab] = useState('new');
+  const [pagination, setPagination] = useState({ currentPage: 1, perPage: 10 });
+  const [loading, setLoading] = useState(false);
 
-  const categories = [
-    'Electronics',
-    'Fashion',
-    'Home & Furniture',
-    'Beauty & Personal care',
-    'Grocery'
-  ];
+  const [newUsers, setNewUsers] = useState([]);
+  const [declinedUsers, setDeclinedUsers] = useState([]);
+
+  const categories = ['Electronics', 'Fashion', 'Home & Furniture', 'Beauty & Personal care', 'Grocery'];
 
   useEffect(() => {
     if (activeTab === 'transactions') {
@@ -41,18 +31,15 @@ export default function Admin() {
 
     if (activeTab === 'users') {
       axios.get(`${import.meta.env.VITE_API_URL}/api/users/pending`)
-        .then(res => setPendingUsers(res.data))
+        .then(res => {
+          setNewUsers(res.data.newUsers);
+          setDeclinedUsers(res.data.declinedUsers);
+        })
         .catch(err => console.error('Failed to fetch users:', err));
-
-      axios.get(`${import.meta.env.VITE_API_URL}/api/users/declined`)
-        .then(res => setDeclinedUsers(res.data))
-        .catch(err => console.error('Failed to fetch declined users:', err));
     }
   }, [activeTab]);
 
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
+  const handleChange = e => setForm({ ...form, [e.target.name]: e.target.value });
 
   const addSpec = () => {
     if (specInput.trim()) {
@@ -61,23 +48,22 @@ export default function Admin() {
     }
   };
 
-  const removeSpec = (index) => {
-    setSpecifications(specifications.filter((_, i) => i !== index));
-  };
+  const removeSpec = index => setSpecifications(specifications.filter((_, i) => i !== index));
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
-    axios.post(`${import.meta.env.VITE_API_URL}/api/products`, {
-      ...form,
-      price: Number(form.price),
-      specifications
-    })
-      .then(() => {
-        alert('✅ Product added!');
-        setForm({ name: '', price: '', image: '', description: '', category: 'Electronics' });
-        setSpecifications([]);
-      })
-      .catch(() => alert('❌ Failed to add product'));
+    try {
+      await axios.post(`${import.meta.env.VITE_API_URL}/api/products`, {
+        ...form,
+        price: Number(form.price),
+        specifications
+      });
+      alert('✅ Product added!');
+      setForm({ name: '', price: '', image: '', description: '', category: 'Electronics' });
+      setSpecifications([]);
+    } catch {
+      alert('❌ Failed to add product');
+    }
   };
 
   const savePaymentDefaults = () => {
@@ -98,13 +84,20 @@ export default function Admin() {
     axios.post(`${import.meta.env.VITE_API_URL}/api/users/approval`, { username, approve })
       .then(() => {
         alert(`User ${approve ? 'approved' : 'declined'}!`);
-        setPendingUsers(prev => prev.filter(u => u.username !== username));
-        setDeclinedUsers(prev =>
-          approve ? prev.filter(u => u.username !== username)
-                  : [...prev, { username }]
-        );
+        setNewUsers(prev => prev.filter(u => u.username !== username));
+        setDeclinedUsers(prev => prev.filter(u => u.username !== username));
       })
       .catch(() => alert('❌ Failed to update user status.'));
+  };
+
+  const handleUserDelete = (username) => {
+    if (!window.confirm(`Delete user "${username}" permanently?`)) return;
+    axios.delete(`${import.meta.env.VITE_API_URL}/api/users/${username}`)
+      .then(() => {
+        alert('User deleted!');
+        setDeclinedUsers(prev => prev.filter(u => u.username !== username));
+      })
+      .catch(() => alert('❌ Failed to delete user.'));
   };
 
   const filteredTransactions = transactions
@@ -115,154 +108,129 @@ export default function Admin() {
     )
     .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
+  const totalPages = Math.ceil(filteredTransactions.length / pagination.perPage);
+  const currentPageData = filteredTransactions.slice(
+    (pagination.currentPage - 1) * pagination.perPage,
+    pagination.currentPage * pagination.perPage
+  );
+
   return (
     <div className="admin-container">
       <h2>Admin Dashboard</h2>
 
-      {/* Main Tabs */}
       <div className="admin-tabs">
-        <button className={activeTab === 'product' ? 'active' : ''} onClick={() => setActiveTab('product')}>Add Product</button>
-        <button className={activeTab === 'payment' ? 'active' : ''} onClick={() => setActiveTab('payment')}>Payment Config</button>
-        <button className={activeTab === 'transactions' ? 'active' : ''} onClick={() => setActiveTab('transactions')}>Transaction Logs</button>
-        <button className={activeTab === 'users' ? 'active' : ''} onClick={() => setActiveTab('users')}>Users Registration</button>
+        {['product', 'payment', 'transactions', 'users'].map(tab => (
+          <button key={tab} className={activeTab === tab ? 'active' : ''} onClick={() => setActiveTab(tab)}>
+            {tab === 'product' ? 'Add Product' : tab === 'payment' ? 'Payment Config' : tab === 'transactions' ? 'Transaction Logs' : 'Users Registration'}
+          </button>
+        ))}
       </div>
 
-      {/* Product Tab */}
       {activeTab === 'product' && (
         <div className="admin-section fade-in">
           <form onSubmit={handleSubmit}>
-            <input name="name" placeholder="Name" value={form.name} onChange={handleChange} required />
-            <input name="price" type="number" placeholder="Price" value={form.price} onChange={handleChange} required />
-            <input name="image" placeholder="Image URL" value={form.image} onChange={handleChange} required />
-            <input name="description" placeholder="Description" value={form.description} onChange={handleChange} required />
-            <select name="category" onChange={handleChange} value={form.category}>
+            <input name="name" value={form.name} onChange={handleChange} placeholder="Name" required />
+            <input name="price" type="number" value={form.price} onChange={handleChange} placeholder="Price" required />
+            <input name="image" value={form.image} onChange={handleChange} placeholder="Image URL" required />
+            <input name="description" value={form.description} onChange={handleChange} placeholder="Description" required />
+            <select name="category" value={form.category} onChange={handleChange}>
               {categories.map(c => <option key={c}>{c}</option>)}
             </select>
-
             <div className="spec-section">
-              <input
-                type="text"
-                placeholder="Add Specification"
-                value={specInput}
-                onChange={(e) => setSpecInput(e.target.value)}
-              />
-              <button type="button" className="add-spec-btn" onClick={addSpec}>
-                Add Spec {specifications.length + 1}
-              </button>
+              <input type="text" placeholder="Add Specification" value={specInput} onChange={e => setSpecInput(e.target.value)} />
+              <button type="button" className="add-spec-btn" onClick={addSpec}>Add Spec {specifications.length + 1}</button>
             </div>
-
             <ul className="spec-list">
-              {specifications.map((spec, idx) => (
-                <li key={idx}>
-                  {spec}
-                  <button type="button" className="remove-spec-btn" onClick={() => removeSpec(idx)}>❌</button>
-                </li>
+              {specifications.map((s, i) => (
+                <li key={i}>{s}<button type="button" className="remove-spec-btn" onClick={() => removeSpec(i)}>❌</button></li>
               ))}
             </ul>
-
             <button type="submit">Add Product</button>
           </form>
         </div>
       )}
 
-      {/* Payment Config Tab */}
       {activeTab === 'payment' && (
         <div className="admin-section fade-in payment-defaults">
-          <label>Card Number:</label>
-          <input value={defaultCard.number} onChange={e => {
-            const raw = e.target.value.replace(/\D/g, '').slice(0, 16);
-            const formatted = raw.replace(/(.{4})/g, '$1-').replace(/-$/, '');
-            setDefaultCard({ ...defaultCard, number: formatted });
-          }} placeholder="1234-5678-9012-3456" />
-          <label>Expiry (MM/YY):</label>
-          <input value={defaultCard.expiry} onChange={e => {
-            let val = e.target.value.replace(/\D/g, '').slice(0, 4);
-            if (val.length >= 3) val = val.slice(0, 2) + '/' + val.slice(2);
-            setDefaultCard({ ...defaultCard, expiry: val });
-          }} placeholder="MM/YY" />
-          <label>CVV:</label>
-          <input value={defaultCard.cvv} onChange={e => setDefaultCard({ ...defaultCard, cvv: e.target.value })} />
-          <label>Card Holder Name:</label>
-          <input value={defaultCard.name} onChange={e => setDefaultCard({ ...defaultCard, name: e.target.value })} />
+          {['number', 'expiry', 'cvv', 'name'].map(field => (
+            <>
+              <label>{field === 'number' ? 'Card Number' : field === 'expiry' ? 'Expiry (MM/YY)' : field === 'cvv' ? 'CVV' : 'Card Holder Name'}</label>
+              <input
+                value={defaultCard[field]}
+                onChange={e => {
+                  let val = e.target.value.replace(/\D/g, '');
+                  if (field === 'number') val = val.slice(0, 16).replace(/(.{4})/g, '$1-').replace(/-$/, '');
+                  if (field === 'expiry') {
+                    val = val.slice(0, 4);
+                    if (val.length >= 3) val = val.slice(0, 2) + '/' + val.slice(2);
+                  }
+                  setDefaultCard({ ...defaultCard, [field]: val });
+                }}
+                placeholder={field === 'number' ? '1234-5678-9012-3456' : field === 'expiry' ? 'MM/YY' : ''}
+              />
+            </>
+          ))}
           <label>Valid UPI ID:</label>
           <input value={defaultUPI} onChange={e => setDefaultUPI(e.target.value)} />
           <button onClick={savePaymentDefaults}>Save Payment Defaults</button>
         </div>
       )}
 
-      {/* Transactions Tab */}
       {activeTab === 'transactions' && (
         <div className="admin-section fade-in transaction-log">
           <h3>🧾 Transaction Logs</h3>
           <div className="filters">
-            <input
-              placeholder="Filter by user"
-              value={filters.user}
-              onChange={(e) => setFilters({ ...filters, user: e.target.value })}
-            />
-            <select value={filters.status} onChange={(e) => setFilters({ ...filters, status: e.target.value })}>
+            <input placeholder="Filter by user" value={filters.user} onChange={e => setFilters({ ...filters, user: e.target.value })} />
+            <select value={filters.status} onChange={e => setFilters({ ...filters, status: e.target.value })}>
               <option value="">All Status</option>
               <option value="success">Success</option>
               <option value="failed">Failed</option>
             </select>
-            <input
-              type="date"
-              value={filters.date}
-              onChange={(e) => setFilters({ ...filters, date: e.target.value })}
-            />
+            <input type="date" value={filters.date} onChange={e => setFilters({ ...filters, date: e.target.value })} />
           </div>
 
-          {loading ? (
-            <p>Loading...</p>
-          ) : filteredTransactions.length === 0 ? (
-            <p>No transactions match the filter.</p>
-          ) : (
-            <table>
-              <thead>
-                <tr>
-                  <th>User</th>
-                  <th>Method</th>
-                  <th>Status</th>
-                  <th>Amount</th>
-                  <th>Date</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredTransactions.map(txn => (
-                  <tr key={txn._id}>
-                    <td>{txn.user || 'Anonymous'}</td>
-                    <td>{txn.method}</td>
-                    <td style={{ color: txn.status === 'success' ? 'green' : 'red' }}>{txn.status}</td>
-                    <td>₹{txn.amount}</td>
-                    <td>{txn.createdAt ? new Date(txn.createdAt).toLocaleString() : 'N/A'}</td>
-                  </tr>
+          {loading ? <p>Loading...</p> : (
+            <>
+              <table>
+                <thead>
+                  <tr><th>User</th><th>Method</th><th>Status</th><th>Amount</th><th>Date</th></tr>
+                </thead>
+                <tbody>
+                  {currentPageData.map(txn => (
+                    <tr key={txn._id}>
+                      <td>{txn.user || 'Anonymous'}</td>
+                      <td>{txn.method}</td>
+                      <td style={{ color: txn.status === 'success' ? 'green' : 'red' }}>{txn.status}</td>
+                      <td>₹{txn.amount}</td>
+                      <td>{new Date(txn.createdAt).toLocaleString()}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <div className="pagination">
+                {Array.from({ length: totalPages }, (_, i) => (
+                  <button key={i + 1} className={pagination.currentPage === i + 1 ? 'active' : ''} onClick={() => setPagination({ ...pagination, currentPage: i + 1 })}>{i + 1}</button>
                 ))}
-              </tbody>
-            </table>
+              </div>
+            </>
           )}
         </div>
       )}
 
-      {/* Users Registration Tab */}
       {activeTab === 'users' && (
-        <div className="admin-section fade-in">
+        <div className="admin-section fade-in transaction-log">
           <h3>👥 Users Registration</h3>
-
-          <div className="user-subtabs">
-            <button className={userTab === 'new' ? 'active' : ''} onClick={() => setUserTab('new')}>New Registrations</button>
-            <button className={userTab === 'declined' ? 'active' : ''} onClick={() => setUserTab('declined')}>Declined</button>
+          <div className="admin-tabs">
+            <button className={userSubTab === 'new' ? 'active' : ''} onClick={() => setUserSubTab('new')}>New Registrations</button>
+            <button className={userSubTab === 'declined' ? 'active' : ''} onClick={() => setUserSubTab('declined')}>Declined</button>
           </div>
 
-          {userTab === 'new' && (
-            pendingUsers.length === 0 ? (
-              <p>No pending users.</p>
-            ) : (
+          {userSubTab === 'new' ? (
+            newUsers.length === 0 ? <p>No new registrations.</p> : (
               <table>
-                <thead>
-                  <tr><th>Username</th><th>Action</th></tr>
-                </thead>
+                <thead><tr><th>Username</th><th>Action</th></tr></thead>
                 <tbody>
-                  {pendingUsers.map(user => (
+                  {newUsers.map(user => (
                     <tr key={user._id}>
                       <td>{user.username}</td>
                       <td>
@@ -274,23 +242,17 @@ export default function Admin() {
                 </tbody>
               </table>
             )
-          )}
-
-          {userTab === 'declined' && (
-            declinedUsers.length === 0 ? (
-              <p>No declined users.</p>
-            ) : (
+          ) : (
+            declinedUsers.length === 0 ? <p>No declined users.</p> : (
               <table>
-                <thead>
-                  <tr><th>Username</th><th>Action</th></tr>
-                </thead>
+                <thead><tr><th>Username</th><th>Action</th></tr></thead>
                 <tbody>
                   {declinedUsers.map(user => (
                     <tr key={user._id}>
                       <td>{user.username}</td>
                       <td>
                         <button onClick={() => handleUserApproval(user.username, true)} style={{ color: 'green' }}>Approve</button>
-                        <button onClick={() => handleUserApproval(user.username, false)} style={{ color: 'red', marginLeft: '10px' }}>Decline</button>
+                        <button onClick={() => handleUserDelete(user.username)} style={{ color: 'red', marginLeft: '10px' }}>Delete</button>
                       </td>
                     </tr>
                   ))}
