@@ -12,7 +12,11 @@ const Transaction = require('./models/Transaction');
 
 const PORT = process.env.PORT || 5050;
 
-app.use(cors());
+app.use(cors({
+  origin: ['https://ssnmart.netlify.app'], // Add your frontend domain here
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
+}));
 app.use(express.json());
 
 // Verifying backend API
@@ -40,6 +44,22 @@ app.post('/api/auth/login', async (req, res) => {
   if (!user.approved) return res.status(403).json({ message: 'User not approved by admin' });
 
   res.json({ message: 'Login successful', user: { username: user.username } });
+});
+
+app.get('/api/users/pending', async (req, res) => {
+  const pendingUsers = await User.find({ approved: false });
+  res.json(pendingUsers);
+});
+
+app.post('/api/users/approval', async (req, res) => {
+  const { username, approve } = req.body;
+  const result = await User.findOneAndUpdate(
+    { username },
+    { $set: { approved: approve } },
+    { new: true }
+  );
+  if (!result) return res.status(404).json({ message: 'User not found' });
+  res.json({ message: `User ${approve ? 'approved' : 'rejected'}`, user: result });
 });
 
 
