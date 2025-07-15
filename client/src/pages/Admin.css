@@ -198,9 +198,9 @@
 }
 
 /* Approve button */
-.approve-btn {
-  background-color: #28a745;
-  color: white;
+.admin-container .approve-btn {
+  background-color: #28a745 !important;
+  color: white !important;
   border: none;
   padding: 6px 12px;
   border-radius: 4px;
@@ -208,14 +208,14 @@
   cursor: pointer;
 }
 
-.approve-btn:hover {
-  background-color: #218838;
+.admin-container .approve-btn:hover {
+  background-color: #218838 !important;
 }
 
 /* Decline button */
-.decline-btn {
-  background-color: #dc3545;
-  color: white;
+.admin-container .decline-btn {
+  background-color: #dc3545 !important;
+  color: white !important;
   border: none;
   padding: 6px 12px;
   border-radius: 4px;
@@ -224,14 +224,14 @@
   margin-left: 10px;
 }
 
-.decline-btn:hover {
-  background-color: #c82333;
+.admin-container .decline-btn:hover {
+  background-color: #c82333 !important;
 }
 
 /* Delete button */
-.delete-btn {
-  background-color: #6c757d;
-  color: white;
+.admin-container .delete-btn {
+  background-color: #6c757d !important;
+  color: white !important;
   border: none;
   padding: 6px 12px;
   border-radius: 4px;
@@ -240,6 +240,6 @@
   margin-left: 10px;
 }
 
-.delete-btn:hover {
-  background-color: #5a6268;
+.admin-container .delete-btn:hover {
+  background-color: #5a6268 !important;
 }
