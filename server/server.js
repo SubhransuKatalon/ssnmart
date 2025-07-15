@@ -43,7 +43,7 @@ app.post('/api/auth/login', async (req, res) => {
   if (!user) return res.status(401).json({ message: 'Invalid credentials' });
 
   if (user.declined)
-    return res.status(403).json({ message: 'declined' });
+    return res.status(403).json({ message: 'Admin has declined your registration. Contact admin@ssnmart.com' });
 
   if (!user.approved)
     return res.status(403).json({ message: 'Your account is pending approval by admin.' });
@@ -56,15 +56,23 @@ app.get('/api/users/pending', async (req, res) => {
   res.json(pendingUsers);
 });
 
+// Admin Approval
 app.post('/api/users/approval', async (req, res) => {
   const { username, approve } = req.body;
+
+  const update = {
+    approved: approve,
+    declined: !approve
+  };
+
   const result = await User.findOneAndUpdate(
     { username },
-    { $set: { approved: approve } },
+    { $set: update },
     { new: true }
   );
+
   if (!result) return res.status(404).json({ message: 'User not found' });
-  res.json({ message: `User ${approve ? 'approved' : 'rejected'}`, user: result });
+  res.json({ message: `User ${approve ? 'approved' : 'declined'}`, user: result });
 });
 
 

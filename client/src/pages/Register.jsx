@@ -18,7 +18,7 @@ export default function Register() {
         password,
       });
 
-      setMessage('✅ Registration successful. You can now log in.');
+      setMessage('✅ Registration successful. Reach out to Admin for approval.');
     } catch (err) {
       if (err.response?.status === 409) {
         setError('❌ User already exists. Please choose a different username.');
