@@ -236,8 +236,8 @@ export default function Admin() {
                     <tr key={user._id}>
                       <td>{user.username}</td>
                       <td>
-                        <button className="approve-btn" onClick={() => handleUserApproval(user.username, true)} style={{ color: 'green' }}>Approve</button>
-                        <button className="delete-btn" onClick={() => handleUserApproval(user.username, false)} style={{ color: 'red', marginLeft: '10px' }}>Decline</button>
+                        <button className="approve-btn" onClick={() => handleUserApproval(user.username, true)}>Approve</button>
+                        <button className="decline-btn" onClick={() => handleUserApproval(user.username, false)}>Decline</button>
                       </td>
                     </tr>
                   ))}
@@ -253,8 +253,8 @@ export default function Admin() {
                     <tr key={user._id}>
                       <td>{user.username}</td>
                       <td>
-                        <button className="approve-btn" onClick={() => handleUserApproval(user.username, true)} style={{ color: 'green' }}>Approve</button>
-                        <button className="delete-btn" onClick={() => handleUserDelete(user.username)} style={{ color: 'red', marginLeft: '10px' }}>Delete</button>
+                        <button className="approve-btn" onClick={() => handleUserApproval(user.username, true)}>Approve</button>
+                        <button className="delete-btn" onClick={() => handleUserDelete(user.username)}>Delete</button>
                       </td>
                     </tr>
                   ))}
