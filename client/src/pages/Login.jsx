@@ -28,6 +28,8 @@ export default function Login({ onLogin }) {
     } catch (err) {
       if (err.response?.status === 401) {
         setError('❌ Invalid username or password');
+      } else if (err.response?.data.message === 'declined') {
+        setError('❌ Admin has declined your registration. Contact admin@ssnmart.com');
       } else if (err.response?.status === 403) {
         setError('❌ Your account is pending approval by admin.');
       } else {

@@ -41,7 +41,12 @@ app.post('/api/auth/login', async (req, res) => {
   const { username, password } = req.body;
   const user = await User.findOne({ username, password });
   if (!user) return res.status(401).json({ message: 'Invalid credentials' });
-  if (!user.approved) return res.status(403).json({ message: 'User not approved by admin' });
+
+  if (user.declined)
+    return res.status(403).json({ message: 'declined' });
+
+  if (!user.approved)
+    return res.status(403).json({ message: 'Your account is pending approval by admin.' });
 
   res.json({ message: 'Login successful', user: { username: user.username } });
 });

@@ -103,7 +103,7 @@ export default function Admin() {
       (!filters.user || txn.user?.toLowerCase().includes(filters.user.toLowerCase())) &&
       (!filters.date || new Date(txn.createdAt).toLocaleDateString() === filters.date)
     )
-    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)); // Recent first
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
   return (
     <div className="admin-container">
@@ -184,7 +184,6 @@ export default function Admin() {
       {activeTab === 'transactions' && (
         <div className="admin-section fade-in transaction-log">
           <h3>🧾 Transaction Logs</h3>
-
           <div className="filters">
             <input
               placeholder="Filter by user"
