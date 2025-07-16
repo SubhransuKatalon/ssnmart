@@ -243,3 +243,17 @@
 .admin-container .delete-btn:hover {
   background-color: #5a6268 !important;
 }
+
+.no-results-message {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 16px;
+  color: #888;
+  font-style: italic;
+}
+
+.loading-message {
+  text-align: center;
+  font-weight: bold;
+  margin-top: 20px;
+}

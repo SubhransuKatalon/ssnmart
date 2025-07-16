@@ -191,31 +191,41 @@ export default function Admin() {
             <input type="date" value={filters.date} onChange={e => setFilters({ ...filters, date: e.target.value })} />
           </div>
 
-          {loading ? <p>Loading...</p> : (
-            <>
-              <table>
-                <thead>
-                  <tr><th>User</th><th>Method</th><th>Status</th><th>Amount</th><th>Date</th></tr>
-                </thead>
-                <tbody>
-                  {currentPageData.map(txn => (
-                    <tr key={txn._id}>
-                      <td>{txn.user || 'Anonymous'}</td>
-                      <td>{txn.method}</td>
-                      <td style={{ color: txn.status === 'success' ? 'green' : 'red' }}>{txn.status}</td>
-                      <td>₹{txn.amount}</td>
-                      <td>{new Date(txn.createdAt).toLocaleString()}</td>
-                    </tr>
+          {loading ? (
+              <p className="loading-message">Loading...</p>
+            ) : currentPageData.length === 0 ? (
+              <p className="no-results-message">🚫 No transactions found for the selected filters.</p>
+            ) : (
+              <>
+                <table>
+                  <thead>
+                    <tr><th>User</th><th>Method</th><th>Status</th><th>Amount</th><th>Date</th></tr>
+                  </thead>
+                  <tbody>
+                    {currentPageData.map(txn => (
+                      <tr key={txn._id}>
+                        <td>{txn.user || 'Anonymous'}</td>
+                        <td>{txn.method}</td>
+                        <td style={{ color: txn.status === 'success' ? 'green' : 'red' }}>{txn.status}</td>
+                        <td>₹{txn.amount}</td>
+                        <td>{new Date(txn.createdAt).toLocaleString()}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                <div className="pagination">
+                  {Array.from({ length: totalPages }, (_, i) => (
+                    <button
+                      key={i + 1}
+                      className={pagination.currentPage === i + 1 ? 'active' : ''}
+                      onClick={() => setPagination({ ...pagination, currentPage: i + 1 })}
+                    >
+                      {i + 1}
+                    </button>
                   ))}
-                </tbody>
-              </table>
-              <div className="pagination">
-                {Array.from({ length: totalPages }, (_, i) => (
-                  <button key={i + 1} className={pagination.currentPage === i + 1 ? 'active' : ''} onClick={() => setPagination({ ...pagination, currentPage: i + 1 })}>{i + 1}</button>
-                ))}
-              </div>
-            </>
-          )}
+                </div>
+              </>
+            )}
         </div>
       )}
 
