@@ -101,12 +101,12 @@ export default function Admin() {
   };
 
   const filteredTransactions = transactions
-    .filter(txn =>
-      (!filters.status || txn.status === filters.status) &&
-      (!filters.user || txn.user?.toLowerCase().includes(filters.user.toLowerCase())) &&
-      (!filters.date || new Date(txn.createdAt).toLocaleDateString() === filters.date)
-    )
-    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  .filter(txn =>
+    (!filters.status || txn.status === filters.status) &&
+    (!filters.user || txn.user?.toLowerCase().includes(filters.user.toLowerCase())) &&
+    (!filters.date || new Date(txn.createdAt).toISOString().slice(0, 10) === filters.date)
+  )
+  .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
   const totalPages = Math.ceil(filteredTransactions.length / pagination.perPage);
   const currentPageData = filteredTransactions.slice(
