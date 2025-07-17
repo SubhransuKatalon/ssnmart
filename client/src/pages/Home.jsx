@@ -54,7 +54,7 @@ export default function Home() {
       <section className="product-section">
         <h2>🌟 Featured Products</h2>
         <div className="product-grid">
-          {featured.slice(0, 5).map(p => (
+          {featured.map(p => (
             <div className="product-card" key={p._id}>
               <img src={p.image} alt={p.name} />
               <h4>{p.name}</h4>
@@ -69,7 +69,7 @@ export default function Home() {
       <section className="product-section">
         <h2>🔥 Bestsellers</h2>
         <div className="product-grid">
-          {bestsellers.slice(0, 5).map(p => (
+          {bestsellers.map(p => (
             <div className="product-card" key={p._id}>
               <img src={p.image} alt={p.name} />
               <h4>{p.name}</h4>
