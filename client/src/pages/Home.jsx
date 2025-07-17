@@ -27,7 +27,7 @@ export default function Home() {
     <div className="home">
       {/* Hero Banner */}
       <div className="hero-banner">
-        <img src="/images/hero-banner.jpg" alt="SSN Mart Deals" />
+        <img src="/banners/hero-banner.jpg" alt="SSN Mart Deals" />
         <div className="hero-text">
           <h1>Welcome to SSN Mart</h1>
           <p>Your one-stop shop for everything!</p>
@@ -83,13 +83,13 @@ export default function Home() {
         <h2>💬 What Our Customers Say</h2>
         <div className="testimonials">
           <blockquote>
-            "Amazing variety and quick delivery!" <span>- Priya K.</span>
+            "Amazing variety and quick delivery!" <span>- Vaibhav Jain</span>
           </blockquote>
           <blockquote>
-            "Found everything I needed at one place. Love SSN Mart!" <span>- Rahul S.</span>
+            "Found everything I needed at one place. Love SSN Mart!" <span>- Mohit Kumar</span>
           </blockquote>
           <blockquote>
-            "Super smooth checkout and great prices." <span>- Anjali M.</span>
+            "Super smooth checkout and great prices." <span>- Sanya M.</span>
           </blockquote>
         </div>
       </section>
