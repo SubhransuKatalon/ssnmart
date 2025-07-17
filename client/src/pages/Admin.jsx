@@ -5,7 +5,10 @@ import './Admin.css';
 export default function Admin() {
   const [activeTab, setActiveTab] = useState('product');
   const [userSubTab, setUserSubTab] = useState('new');
-  const [form, setForm] = useState({ name: '', price: '', image: '', description: '', category: 'Electronics' });
+  const [form, setForm] = useState({
+    name: '', price: '', image: '', description: '', category: 'Electronics',
+    featured: false, bestseller: false
+  });
   const [specInput, setSpecInput] = useState('');
   const [specifications, setSpecifications] = useState([]);
   const [defaultCard, setDefaultCard] = useState({ name: '', number: '', expiry: '', cvv: '' });
@@ -14,7 +17,6 @@ export default function Admin() {
   const [filters, setFilters] = useState({ status: '', user: '', date: '' });
   const [pagination, setPagination] = useState({ currentPage: 1, perPage: 10 });
   const [loading, setLoading] = useState(false);
-
   const [newUsers, setNewUsers] = useState([]);
   const [declinedUsers, setDeclinedUsers] = useState([]);
 
@@ -25,7 +27,7 @@ export default function Admin() {
       setLoading(true);
       axios.get(`${import.meta.env.VITE_API_URL}/api/transactions`)
         .then(res => setTransactions(res.data))
-        .catch(err => console.error('Failed to fetch transactions:', err))
+        .catch(console.error)
         .finally(() => setLoading(false));
     }
 
@@ -35,11 +37,17 @@ export default function Admin() {
           setNewUsers(res.data.newUsers);
           setDeclinedUsers(res.data.declinedUsers);
         })
-        .catch(err => console.error('Failed to fetch users:', err));
+        .catch(console.error);
     }
   }, [activeTab]);
 
-  const handleChange = e => setForm({ ...form, [e.target.name]: e.target.value });
+  const handleChange = e => {
+    const { name, value, type, checked } = e.target;
+    setForm(prev => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value
+    }));
+  };
 
   const addSpec = () => {
     if (specInput.trim()) {
@@ -59,7 +67,7 @@ export default function Admin() {
         specifications
       });
       alert('✅ Product added!');
-      setForm({ name: '', price: '', image: '', description: '', category: 'Electronics' });
+      setForm({ name: '', price: '', image: '', description: '', category: 'Electronics', featured: false, bestseller: false });
       setSpecifications([]);
     } catch {
       alert('❌ Failed to add product');
@@ -101,12 +109,12 @@ export default function Admin() {
   };
 
   const filteredTransactions = transactions
-  .filter(txn =>
-    (!filters.status || txn.status === filters.status) &&
-    (!filters.user || txn.user?.toLowerCase().includes(filters.user.toLowerCase())) &&
-    (!filters.date || new Date(txn.createdAt).toISOString().slice(0, 10) === filters.date)
-  )
-  .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    .filter(txn =>
+      (!filters.status || txn.status === filters.status) &&
+      (!filters.user || txn.user?.toLowerCase().includes(filters.user.toLowerCase())) &&
+      (!filters.date || new Date(txn.createdAt).toISOString().slice(0, 10) === filters.date)
+    )
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
   const totalPages = Math.ceil(filteredTransactions.length / pagination.perPage);
   const currentPageData = filteredTransactions.slice(
@@ -137,15 +145,26 @@ export default function Admin() {
             <select name="category" value={form.category} onChange={handleChange}>
               {categories.map(c => <option key={c}>{c}</option>)}
             </select>
+
+            {/* ✅ Checkboxes */}
+            <div className="checkbox-row">
+              <label><input type="checkbox" name="featured" checked={form.featured} onChange={handleChange} /> ✅ Featured</label>
+              <label><input type="checkbox" name="bestseller" checked={form.bestseller} onChange={handleChange} /> 🔥 Bestseller</label>
+            </div>
+
             <div className="spec-section">
               <input type="text" placeholder="Add Specification" value={specInput} onChange={e => setSpecInput(e.target.value)} />
               <button type="button" className="add-spec-btn" onClick={addSpec}>Add Spec {specifications.length + 1}</button>
             </div>
+
             <ul className="spec-list">
               {specifications.map((s, i) => (
-                <li key={i}>{s}<button type="button" className="remove-spec-btn" onClick={() => removeSpec(i)}>❌</button></li>
+                <li key={i}>{s}
+                  <button type="button" className="remove-spec-btn" onClick={() => removeSpec(i)}>❌</button>
+                </li>
               ))}
             </ul>
+
             <button type="submit">Add Product</button>
           </form>
         </div>

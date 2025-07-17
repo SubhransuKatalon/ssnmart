@@ -131,6 +131,19 @@
   font-size: 16px;
 }
 
+.checkbox-group {
+  display: flex;
+  gap: 1.5rem;
+  margin: 10px 0;
+}
+
+.checkbox-group label {
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
 .payment-defaults label {
   margin-top: 10px;
   font-weight: 500;

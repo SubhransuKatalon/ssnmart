@@ -83,13 +83,17 @@ app.get('/api/products', async (req, res) => {
 });
 
 app.post('/api/products', async (req, res) => {
-  const { name, price, image, description, category, specifications } = req.body;
+  const { name, price, image, description, category, specifications, featured = false, bestseller = false } = req.body;
   if (!name || !price || !image || !category) {
     return res.status(400).json({ message: 'Missing required fields' });
   }
-  const product = new Product({ name, price, image, description, category, specifications });
-  await product.save();
-  res.status(201).json({ message: 'Product created', product });
+  const product = new Product({ name, price, image, description, category, specifications, featured, bestseller });
+  try {
+    await product.save();
+    res.status(201).json({ message: 'Product created', product });
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to create product', error: err.message });
+  }
 });
 
 app.get('/api/products/:id', async (req, res) => {

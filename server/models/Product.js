@@ -6,7 +6,9 @@ const ProductSchema = new mongoose.Schema({
   image: String,
   description: String,
   specifications: [String],       
-  category: String           
+  category: String,
+  featured: { type: Boolean, default: false }, 
+  bestseller: { type: Boolean, default: false }           
 });
 
 module.exports = mongoose.model('Product', ProductSchema);
