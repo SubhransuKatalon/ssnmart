@@ -31,7 +31,7 @@ export default function Home() {
       <div className="hero-banner">
         <img src="/banners/hero-banner.jpg" alt="SSN Mart Deals" />
         <div className="hero-text">
-          <h1>Welcome to SSN Mart</h1>
+          <h1>Welcome to SSN MART</h1>
           <p>Your one-stop shop for everything!</p>
           <a href="/products" className="btn-shop">🛍️ Start Shopping</a>
         </div>
