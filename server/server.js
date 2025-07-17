@@ -98,14 +98,22 @@ app.post('/api/products', async (req, res) => {
 
 // Get featured products
 app.get('/api/products/featured', async (req, res) => {
-  const featured = await Product.find({ featured: true }).limit(10);
-  res.json(featured);
+  try {
+    const featured = await Product.find({ featured: true }).limit(5);
+    res.json(featured);
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to fetch featured products' });
+  }
 });
 
-// Get bestseller products
+// Get bestsellers
 app.get('/api/products/bestsellers', async (req, res) => {
-  const bestsellers = await Product.find({ bestseller: true }).limit(10);
-  res.json(bestsellers);
+  try {
+    const bestsellers = await Product.find({ bestseller: true }).limit(5);
+    res.json(bestsellers);
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to fetch bestsellers' });
+  }
 });
 
 app.get('/api/products/:id', async (req, res) => {
