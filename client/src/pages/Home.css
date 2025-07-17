@@ -27,12 +27,15 @@
 .hero-text h1 {
   font-size: 2.5rem;
   margin-bottom: 10px;
+  background-color: #d196c7;
+  padding: 10px 20px;
+  color: white;
 }
 
 .btn-shop {
   background-color: #ff5722;
   padding: 10px 20px;
-  color: white;
+  color: rgb(58, 196, 43);
   text-decoration: none;
   border-radius: 5px;
 }
