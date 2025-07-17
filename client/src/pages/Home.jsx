@@ -6,11 +6,11 @@ export default function Home() {
   const [featured, setFeatured] = useState([]);
   const [bestsellers, setBestsellers] = useState([]);
   const categories = [
-    { name: 'Electronics', image: '/images/categories/electronics.jpg' },
-    { name: 'Fashion', image: '/images/categories/fashion.jpg' },
-    { name: 'Home & Furniture', image: '/images/categories/home.jpg' },
-    { name: 'Beauty & Personal Care', image: '/images/categories/beauty.jpg' },
-    { name: 'Grocery', image: '/images/categories/grocery.jpg' },
+    { name: 'Electronics', image: '/banners/electronics.jpg' },
+    { name: 'Fashion', image: '/banners/fashion.jpg' },
+    { name: 'Home & Furniture', image: '/banners/home.jpg' },
+    { name: 'Beauty & Personal Care', image: '/banners/beauty.jpg' },
+    { name: 'Grocery', image: '/banners/grocery.jpg' },
   ];
 
   useEffect(() => {
