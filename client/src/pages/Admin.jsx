@@ -148,8 +148,8 @@ export default function Admin() {
 
             {/* ✅ Checkboxes */}
             <div className="checkbox-row">
-              <label><input type="checkbox" name="featured" checked={form.featured} onChange={handleChange} /> ✅ Featured</label>
-              <label><input type="checkbox" name="bestseller" checked={form.bestseller} onChange={handleChange} /> 🔥 Bestseller</label>
+              <label><input type="checkbox" name="featured" checked={form.featured} onChange={e => setForm({ ...form, featured: e.target.checked })} /> ✅ Featured</label>
+              <label><input type="checkbox" name="bestseller" checked={form.bestseller} onChange={e => setForm({ ...form, bestseller: e.target.checked })} /> 🔥 Bestseller</label>
             </div>
 
             <div className="spec-section">
