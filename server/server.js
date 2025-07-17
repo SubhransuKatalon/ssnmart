@@ -96,6 +96,18 @@ app.post('/api/products', async (req, res) => {
   }
 });
 
+// Get featured products
+app.get('/api/products/featured', async (req, res) => {
+  const featured = await Product.find({ featured: true }).limit(10);
+  res.json(featured);
+});
+
+// Get bestseller products
+app.get('/api/products/bestsellers', async (req, res) => {
+  const bestsellers = await Product.find({ bestseller: true }).limit(10);
+  res.json(bestsellers);
+});
+
 app.get('/api/products/:id', async (req, res) => {
   const product = await Product.findById(req.params.id);
   if (!product) return res.status(404).json({ message: 'Product not found' });

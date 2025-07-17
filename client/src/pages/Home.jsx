@@ -14,13 +14,15 @@ export default function Home() {
   ];
 
   useEffect(() => {
-    axios.get(`${import.meta.env.VITE_API_URL}/api/products`)
-      .then(res => {
-        const all = res.data;
-        setFeatured(all.slice(0, 4));
-        setBestsellers([...all].sort((a, b) => b.sold - a.sold).slice(0, 4));
-      })
-      .catch(err => console.error('Failed to load products:', err));
+    // Fetch featured products
+    axios.get(`${import.meta.env.VITE_API_URL}/api/products/featured`)
+      .then(res => setFeatured(res.data))
+      .catch(err => console.error('Failed to load featured products:', err));
+
+    // Fetch bestsellers
+    axios.get(`${import.meta.env.VITE_API_URL}/api/products/bestsellers`)
+      .then(res => setBestsellers(res.data))
+      .catch(err => console.error('Failed to load bestsellers:', err));
   }, []);
 
   return (
