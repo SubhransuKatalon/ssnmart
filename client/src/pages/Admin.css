@@ -139,7 +139,8 @@
 
 .checkbox-row {
   display: flex;
-  gap: 20px;
+  justify-content: center; /* Center horizontally */
+  gap: 40px; /* spacing between checkboxes */
   margin: 10px 0;
   align-items: center;
 }
