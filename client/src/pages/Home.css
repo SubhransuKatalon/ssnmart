@@ -27,7 +27,7 @@
 .hero-text h1 {
   font-size: 2.5rem;
   margin-bottom: 10px;
-  background-color: #d196c7;
+  background: transparent;
   padding: 10px 20px;
   color: rgb(24, 239, 5);
 }
