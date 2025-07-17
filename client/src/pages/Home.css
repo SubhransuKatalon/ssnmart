@@ -29,13 +29,13 @@
   margin-bottom: 10px;
   background-color: #d196c7;
   padding: 10px 20px;
-  color: white;
+  color: rgb(24, 239, 5);
 }
 
 .btn-shop {
   background-color: #ff5722;
   padding: 10px 20px;
-  color: rgb(58, 196, 43);
+  color: rgb(5, 249, 229);
   text-decoration: none;
   border-radius: 5px;
 }
