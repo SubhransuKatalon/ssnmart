@@ -199,3 +199,17 @@
     padding: 10px;
   }
 }
+
+/* 🔥 Multicolor Blink Animation */
+@keyframes blinkColorful {
+  0% { color: #e91e63; }
+  25% { color: #3f51b5; }
+  50% { color: #4caf50; }
+  75% { color: #ff9800; }
+  100% { color: #e91e63; }
+}
+
+.blink-multicolor {
+  animation: blinkColorful 1.5s infinite;
+  font-weight: bold;
+}

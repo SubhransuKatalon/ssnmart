@@ -31,15 +31,15 @@ export default function Home() {
       <div className="hero-banner">
         <img src="/banners/hero-banner.jpg" alt="SSN Mart Deals" />
         <div className="hero-text">
-          <h1>Welcome to SSN MART</h1>
-          <p>Your one-stop shop for everything!</p>
-          <a href="/products" className="btn-shop">🛍️ Start Shopping</a>
+          <h1 className="blink-multicolor">Welcome to SSN MART</h1>
+          <p className="blink-multicolor">Your one-stop shop for everything!</p>
+          <a href="/products" className="btn-shop blink-multicolor">🛍️ Start Shopping</a>
         </div>
       </div>
 
       {/* Categories */}
       <section className="category-section">
-        <h2>🧭 Shop by Category</h2>
+        <h2 className="blink-multicolor">🧭 Shop by Category</h2>
         <div className="categories">
           {categories.map(cat => (
             <a href={`/category/${cat.name}`} className="category-card" key={cat.name}>
@@ -52,7 +52,7 @@ export default function Home() {
 
       {/* Featured Products */}
       <section className="product-section">
-        <h2>🌟 Featured Products</h2>
+        <h2 className="blink-multicolor">🌟 Featured Products</h2>
         <div className="product-grid">
           {featured.slice(0,4).map(p => (
             <div className="product-card" key={p._id}>
@@ -67,7 +67,7 @@ export default function Home() {
 
       {/* Bestsellers */}
       <section className="product-section">
-        <h2>🔥 Bestsellers</h2>
+        <h2 className="blink-multicolor">🔥 Bestsellers</h2>
         <div className="product-grid">
           {bestsellers.slice(0,4).map(p => (
             <div className="product-card" key={p._id}>
@@ -82,7 +82,7 @@ export default function Home() {
 
       {/* Testimonials */}
       <section className="testimonial-section">
-        <h2>💬 What Our Customers Say</h2>
+        <h2 className="blink-multicolor">💬 What Our Customers Say</h2>
         <div className="testimonials">
           <blockquote>
             "Amazing variety and quick delivery!" <span>- Vaibhav Jain</span>
