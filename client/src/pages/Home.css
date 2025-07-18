@@ -44,6 +44,7 @@
   margin-bottom: 10px;
 }
 
+/* Desktop */
 .btn-shop {
   background-color: #ff5722;
   padding: 10px 20px;
@@ -51,6 +52,8 @@
   text-decoration: none;
   border-radius: 5px;
   font-weight: bold;
+  display: inline-block;
+  margin-top: 16px; /* Increased space */
 }
 
 .category-section,
