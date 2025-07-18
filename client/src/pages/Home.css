@@ -1,18 +1,25 @@
+/* Home.css */
+
 .home {
   max-width: 1200px;
   margin: auto;
   padding: 20px;
 }
 
+/* Hero Banner */
 .hero-banner {
   position: relative;
   overflow: hidden;
   border-radius: 10px;
+  min-height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .hero-banner img {
   width: 100%;
-  height: auto;
+  height: 100%;
   object-fit: cover;
 }
 
@@ -32,15 +39,23 @@
   color: rgb(24, 239, 5);
 }
 
+.hero-text p {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
 .btn-shop {
   background-color: #ff5722;
   padding: 10px 20px;
   color: rgb(5, 249, 229);
   text-decoration: none;
   border-radius: 5px;
+  font-weight: bold;
 }
 
-.category-section, .product-section, .testimonial-section {
+.category-section,
+.product-section,
+.testimonial-section {
   margin-top: 40px;
   text-align: center;
 }
@@ -115,26 +130,44 @@
 /* ✅ Mobile Responsive */
 @media (max-width: 600px) {
   .hero-banner {
-    height: auto;
+    min-height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .hero-banner img {
+    height: 100%;
+    object-fit: cover;
   }
 
   .hero-text {
-    top: 10%;
-    left: 5%;
-    transform: translateY(-10%);
-    padding: 10px;
-    background-color: rgba(0,0,0,0.4);
-    border-radius: 8px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.4);
+    padding: 12px;
+    border-radius: 10px;
+    width: 90%;
   }
 
   .hero-text h1 {
-    font-size: 1.5rem;
-    padding: 8px 12px;
+    font-size: 1.4rem;
+    padding: 4px 8px;
+  }
+
+  .hero-text p {
+    font-size: 0.95rem;
+    margin: 6px 0 10px;
   }
 
   .btn-shop {
     font-size: 14px;
-    padding: 8px 16px;
+    padding: 6px 14px;
+    display: inline-block;
+    margin-top: 5px;
   }
 
   .category-card {
