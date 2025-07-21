@@ -85,6 +85,10 @@ button {
   position: absolute;
   top: 0;
   left: 0;
-  animation: slideAcrossScreen 6s ease-in-out infinite;
+  animation: slideAcrossScreen 10s ease-in-out infinite;
   height: 60px;
+}
+
+.logo-slide-across:hover {
+  animation-play-state: paused;
 }
