@@ -77,8 +77,8 @@ button {
   width: 100%;
   overflow: hidden;
   position: relative;
-  height: 70px;
-  margin: 10px 0;
+  height: 60px;
+  margin: 0.6px 0;
 }
 
 .logo-slide-across {
