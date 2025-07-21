@@ -14,12 +14,10 @@ export default function Home() {
   ];
 
   useEffect(() => {
-    // Fetch featured products
     axios.get(`${import.meta.env.VITE_API_URL}/api/products/featured`)
       .then(res => setFeatured(res.data))
       .catch(err => console.error('Failed to load featured products:', err));
 
-    // Fetch bestsellers
     axios.get(`${import.meta.env.VITE_API_URL}/api/products/bestsellers`)
       .then(res => setBestsellers(res.data))
       .catch(err => console.error('Failed to load bestsellers:', err));
@@ -31,9 +29,9 @@ export default function Home() {
       <div className="hero-banner">
         <img src="/banners/hero-banner.jpg" alt="SSN Mart Deals" />
         <div className="hero-text">
-          <h1>Welcome to SSN MART</h1>
+          <h1 className="blink-multicolor">Welcome to SSN MART</h1>
           <p className="blink-multicolor">Your one-stop shop for everything!</p>
-          <a href="/products" className="btn-shop">🛍️ Start Shopping</a>
+          <a href="/products" className="btn-shop blink-multicolor">🛍️ Start Shopping</a>
         </div>
       </div>
 
@@ -54,7 +52,7 @@ export default function Home() {
       <section className="product-section">
         <h2 className="blink-multicolor">🌟 Featured Products</h2>
         <div className="product-grid">
-          {featured.slice(0,4).map(p => (
+          {featured.slice(0, 4).map(p => (
             <div className="product-card" key={p._id}>
               <img src={p.image} alt={p.name} />
               <h4>{p.name}</h4>
@@ -69,7 +67,7 @@ export default function Home() {
       <section className="product-section">
         <h2 className="blink-multicolor">🔥 Bestsellers</h2>
         <div className="product-grid">
-          {bestsellers.slice(0,4).map(p => (
+          {bestsellers.slice(0, 4).map(p => (
             <div className="product-card" key={p._id}>
               <img src={p.image} alt={p.name} />
               <h4>{p.name}</h4>
