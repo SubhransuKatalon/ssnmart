@@ -36,3 +36,44 @@ button {
   font-family: inherit;
   font-size: inherit;
 }
+
+/* 🔁 Pulse Animation */
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.08); opacity: 0.9; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* ✨ Rainbow Glow Animation */
+@keyframes rainbowGlow {
+  0%   { filter: drop-shadow(0 0 6px red); }
+  20%  { filter: drop-shadow(0 0 6px orange); }
+  40%  { filter: drop-shadow(0 0 6px yellow); }
+  60%  { filter: drop-shadow(0 0 6px green); }
+  80%  { filter: drop-shadow(0 0 6px blue); }
+  100% { filter: drop-shadow(0 0 6px violet); }
+}
+
+/* ✨ Fade-in & Slide Side-to-Side */
+@keyframes fadeSlide {
+  0%   { opacity: 0; transform: translateX(-30px); }
+  50%  { opacity: 1; transform: translateX(30px); }
+  100% { opacity: 1; transform: translateX(-30px); }
+}
+
+/* 🌈 Rainbow Glow Class */
+.logo-rainbow-glow {
+  animation: rainbowGlow 3s linear infinite;
+}
+
+/* 👁️ Float + Fade Class */
+.logo-fade-move {
+  animation: fadeSlide 4s ease-in-out infinite;
+}
+
+/* 👁️ Smooth attention pulse */
+.logo-animated {
+  animation: pulse 2.5s infinite;
+  transition: transform 0.3s ease-in-out;
+  height: 60px;
+}
