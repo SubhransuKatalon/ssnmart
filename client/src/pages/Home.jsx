@@ -14,12 +14,10 @@ export default function Home() {
   ];
 
   useEffect(() => {
-    // Fetch featured products
     axios.get(`${import.meta.env.VITE_API_URL}/api/products/featured`)
       .then(res => setFeatured(res.data))
       .catch(err => console.error('Failed to load featured products:', err));
 
-    // Fetch bestsellers
     axios.get(`${import.meta.env.VITE_API_URL}/api/products/bestsellers`)
       .then(res => setBestsellers(res.data))
       .catch(err => console.error('Failed to load bestsellers:', err));
@@ -27,6 +25,11 @@ export default function Home() {
 
   return (
     <div className="home">
+      {/* Sticky Glowing Logo */}
+      <div className="logo-sticky">
+        <img src="/logo.png" alt="SSN Mart Logo" className="logo-pulse logo-glow" />
+      </div>
+
       {/* Hero Banner */}
       <div className="hero-banner">
         <img src="/banners/hero-banner.jpg" alt="SSN Mart Deals" />
