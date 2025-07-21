@@ -13,7 +13,7 @@ html, body, #root {
 .app-wrapper {
   text-align: center;
   min-height: 100%;
-  background-color: #f6e1e1; /* same as body to ensure coverage */
+  background-color: #f6e1e1;
   padding-bottom: 50px;
 }
 
@@ -54,26 +54,37 @@ button {
   100% { filter: drop-shadow(0 0 6px violet); }
 }
 
-/* ✨ Fade-in & Slide Side-to-Side */
-@keyframes fadeSlide {
-  0%   { opacity: 0; transform: translateX(-30px); }
-  50%  { opacity: 1; transform: translateX(30px); }
-  100% { opacity: 1; transform: translateX(-30px); }
-}
-
 /* 🌈 Rainbow Glow Class */
 .logo-rainbow-glow {
   animation: rainbowGlow 3s linear infinite;
-}
-
-/* 👁️ Float + Fade Class */
-.logo-fade-move {
-  animation: fadeSlide 4s ease-in-out infinite;
 }
 
 /* 👁️ Smooth attention pulse */
 .logo-animated {
   animation: pulse 2.5s infinite;
   transition: transform 0.3s ease-in-out;
+  height: 60px;
+}
+
+/* 🚀 Logo Slide Across the Top Screen */
+@keyframes slideAcrossScreen {
+  0%   { transform: translateX(0); }
+  50%  { transform: translateX(calc(100vw - 100px)); } /* logo width ~100px */
+  100% { transform: translateX(0); }
+}
+
+.logo-move-container {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  height: 70px;
+  margin: 10px 0;
+}
+
+.logo-slide-across {
+  position: absolute;
+  top: 0;
+  left: 0;
+  animation: slideAcrossScreen 6s ease-in-out infinite;
   height: 60px;
 }

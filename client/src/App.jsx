@@ -42,7 +42,9 @@ function App() {
 
   return (
     <div className="app-wrapper">
-      <img src="/logo.png" alt="SSN Mart" className="logo-animated logo-glow" height="60" />
+      <div className="logo-move-container">
+        <img src="/logo.png" alt="SSN Mart" className="logo-animated logo-rainbow-glow logo-slide-across" />
+      </div>
       {/* 🔽 Pass isAdmin to TopToolBar */}
       <TopToolBar onLogout={handleLogout} isAdmin={isLoggedIn && JSON.parse(localStorage.getItem('user'))?.username === 'admin'} />
       <hr />
