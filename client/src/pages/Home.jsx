@@ -78,10 +78,11 @@ export default function Home() {
           onChange={handleSearchChange}
         />
         {suggestions.length > 0 && (
-          <ul className="suggestions-list">
-            {suggestions.map(p => (
-              <li key={p._id} onClick={() => handleSelectProduct(p._id)}>
-                {p.name}
+          <ul className="suggestions">
+            {suggestions.map(item => (
+              <li key={item._id} onClick={() => handleSelectSuggestion(item)} className="suggestion-item">
+                <img src={item.image} alt={item.name} className="suggestion-image" />
+                <span>{item.name}</span>
               </li>
             ))}
           </ul>
