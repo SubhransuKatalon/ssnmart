@@ -11,7 +11,7 @@ const User = require('./models/User');
 const PaymentConfig = require('./models/PaymentConfig');
 const Transaction = require('./models/Transaction');
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 5050;
 
 app.use(cors({
   origin: ['https://ssnmart.netlify.app'],
@@ -124,13 +124,14 @@ app.get('/api/products/:id', async (req, res) => {
 
 // Product Search (for live search suggestions)
 app.get('/api/products/search', async (req, res) => {
+  console.log('[DEBUG] /api/products/search hit, query=', req.query.query);
   const query = req.query.query || '';
   if (!query.trim()) return res.json([]);
 
   try {
     const results = await Product.find({
       name: { $regex: query, $options: 'i' }
-    }).select('_id name').limit(10); // lightweight and fast
+    }).select('_id name image').limit(10); // lightweight and fast
 
     res.json(results);
   } catch (err) {
