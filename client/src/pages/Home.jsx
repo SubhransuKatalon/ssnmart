@@ -103,18 +103,30 @@ export default function Home() {
 
       {/* 🔍 Search Bar */}
       <div className="search-section" ref={wrapperRef}>
-        <input
-          type="text"
-          placeholder="Search for products..."
-          className="search-input"
-          value={search}
-          onChange={handleSearchChange}
-          onFocus={() => {
-            if (suggestions.length > 0 || noResults) {
-              setShowSuggestions(true);
-            }
-          }}
-        />
+        <div className="search-wrapper">
+          <span className="search-icon">🔍</span>
+          <input
+            type="text"
+            placeholder="Search for products..."
+            className="search-input"
+            value={search}
+            onChange={handleSearchChange}
+            onFocus={() => {
+              if (suggestions.length > 0 || noResults) {
+                setShowSuggestions(true);
+              }
+            }}
+          />
+          {search && (
+            <span className="clear-icon" onClick={() => {
+              setSearch('');
+              setSuggestions([]);
+              setShowSuggestions(false);
+              setNoResults(false);
+            }}>✖</span>
+          )}
+        </div>
+
         {showSuggestions && (
           <ul className="suggestions">
             {suggestions.map(item => (

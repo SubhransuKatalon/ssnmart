@@ -298,3 +298,42 @@
   text-align: center;
   font-style: italic;
 }
+
+.search-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.search-icon {
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+  font-size: 18px;
+  color: #888;
+  pointer-events: none;
+}
+
+.clear-icon {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  font-size: 16px;
+  color: #888;
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.2s ease;
+}
+
+.clear-icon:hover {
+  color: #ff4444;
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px 35px 10px 32px; /* space for icons */
+  border: 1px solid #aaa;
+  border-radius: 6px;
+  font-size: 1rem;
+}
