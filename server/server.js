@@ -1,4 +1,3 @@
-// server.js
 const express = require('express');
 const cors = require('cors');
 const app = express();
@@ -20,13 +19,17 @@ app.use(cors({
 }));
 app.use(express.json());
 
-// API Root
+// --- API Root ---
 app.get('/', (req, res) => {
   res.send('🛒 SSNMart API is running.');
 });
 
-// --- AUTH ---
+// --- Test Route ---
+app.get('/test', (req, res) => {
+  res.json({ message: '✅ Test route working' });
+});
 
+// --- AUTH ---
 app.post('/api/auth/register', async (req, res) => {
   const { username, password } = req.body;
   const existing = await User.findOne({ username });
@@ -49,7 +52,6 @@ app.post('/api/auth/login', async (req, res) => {
 });
 
 // --- USER ADMIN ---
-
 app.get('/api/users/pending', async (req, res) => {
   const newUsers = await User.find({ approved: false, declined: false });
   const declinedUsers = await User.find({ declined: true });
@@ -74,7 +76,6 @@ app.delete('/api/users/:username', async (req, res) => {
 });
 
 // --- PRODUCTS ---
-
 app.get('/api/products', async (req, res) => {
   const category = req.query.category;
   const filter = category ? { category: new RegExp('^' + category + '$', 'i') } : {};
@@ -96,7 +97,6 @@ app.post('/api/products', async (req, res) => {
   }
 });
 
-// Get featured products
 app.get('/api/products/featured', async (req, res) => {
   try {
     const featured = await Product.find({ featured: true }).limit(5);
@@ -106,7 +106,6 @@ app.get('/api/products/featured', async (req, res) => {
   }
 });
 
-// Get bestsellers
 app.get('/api/products/bestsellers', async (req, res) => {
   try {
     const bestsellers = await Product.find({ bestseller: true }).limit(5);
@@ -122,23 +121,22 @@ app.get('/api/products/:id', async (req, res) => {
   res.json(product);
 });
 
-// Product Search (for live search suggestions)
+// --- Product Search ---
 app.get('/api/products/search', async (req, res) => {
-  const query = req.query.query || '';
-
-  console.log('[SEARCH] Received query:', query);
-
-  if (!query.trim()) {
-    console.log('[SEARCH] Empty query');
-    return res.json([]);
-  }
-
   try {
-    const results = await Product.find({
-      name: { $regex: query, $options: 'i' }
-    }).select('_id name image');
+    const query = req.query.query || '';
+    console.log('[SEARCH] Incoming query:', query);
 
-    console.log('[SEARCH] Found:', results.length, 'items');
+    if (!query.trim()) {
+      console.log('[SEARCH] Empty query');
+      return res.json([]);
+    }
+
+    const regex = new RegExp(query, 'i');
+    console.log('[SEARCH] Constructed regex:', regex);
+
+    const results = await Product.find({ name: regex }).select('_id name image');
+    console.log('[SEARCH] Results found:', results.length);
     res.json(results);
   } catch (err) {
     console.error('[SEARCH ERROR]', err);
@@ -147,7 +145,6 @@ app.get('/api/products/search', async (req, res) => {
 });
 
 // --- CART ---
-
 app.get('/api/cart', async (req, res) => {
   const { userId } = req.query;
   if (!userId) return res.status(400).json({ message: 'Missing userId' });
@@ -191,7 +188,6 @@ app.delete('/api/cart/clear/:userId', async (req, res) => {
 });
 
 // --- PAYMENT CONFIG ---
-
 app.post('/api/payment-config', async (req, res) => {
   await PaymentConfig.deleteMany();
   const config = new PaymentConfig(req.body);
@@ -205,7 +201,6 @@ app.get('/api/payment-config', async (req, res) => {
 });
 
 // --- TRANSACTIONS ---
-
 app.post('/api/transactions', async (req, res) => {
   const txn = new Transaction(req.body);
   await txn.save();
@@ -218,12 +213,17 @@ app.get('/api/transactions', async (req, res) => {
 });
 
 // --- HEALTH CHECK ---
-
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok' });
 });
 
+// --- Global Error Handler ---
+app.use((err, req, res, next) => {
+  console.error('🔥 Unhandled Error:', err);
+  res.status(500).json({ message: 'Unexpected server error', error: err.message });
+});
+
 // --- SERVER START ---
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`🚀 Server running on port ${PORT}`);
 });
