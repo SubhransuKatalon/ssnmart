@@ -124,19 +124,25 @@ app.get('/api/products/:id', async (req, res) => {
 
 // Product Search (for live search suggestions)
 app.get('/api/products/search', async (req, res) => {
-  console.log('[DEBUG] /api/products/search hit, query=', req.query.query);
   const query = req.query.query || '';
-  if (!query.trim()) return res.json([]);
+
+  console.log('[SEARCH] Received query:', query);
+
+  if (!query.trim()) {
+    console.log('[SEARCH] Empty query');
+    return res.json([]);
+  }
 
   try {
     const results = await Product.find({
       name: { $regex: query, $options: 'i' }
-    }).select('_id name image').limit(10); // lightweight and fast
+    }).select('_id name image');
 
+    console.log('[SEARCH] Found:', results.length, 'items');
     res.json(results);
   } catch (err) {
-    console.error('Search error:', err);
-    res.status(500).json({ message: 'Search failed' });
+    console.error('[SEARCH ERROR]', err);
+    res.status(500).json({ message: 'Search failed', error: err.message });
   }
 });
 
