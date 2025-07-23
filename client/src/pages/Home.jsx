@@ -104,7 +104,12 @@ export default function Home() {
       {/* 🔍 Search Bar */}
       <div className="search-section" ref={wrapperRef}>
         <div className="search-wrapper">
-          <span className="search-icon">🔍</span>
+          <span className="search-icon">
+            <svg width="20" height="20" fill="none" stroke="#555" strokeWidth="2" viewBox="0 0 24 24">
+              <circle cx="11" cy="11" r="8" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+          </span>
           <input
             type="text"
             placeholder="Search for products..."
@@ -123,7 +128,12 @@ export default function Home() {
               setSuggestions([]);
               setShowSuggestions(false);
               setNoResults(false);
-            }}>✖</span>
+            }}>
+              <svg width="18" height="18" viewBox="0 0 24 24" stroke="#999" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            </span>
           )}
         </div>
 
