@@ -122,6 +122,23 @@ app.get('/api/products/:id', async (req, res) => {
   res.json(product);
 });
 
+// Product Search (for live search suggestions)
+app.get('/api/products/search', async (req, res) => {
+  const query = req.query.query || '';
+  if (!query.trim()) return res.json([]);
+
+  try {
+    const results = await Product.find({
+      name: { $regex: query, $options: 'i' }
+    }).select('_id name').limit(10); // lightweight and fast
+
+    res.json(results);
+  } catch (err) {
+    console.error('Search error:', err);
+    res.status(500).json({ message: 'Search failed' });
+  }
+});
+
 // --- CART ---
 
 app.get('/api/cart', async (req, res) => {

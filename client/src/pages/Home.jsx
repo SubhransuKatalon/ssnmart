@@ -1,10 +1,16 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './Home.css';
 
 export default function Home() {
   const [featured, setFeatured] = useState([]);
   const [bestsellers, setBestsellers] = useState([]);
+  const [search, setSearch] = useState('');
+  const [suggestions, setSuggestions] = useState([]);
+  const navigate = useNavigate();
+  let debounceTimer;
+
   const categories = [
     { name: 'Electronics', image: '/banners/electronics.jpg' },
     { name: 'Fashion', image: '/banners/fashion.jpg' },
@@ -14,19 +20,66 @@ export default function Home() {
   ];
 
   useEffect(() => {
-    // Fetch featured products
     axios.get(`${import.meta.env.VITE_API_URL}/api/products/featured`)
       .then(res => setFeatured(res.data))
       .catch(err => console.error('Failed to load featured products:', err));
 
-    // Fetch bestsellers
     axios.get(`${import.meta.env.VITE_API_URL}/api/products/bestsellers`)
       .then(res => setBestsellers(res.data))
       .catch(err => console.error('Failed to load bestsellers:', err));
   }, []);
 
+  const handleSearchChange = (e) => {
+    const value = e.target.value;
+    setSearch(value);
+
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => {
+      if (value.trim()) {
+        axios.get(`${import.meta.env.VITE_API_URL}/api/products/search?query=${value}`)
+          .then(res => setSuggestions(res.data))
+          .catch(err => console.error('Search failed:', err));
+      } else {
+        setSuggestions([]);
+      }
+    }, 300); // 300ms debounce
+  };
+
+  const handleSelectProduct = (id) => {
+    setSearch('');
+    setSuggestions([]);
+    navigate(`/product/${id}`);
+  };
+
   return (
     <div className="home">
+      {/* Optional iframe (update src if needed) */}
+      <iframe
+        src="https://example.com"
+        title="SSN Mart iFrame"
+        style={{ width: '100%', height: '200px', border: 'none', marginBottom: '20px' }}
+      ></iframe>
+
+      {/* 🔍 Search Bar */}
+      <div className="search-section">
+        <input
+          type="text"
+          placeholder="Search for products..."
+          className="search-input"
+          value={search}
+          onChange={handleSearchChange}
+        />
+        {suggestions.length > 0 && (
+          <ul className="suggestions-list">
+            {suggestions.map(p => (
+              <li key={p._id} onClick={() => handleSelectProduct(p._id)}>
+                {p.name}
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+
       {/* Hero Banner */}
       <div className="hero-banner">
         <img src="/banners/hero-banner.jpg" alt="SSN Mart Deals" />
@@ -54,7 +107,7 @@ export default function Home() {
       <section className="product-section">
         <h2 className="blink-multicolor">🌟 Featured Products</h2>
         <div className="product-grid">
-          {featured.slice(0,4).map(p => (
+          {featured.slice(0, 4).map(p => (
             <div className="product-card" key={p._id}>
               <img src={p.image} alt={p.name} />
               <h4>{p.name}</h4>
@@ -69,7 +122,7 @@ export default function Home() {
       <section className="product-section">
         <h2 className="blink-multicolor">🔥 Bestsellers</h2>
         <div className="product-grid">
-          {bestsellers.slice(0,4).map(p => (
+          {bestsellers.slice(0, 4).map(p => (
             <div className="product-card" key={p._id}>
               <img src={p.image} alt={p.name} />
               <h4>{p.name}</h4>
