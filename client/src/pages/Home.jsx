@@ -8,8 +8,10 @@ export default function Home() {
   const [bestsellers, setBestsellers] = useState([]);
   const [search, setSearch] = useState('');
   const [suggestions, setSuggestions] = useState([]);
+  const [highlightedIndex, setHighlightedIndex] = useState(-1);
+  const [history, setHistory] = useState(() => JSON.parse(localStorage.getItem('searchHistory')) || []);
+  const suggestionsRef = useRef();
   const navigate = useNavigate();
-  const debounceRef = useRef(null);
 
   const categories = [
     { name: 'Electronics', image: '/banners/electronics.jpg' },
@@ -29,35 +31,115 @@ export default function Home() {
       .catch(err => console.error('Failed to load bestsellers:', err));
   }, []);
 
+  useEffect(() => {
+    const handler = (e) => {
+      if (suggestionsRef.current && !suggestionsRef.current.contains(e.target)) {
+        setSuggestions([]);
+      }
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, []);
+
+  const updateHistory = (term) => {
+    const updated = [term, ...history.filter(h => h !== term)].slice(0, 5);
+    setHistory(updated);
+    localStorage.setItem('searchHistory', JSON.stringify(updated));
+  };
+
   const handleSearchChange = (e) => {
     const value = e.target.value;
     setSearch(value);
+    setHighlightedIndex(-1);
 
-    clearTimeout(debounceRef.current);
-    debounceRef.current = setTimeout(() => {
-      if (value.trim()) {
-        axios.get(`${import.meta.env.VITE_API_URL}/api/products`)
-          .then(res => {
-            const filtered = res.data.filter(p =>
-              p.name.toLowerCase().includes(value.toLowerCase())
-            );
-            setSuggestions(filtered.slice(0, 6));
-          })
-          .catch(err => console.error('Search failed:', err));
-      } else {
-        setSuggestions([]);
-      }
-    }, 300);
+    if (value.trim()) {
+      axios.get(`${import.meta.env.VITE_API_URL}/api/products/search?query=${value}`)
+        .then(res => setSuggestions(res.data))
+        .catch(err => console.error('Search failed:', err));
+    } else {
+      setSuggestions([]);
+    }
   };
 
   const handleSelectProduct = (id) => {
+    updateHistory(search);
     setSearch('');
     setSuggestions([]);
+    setHighlightedIndex(-1);
     navigate(`/product/${id}`);
+  };
+
+  const highlightMatch = (text) => {
+    const regex = new RegExp(`(${search})`, 'i');
+    const parts = text.split(regex);
+    return parts.map((part, i) =>
+      regex.test(part) ? <strong key={i}>{part}</strong> : part
+    );
   };
 
   return (
     <div className="home">
+      {/* 🔍 Search Section */}
+      <div className="search-section" ref={suggestionsRef}>
+        <div className="search-input-wrapper">
+          <span className="search-icon">🔍</span>
+          <input
+            type="text"
+            placeholder="Search for products..."
+            className="search-input"
+            value={search}
+            onChange={handleSearchChange}
+            onKeyDown={(e) => {
+              if (e.key === 'ArrowDown') {
+                setHighlightedIndex((prev) => Math.min(prev + 1, suggestions.length - 1));
+              } else if (e.key === 'ArrowUp') {
+                setHighlightedIndex((prev) => Math.max(prev - 1, 0));
+              } else if (e.key === 'Enter') {
+                if (highlightedIndex >= 0 && suggestions[highlightedIndex]) {
+                  handleSelectProduct(suggestions[highlightedIndex]._id);
+                }
+              }
+            }}
+          />
+          {search && (
+            <button className="clear-btn" onClick={() => {
+              setSearch('');
+              setSuggestions([]);
+              setHighlightedIndex(-1);
+            }}>❌</button>
+          )}
+        </div>
+
+        {/* 🔽 Suggestions */}
+        {(suggestions.length > 0 || (search && history.length > 0)) && (
+          <ul className="suggestions-list">
+            {suggestions.length > 0 ? suggestions.map((p, i) => (
+              <li
+                key={p._id}
+                className={i === highlightedIndex ? 'highlighted' : ''}
+                onClick={() => handleSelectProduct(p._id)}
+                style={{ animationDelay: `${i * 40}ms` }}
+              >
+                <img src={p.image} alt={p.name} className="suggestion-thumb" />
+                <span>{highlightMatch(p.name)}</span>
+              </li>
+            )) : (
+              history.map((term, i) => (
+                <li key={i} onClick={() => {
+                  setSearch(term);
+                  handleSearchChange({ target: { value: term } });
+                }}>
+                  <span>🔁 {term}</span>
+                </li>
+              ))
+            )}
+          </ul>
+        )}
+        {search && suggestions.length === 0 && (
+          <div className="no-results">No products found.</div>
+        )}
+      </div>
+
       {/* Hero Banner */}
       <div className="hero-banner">
         <img src="/banners/hero-banner.jpg" alt="SSN Mart Deals" />
@@ -66,26 +148,6 @@ export default function Home() {
           <p className="blink-multicolor">Your one-stop shop for everything!</p>
           <a href="/products" className="btn-shop">🛍️ Start Shopping</a>
         </div>
-      </div>
-
-      {/* 🔍 Search Bar */}
-      <div className="search-section">
-        <input
-          type="text"
-          placeholder="Search for products..."
-          className="search-input"
-          value={search}
-          onChange={handleSearchChange}
-        />
-        {suggestions.length > 0 && (
-          <ul className="suggestions-list">
-            {suggestions.map(p => (
-              <li key={p._id} onClick={() => handleSelectProduct(p._id)}>
-                {p.name}
-              </li>
-            ))}
-          </ul>
-        )}
       </div>
 
       {/* Categories */}

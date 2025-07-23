@@ -1,5 +1,3 @@
-/* Home.css */
-
 .home {
   max-width: 1200px;
   margin: auto;
@@ -44,7 +42,6 @@
   margin-bottom: 10px;
 }
 
-/* Desktop */
 .btn-shop {
   background-color: #ff5722;
   padding: 10px 20px;
@@ -53,7 +50,7 @@
   border-radius: 5px;
   font-weight: bold;
   display: inline-block;
-  margin-top: 16px; /* Increased space */
+  margin-top: 16px;
 }
 
 .category-section,
@@ -130,6 +127,113 @@
   color: #555;
 }
 
+/* 🔥 Multicolor Blink Animation */
+@keyframes blinkColorful {
+  0% { color: #e91e63; }
+  25% { color: #3f51b5; }
+  50% { color: #4caf50; }
+  75% { color: #ff9800; }
+  100% { color: #e91e63; }
+}
+
+.blink-multicolor {
+  animation: blinkColorful 1.5s infinite;
+  font-weight: bold;
+}
+
+/* 🔍 Search Section */
+.search-section {
+  margin: 30px auto 10px;
+  max-width: 500px;
+  position: relative;
+  z-index: 5;
+}
+
+.search-input-wrapper {
+  position: relative;
+}
+
+.search-icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.2rem;
+  color: #999;
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px 40px 10px 35px;
+  border: 1px solid #aaa;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.clear-btn {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+/* 🔽 Suggestions Dropdown */
+.suggestions-list {
+  position: absolute;
+  width: 100%;
+  background: white;
+  border: 1px solid #ccc;
+  border-top: none;
+  z-index: 10;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 180px;
+  overflow-y: auto;
+  border-radius: 0 0 6px 6px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  animation: fadeIn 0.25s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.suggestions-list li {
+  padding: 8px 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.suggestions-list li:hover,
+.suggestions-list .highlighted {
+  background-color: #f0f0f0;
+}
+
+.suggestion-thumb {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  border-radius: 4px;
+}
+
+.no-results {
+  background: #fff;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-top: none;
+  text-align: center;
+  color: #999;
+  border-radius: 0 0 6px 6px;
+}
+
 /* ✅ Mobile Responsive */
 @media (max-width: 600px) {
   .hero-banner {
@@ -169,7 +273,6 @@
   .btn-shop {
     font-size: 14px;
     padding: 6px 14px;
-    display: inline-block;
     margin-top: 5px;
   }
 
@@ -198,58 +301,13 @@
     font-size: 14px;
     padding: 10px;
   }
-}
 
-/* 🔥 Multicolor Blink Animation */
-@keyframes blinkColorful {
-  0% { color: #e91e63; }
-  25% { color: #3f51b5; }
-  50% { color: #4caf50; }
-  75% { color: #ff9800; }
-  100% { color: #e91e63; }
-}
+  .search-section {
+    max-width: 95%;
+  }
 
-.blink-multicolor {
-  animation: blinkColorful 1.5s infinite;
-  font-weight: bold;
-}
-
-.search-section {
-  margin: 20px auto;
-  max-width: 400px;
-  position: relative;
-  z-index: 5;
-}
-
-.search-input {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #aaa;
-  border-radius: 6px;
-  font-size: 1rem;
-}
-
-.suggestions-list {
-  position: absolute;
-  width: 100%;
-  background: white;
-  border: 1px solid #ccc;
-  border-top: none;
-  z-index: 10;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  max-height: 180px;
-  overflow-y: auto;
-  border-radius: 0 0 6px 6px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-}
-
-.suggestions-list li {
-  padding: 10px;
-  cursor: pointer;
-}
-
-.suggestions-list li:hover {
-  background-color: #f0f0f0;
+  .suggestion-thumb {
+    width: 28px;
+    height: 28px;
+  }
 }
