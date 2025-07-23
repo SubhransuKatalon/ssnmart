@@ -29,6 +29,10 @@ export default function Home() {
       .catch(err => console.error('Failed to load bestsellers:', err));
   }, []);
 
+  useEffect(() => {
+    return () => clearTimeout(debounceRef.current);
+  }, []);
+
   const handleSearchChange = (e) => {
     const value = e.target.value;
     setSearch(value);
@@ -57,14 +61,10 @@ export default function Home() {
   };
 
   const handleSelectSuggestion = (item) => {
-  navigate(`/product/${item._id}`);
-  setShowSuggestions(false);
-  setRecentSearches((prev) => {
-    const updated = [item.name, ...prev.filter((v) => v !== item.name)];
-    return updated.slice(0, 5);
-  });
-};
-
+    setSearch('');
+    setSuggestions([]);
+    navigate(`/product/${item._id}`);
+  };
 
   return (
     <div className="home">
@@ -90,7 +90,11 @@ export default function Home() {
         {suggestions.length > 0 && (
           <ul className="suggestions">
             {suggestions.map(item => (
-              <li key={item._id} onClick={() => handleSelectSuggestion(item)} className="suggestion-item">
+              <li
+                key={item._id}
+                onClick={() => handleSelectSuggestion(item)}
+                className="suggestion-item"
+              >
                 <img src={item.image} alt={item.name} className="suggestion-image" />
                 <span>{item.name}</span>
               </li>
