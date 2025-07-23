@@ -8,8 +8,11 @@ export default function Home() {
   const [bestsellers, setBestsellers] = useState([]);
   const [search, setSearch] = useState('');
   const [suggestions, setSuggestions] = useState([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [noResults, setNoResults] = useState(false);
   const navigate = useNavigate();
   const debounceRef = useRef(null);
+  const wrapperRef = useRef(null);
 
   const categories = [
     { name: 'Electronics', image: '/banners/electronics.jpg' },
@@ -30,14 +33,21 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    return () => clearTimeout(debounceRef.current);
+    const handleClickOutside = (e) => {
+      if (wrapperRef.current && !wrapperRef.current.contains(e.target)) {
+        setShowSuggestions(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   const handleSearchChange = (e) => {
     const value = e.target.value;
     setSearch(value);
-
+    setNoResults(false);
     clearTimeout(debounceRef.current);
+
     debounceRef.current = setTimeout(() => {
       if (value.trim()) {
         axios.get(`${import.meta.env.VITE_API_URL}/api/products`)
@@ -46,24 +56,37 @@ export default function Home() {
               p.name.toLowerCase().includes(value.toLowerCase())
             );
             setSuggestions(filtered.slice(0, 6));
+            setShowSuggestions(true);
+            setNoResults(filtered.length === 0);
           })
-          .catch(err => console.error('Search failed:', err));
+          .catch(err => {
+            console.error('Search failed:', err);
+            setSuggestions([]);
+            setShowSuggestions(true);
+            setNoResults(true);
+          });
       } else {
         setSuggestions([]);
+        setShowSuggestions(false);
+        setNoResults(false);
       }
     }, 300);
-  };
-
-  const handleSelectProduct = (id) => {
-    setSearch('');
-    setSuggestions([]);
-    navigate(`/product/${id}`);
   };
 
   const handleSelectSuggestion = (item) => {
     setSearch('');
     setSuggestions([]);
+    setShowSuggestions(false);
     navigate(`/product/${item._id}`);
+  };
+
+  const highlightMatch = (text, query) => {
+    const index = text.toLowerCase().indexOf(query.toLowerCase());
+    if (index === -1) return text;
+    const before = text.slice(0, index);
+    const match = text.slice(index, index + query.length);
+    const after = text.slice(index + query.length);
+    return <>{before}<strong className="highlight">{match}</strong>{after}</>;
   };
 
   return (
@@ -79,26 +102,30 @@ export default function Home() {
       </div>
 
       {/* 🔍 Search Bar */}
-      <div className="search-section">
+      <div className="search-section" ref={wrapperRef}>
         <input
           type="text"
           placeholder="Search for products..."
           className="search-input"
           value={search}
           onChange={handleSearchChange}
+          onFocus={() => {
+            if (suggestions.length > 0 || noResults) {
+              setShowSuggestions(true);
+            }
+          }}
         />
-        {suggestions.length > 0 && (
+        {showSuggestions && (
           <ul className="suggestions">
             {suggestions.map(item => (
-              <li
-                key={item._id}
-                onClick={() => handleSelectSuggestion(item)}
-                className="suggestion-item"
-              >
+              <li key={item._id} onClick={() => handleSelectSuggestion(item)} className="suggestion-item">
                 <img src={item.image} alt={item.name} className="suggestion-image" />
-                <span>{item.name}</span>
+                <span>{highlightMatch(item.name, search)}</span>
               </li>
             ))}
+            {noResults && (
+              <li className="no-results">No results found</li>
+            )}
           </ul>
         )}
       </div>
