@@ -8,14 +8,8 @@ export default function Home() {
   const [bestsellers, setBestsellers] = useState([]);
   const [search, setSearch] = useState('');
   const [suggestions, setSuggestions] = useState([]);
-  const [recentSearches, setRecentSearches] = useState([]);
-  const [highlightedIndex, setHighlightedIndex] = useState(-1);
-  const [showSuggestions, setShowSuggestions] = useState(false);
-
   const navigate = useNavigate();
   const debounceRef = useRef(null);
-  const inputRef = useRef();
-  const suggestionsRef = useRef();
 
   const categories = [
     { name: 'Electronics', image: '/banners/electronics.jpg' },
@@ -35,84 +29,42 @@ export default function Home() {
       .catch(err => console.error('Failed to load bestsellers:', err));
   }, []);
 
-  useEffect(() => {
-    function handleClickOutside(e) {
-      if (
-        suggestionsRef.current &&
-        !suggestionsRef.current.contains(e.target) &&
-        !inputRef.current.contains(e.target)
-      ) {
-        setShowSuggestions(false);
-        setHighlightedIndex(-1);
-      }
-    }
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
-
   const handleSearchChange = (e) => {
     const value = e.target.value;
     setSearch(value);
-    setHighlightedIndex(-1);
 
     clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => {
       if (value.trim()) {
-        axios
-          .get(`${import.meta.env.VITE_API_URL}/api/products/search?query=${value}`)
-          .then((res) => {
-            setSuggestions(res.data);
-            setShowSuggestions(true);
+        axios.get(`${import.meta.env.VITE_API_URL}/api/products`)
+          .then(res => {
+            const filtered = res.data.filter(p =>
+              p.name.toLowerCase().includes(value.toLowerCase())
+            );
+            setSuggestions(filtered.slice(0, 6));
           })
-          .catch((err) => console.error('Search failed:', err));
+          .catch(err => console.error('Search failed:', err));
       } else {
         setSuggestions([]);
-        setShowSuggestions(false);
       }
     }, 300);
   };
 
+  const handleSelectProduct = (id) => {
+    setSearch('');
+    setSuggestions([]);
+    navigate(`/product/${id}`);
+  };
+
   const handleSelectSuggestion = (item) => {
-    navigate(`/product/${item._id}`);
-    setSearch('');
-    setSuggestions([]);
-    setShowSuggestions(false);
-    setRecentSearches((prev) => {
-      const updated = [item.name, ...prev.filter((v) => v !== item.name)];
-      return updated.slice(0, 5);
-    });
-  };
+  navigate(`/product/${item._id}`);
+  setShowSuggestions(false);
+  setRecentSearches((prev) => {
+    const updated = [item.name, ...prev.filter((v) => v !== item.name)];
+    return updated.slice(0, 5);
+  });
+};
 
-  const handleKeyDown = (e) => {
-    if (e.key === 'ArrowDown') {
-      setHighlightedIndex((prev) => (prev + 1) % suggestions.length);
-    } else if (e.key === 'ArrowUp') {
-      setHighlightedIndex((prev) => (prev - 1 + suggestions.length) % suggestions.length);
-    } else if (e.key === 'Enter') {
-      if (highlightedIndex >= 0 && suggestions[highlightedIndex]) {
-        handleSelectSuggestion(suggestions[highlightedIndex]);
-      }
-    }
-  };
-
-  const getHighlightedName = (name) => {
-    const idx = name.toLowerCase().indexOf(search.toLowerCase());
-    if (idx === -1) return name;
-    return (
-      <>
-        {name.slice(0, idx)}
-        <strong>{name.slice(idx, idx + search.length)}</strong>
-        {name.slice(idx + search.length)}
-      </>
-    );
-  };
-
-  const clearSearch = () => {
-    setSearch('');
-    setSuggestions([]);
-    setShowSuggestions(false);
-    inputRef.current.focus();
-  };
 
   return (
     <div className="home">
@@ -128,57 +80,19 @@ export default function Home() {
 
       {/* 🔍 Search Bar */}
       <div className="search-section">
-        <div style={{ position: 'relative' }}>
-          <input
-            ref={inputRef}
-            type="text"
-            placeholder="Search for products..."
-            className="search-input"
-            value={search}
-            onChange={handleSearchChange}
-            onKeyDown={handleKeyDown}
-          />
-          <span style={{
-            position: 'absolute',
-            left: '10px',
-            top: '50%',
-            transform: 'translateY(-50%)',
-            color: '#888'
-          }}>🔍</span>
-
-          {search && (
-            <button
-              onClick={clearSearch}
-              style={{
-                position: 'absolute',
-                right: '10px',
-                top: '50%',
-                transform: 'translateY(-50%)',
-                background: 'none',
-                border: 'none',
-                fontSize: '16px',
-                cursor: 'pointer',
-                color: '#888'
-              }}
-            >
-              ❌
-            </button>
-          )}
-        </div>
-
-        {showSuggestions && (
-          <ul className="suggestions" ref={suggestionsRef}>
-            {suggestions.length === 0 && (
-              <li className="suggestion-item">No products found</li>
-            )}
-            {suggestions.map((item, i) => (
-              <li
-                key={item._id}
-                onClick={() => handleSelectSuggestion(item)}
-                className={`suggestion-item ${i === highlightedIndex ? 'highlighted' : ''}`}
-              >
+        <input
+          type="text"
+          placeholder="Search for products..."
+          className="search-input"
+          value={search}
+          onChange={handleSearchChange}
+        />
+        {suggestions.length > 0 && (
+          <ul className="suggestions">
+            {suggestions.map(item => (
+              <li key={item._id} onClick={() => handleSelectSuggestion(item)} className="suggestion-item">
                 <img src={item.image} alt={item.name} className="suggestion-image" />
-                <span>{getHighlightedName(item.name)}</span>
+                <span>{item.name}</span>
               </li>
             ))}
           </ul>

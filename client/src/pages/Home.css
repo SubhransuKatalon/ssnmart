@@ -44,6 +44,7 @@
   margin-bottom: 10px;
 }
 
+/* Desktop */
 .btn-shop {
   background-color: #ff5722;
   padding: 10px 20px;
@@ -52,7 +53,7 @@
   border-radius: 5px;
   font-weight: bold;
   display: inline-block;
-  margin-top: 16px;
+  margin-top: 16px; /* Increased space */
 }
 
 .category-section,
@@ -129,95 +130,6 @@
   color: #555;
 }
 
-/* 🔥 Multicolor Blink Animation */
-@keyframes blinkColorful {
-  0% { color: #e91e63; }
-  25% { color: #3f51b5; }
-  50% { color: #4caf50; }
-  75% { color: #ff9800; }
-  100% { color: #e91e63; }
-}
-
-.blink-multicolor {
-  animation: blinkColorful 1.5s infinite;
-  font-weight: bold;
-}
-
-/* 🔍 Enhanced Search Section */
-.search-section {
-  position: relative;
-  max-width: 600px;
-  margin: 20px auto;
-  padding: 0 16px;
-  z-index: 5;
-}
-
-.search-input {
-  width: 100%;
-  padding: 12px 48px 12px 40px;
-  border-radius: 30px;
-  border: 2px solid #ccc;
-  font-size: 16px;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  background-color: #fff;
-}
-
-.search-input:focus {
-  outline: none;
-  border-color: #6c63ff;
-  box-shadow: 0 0 5px #6c63ff77;
-}
-
-.suggestions {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  width: 100%;
-  background: white;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  max-height: 300px;
-  overflow-y: auto;
-  z-index: 10;
-  animation: fadeIn 0.3s ease-in-out;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.suggestion-item {
-  display: flex;
-  align-items: center;
-  padding: 10px;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.suggestion-item:hover,
-.suggestion-item.highlighted {
-  background-color: #f5f5f5;
-}
-
-.suggestion-image {
-  width: 40px;
-  height: 40px;
-  object-fit: contain;
-  margin-right: 12px;
-  border-radius: 4px;
-}
-
-strong {
-  font-weight: bold;
-  color: #6c63ff;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-5px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
 /* ✅ Mobile Responsive */
 @media (max-width: 600px) {
   .hero-banner {
@@ -265,17 +177,112 @@ strong {
     width: 100px;
   }
 
+  .category-card img {
+    height: auto;
+  }
+
+  .product-card {
+    padding: 10px;
+  }
+
+  .product-card img {
+    height: 110px;
+  }
+
   .product-grid {
     grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
     gap: 16px;
   }
 
-  .suggestion-image {
-    width: 32px;
-    height: 32px;
-  }
-
-  .suggestions {
+  .testimonials blockquote {
     font-size: 14px;
+    padding: 10px;
   }
+}
+
+/* 🔥 Multicolor Blink Animation */
+@keyframes blinkColorful {
+  0% { color: #e91e63; }
+  25% { color: #3f51b5; }
+  50% { color: #4caf50; }
+  75% { color: #ff9800; }
+  100% { color: #e91e63; }
+}
+
+.blink-multicolor {
+  animation: blinkColorful 1.5s infinite;
+  font-weight: bold;
+}
+
+.search-section {
+  margin: 20px auto;
+  max-width: 400px;
+  position: relative;
+  z-index: 5;
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #aaa;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.suggestions-list {
+  position: absolute;
+  width: 100%;
+  background: white;
+  border: 1px solid #ccc;
+  border-top: none;
+  z-index: 10;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 180px;
+  overflow-y: auto;
+  border-radius: 0 0 6px 6px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.suggestions-list li {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.suggestions-list li:hover {
+  background-color: #f0f0f0;
+}
+
+.suggestions {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  background: white;
+  border: 1px solid #ccc;
+  max-height: 200px;
+  overflow-y: auto;
+  position: absolute;
+  width: 100%;
+  z-index: 10;
+}
+
+.suggestion-item {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.suggestion-item:hover {
+  background-color: #f0f0f0;
+}
+
+.suggestion-image {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  margin-right: 10px;
+  border-radius: 4px;
 }
