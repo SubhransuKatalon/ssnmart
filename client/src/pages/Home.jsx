@@ -56,6 +56,16 @@ export default function Home() {
     navigate(`/product/${id}`);
   };
 
+  const handleSelectSuggestion = (item) => {
+  navigate(`/product/${item._id}`);
+  setShowSuggestions(false);
+  setRecentSearches((prev) => {
+    const updated = [item.name, ...prev.filter((v) => v !== item.name)];
+    return updated.slice(0, 5);
+  });
+};
+
+
   return (
     <div className="home">
       {/* Hero Banner */}
