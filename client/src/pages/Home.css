@@ -1,12 +1,11 @@
-/* Home.css */
-
+/* ========== General Layout ========== */
 .home {
   max-width: 1200px;
   margin: auto;
   padding: 20px;
 }
 
-/* Hero Banner */
+/* ========== Hero Banner ========== */
 .hero-banner {
   position: relative;
   overflow: hidden;
@@ -44,7 +43,6 @@
   margin-bottom: 10px;
 }
 
-/* Desktop */
 .btn-shop {
   background-color: #ff5722;
   padding: 10px 20px;
@@ -53,9 +51,10 @@
   border-radius: 5px;
   font-weight: bold;
   display: inline-block;
-  margin-top: 16px; /* Increased space */
+  margin-top: 16px;
 }
 
+/* ========== Sections ========== */
 .category-section,
 .product-section,
 .testimonial-section {
@@ -118,6 +117,7 @@
   border-radius: 4px;
 }
 
+/* ========== Testimonials ========== */
 .testimonials blockquote {
   font-style: italic;
   margin: 15px auto;
@@ -130,225 +130,34 @@
   color: #555;
 }
 
-/* ✅ Mobile Responsive */
-@media (max-width: 600px) {
-  .hero-banner {
-    min-height: 300px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .hero-banner img {
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .hero-text {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    background-color: rgba(0, 0, 0, 0.4);
-    padding: 12px;
-    border-radius: 10px;
-    width: 90%;
-  }
-
-  .hero-text h1 {
-    font-size: 1.4rem;
-    padding: 4px 8px;
-  }
-
-  .hero-text p {
-    font-size: 0.95rem;
-    margin: 6px 0 10px;
-  }
-
-  .btn-shop {
-    font-size: 14px;
-    padding: 6px 14px;
-    display: inline-block;
-    margin-top: 5px;
-  }
-
-  .category-card {
-    width: 100px;
-  }
-
-  .category-card img {
-    height: auto;
-  }
-
-  .product-card {
-    padding: 10px;
-  }
-
-  .product-card img {
-    height: 110px;
-  }
-
-  .product-grid {
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: 16px;
-  }
-
-  .testimonials blockquote {
-    font-size: 14px;
-    padding: 10px;
-  }
-}
-
-/* 🔥 Multicolor Blink Animation */
-@keyframes blinkColorful {
-  0% { color: #e91e63; }
-  25% { color: #3f51b5; }
-  50% { color: #4caf50; }
-  75% { color: #ff9800; }
-  100% { color: #e91e63; }
-}
-
-.blink-multicolor {
-  animation: blinkColorful 1.5s infinite;
-  font-weight: bold;
-}
-
-.search-section {
-  margin: 20px auto;
-  max-width: 400px;
-  position: relative;
-  z-index: 5;
-}
-
-.search-input {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #aaa;
-  border-radius: 6px;
-  font-size: 1rem;
-}
-
-.suggestions-list {
-  position: absolute;
-  width: 100%;
-  background: white;
-  border: 1px solid #ccc;
-  border-top: none;
-  z-index: 10;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  max-height: 180px;
-  overflow-y: auto;
-  border-radius: 0 0 6px 6px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-}
-
-.suggestions-list li {
-  padding: 10px;
-  cursor: pointer;
-}
-
-.suggestions-list li:hover {
-  background-color: #f0f0f0;
-}
-
-.suggestions {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  background: white;
-  border: 1px solid #ccc;
-  max-height: 200px;
-  overflow-y: auto;
-  position: absolute;
-  width: 100%;
-  z-index: 10;
-}
-
-.suggestion-item {
-  display: flex;
-  align-items: center;
-  padding: 8px 12px;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.suggestion-item:hover {
-  background-color: #f0f0f0;
-}
-
-.suggestion-image {
-  width: 40px;
-  height: 40px;
-  object-fit: contain;
-  margin-right: 10px;
-  border-radius: 4px;
-}
-
-.highlight {
-  font-weight: bold;
-  color: #6c63ff;
-}
-
-.no-results {
-  padding: 10px;
-  color: #999;
-  text-align: center;
-  font-style: italic;
-}
-
-.search-wrapper {
-  position: relative;
-  width: 100%;
-}
-
-.search-icon {
-  position: absolute;
-  top: 50%;
-  left: 10px;
-  transform: translateY(-50%);
-  font-size: 18px;
-  color: #888;
-  pointer-events: none;
-}
-
-.clear-icon {
-  position: absolute;
-  top: 50%;
-  right: 12px;
-  transform: translateY(-50%);
-  font-size: 16px;
-  color: #888;
-  cursor: pointer;
-  user-select: none;
-  transition: color 0.2s ease;
-}
-
-.clear-icon:hover {
-  color: #ff4444;
-}
-
-.search-input {
-  width: 100%;
-  padding: 10px 35px 10px 32px; /* space for icons */
-  border: 1px solid #aaa;
-  border-radius: 6px;
-  font-size: 1rem;
-}
-
-/* --- Enhanced Search Section with SVG Icons --- */
+/* ========== Search Section ========== */
 .search-section {
   margin: 20px auto;
   max-width: 500px;
   position: relative;
   z-index: 5;
+  padding: 0 10px;
 }
 
 .search-wrapper {
   position: relative;
   width: 100%;
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px 40px 10px 40px;
+  border: 1px solid #aaa;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.search-input:focus {
+  border-color: #6c63ff;
+  outline: none;
+  box-shadow: 0 0 4px #6c63ff44;
 }
 
 .search-icon {
@@ -386,23 +195,7 @@
   stroke: #ff4444;
 }
 
-.search-input {
-  width: 100%;
-  padding: 10px 40px 10px 40px;
-  border: 1px solid #aaa;
-  border-radius: 6px;
-  font-size: 1rem;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-}
-
-.search-input:focus {
-  border-color: #6c63ff;
-  outline: none;
-  box-shadow: 0 0 4px #6c63ff44;
-}
-
-/* Suggestions Dropdown */
+/* ========== Suggestions Dropdown ========== */
 .suggestions {
   list-style: none;
   margin: 0;
@@ -451,7 +244,21 @@
   font-style: italic;
 }
 
-/* Smooth animation */
+/* ========== Blink Text Animation ========== */
+@keyframes blinkColorful {
+  0% { color: #e91e63; }
+  25% { color: #3f51b5; }
+  50% { color: #4caf50; }
+  75% { color: #ff9800; }
+  100% { color: #e91e63; }
+}
+
+.blink-multicolor {
+  animation: blinkColorful 1.5s infinite;
+  font-weight: bold;
+}
+
+/* ========== Fade In Animation ========== */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -463,14 +270,67 @@
   }
 }
 
-/* Responsive adjustments */
+/* ========== 📱 Mobile Optimization ========== */
 @media (max-width: 600px) {
+  .hero-banner {
+    min-height: 300px;
+  }
+
+  .hero-text {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.4);
+    padding: 12px;
+    border-radius: 10px;
+    width: 90%;
+  }
+
+  .hero-text h1 {
+    font-size: 1.4rem;
+    padding: 4px 8px;
+  }
+
+  .hero-text p {
+    font-size: 0.95rem;
+    margin: 6px 0 10px;
+  }
+
+  .btn-shop {
+    font-size: 14px;
+    padding: 6px 14px;
+  }
+
+  .category-card {
+    width: 100px;
+  }
+
+  .product-grid {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 16px;
+  }
+
+  .product-card img {
+    height: 110px;
+  }
+
   .search-section {
     padding: 0 10px;
+    margin-top: 15px;
   }
 
   .suggestion-image {
     width: 32px;
     height: 32px;
+  }
+
+  .search-input {
+    padding: 10px 38px 10px 36px;
+  }
+
+  .testimonials blockquote {
+    font-size: 14px;
+    padding: 10px;
   }
 }
