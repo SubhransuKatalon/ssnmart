@@ -11,7 +11,7 @@ const User = require('./models/User');
 const PaymentConfig = require('./models/PaymentConfig');
 const Transaction = require('./models/Transaction');
 
-const PORT = process.env.PORT || 5050;
+const PORT = process.env.PORT;
 
 app.use(cors({
   origin: ['https://ssnmart.netlify.app'],
