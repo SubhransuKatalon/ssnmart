@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './Home.css';
@@ -9,7 +9,7 @@ export default function Home() {
   const [search, setSearch] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const navigate = useNavigate();
-  let debounceTimer;
+  const debounceRef = useRef(null);
 
   const categories = [
     { name: 'Electronics', image: '/banners/electronics.jpg' },
@@ -33,16 +33,21 @@ export default function Home() {
     const value = e.target.value;
     setSearch(value);
 
-    clearTimeout(debounceTimer);
-    debounceTimer = setTimeout(() => {
+    clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => {
       if (value.trim()) {
-        axios.get(`${import.meta.env.VITE_API_URL}/api/products/search?query=${value}`)
-          .then(res => setSuggestions(res.data))
+        axios.get(`${import.meta.env.VITE_API_URL}/api/products`)
+          .then(res => {
+            const filtered = res.data.filter(p =>
+              p.name.toLowerCase().includes(value.toLowerCase())
+            );
+            setSuggestions(filtered.slice(0, 6));
+          })
           .catch(err => console.error('Search failed:', err));
       } else {
         setSuggestions([]);
       }
-    }, 300); // 300ms debounce
+    }, 300);
   };
 
   const handleSelectProduct = (id) => {
@@ -53,12 +58,15 @@ export default function Home() {
 
   return (
     <div className="home">
-      {/* Optional iframe (update src if needed) */}
-      <iframe
-        src="https://example.com"
-        title="SSN Mart iFrame"
-        style={{ width: '100%', height: '200px', border: 'none', marginBottom: '20px' }}
-      ></iframe>
+      {/* Hero Banner */}
+      <div className="hero-banner">
+        <img src="/banners/hero-banner.jpg" alt="SSN Mart Deals" />
+        <div className="hero-text">
+          <h1>Welcome to SSN MART</h1>
+          <p className="blink-multicolor">Your one-stop shop for everything!</p>
+          <a href="/products" className="btn-shop">🛍️ Start Shopping</a>
+        </div>
+      </div>
 
       {/* 🔍 Search Bar */}
       <div className="search-section">
@@ -78,16 +86,6 @@ export default function Home() {
             ))}
           </ul>
         )}
-      </div>
-
-      {/* Hero Banner */}
-      <div className="hero-banner">
-        <img src="/banners/hero-banner.jpg" alt="SSN Mart Deals" />
-        <div className="hero-text">
-          <h1>Welcome to SSN MART</h1>
-          <p className="blink-multicolor">Your one-stop shop for everything!</p>
-          <a href="/products" className="btn-shop">🛍️ Start Shopping</a>
-        </div>
       </div>
 
       {/* Categories */}
