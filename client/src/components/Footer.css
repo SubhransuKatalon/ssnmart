@@ -1,13 +1,18 @@
-/* client/src/components/Footer.css */
 .app-footer {
   width: 100%;
-  background-color: #f0f0f0;
-  text-align: center;
-  padding: 10px 0;
+  background-color: transparent; /* Make it transparent */
+  text-align: right;              /* Align content to the right */
+  padding: 10px 16px;             /* Slight right padding */
   font-size: 0.9rem;
   color: #555;
-  position: relative;
+  position: fixed;
   bottom: 0;
   left: 0;
-  box-shadow: 0 -1px 3px rgba(0,0,0,0.05);
+  box-shadow: none;               /* Remove shadow */
+  z-index: 999;                   /* Ensure it stays on top */
+  pointer-events: none;          /* Optional: prevent clicks */
+}
+
+.app-footer span {
+  pointer-events: auto;          /* Allow selection/copy if needed */
 }
