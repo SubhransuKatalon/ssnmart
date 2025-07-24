@@ -4,6 +4,7 @@ import './App.css';
 
 import TopToolBar from './components/TopToolBar';
 import PrivateRoute from './components/PrivateRoute';
+import Footer from './components/Footer'; // ✅ Add footer import
 
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -45,41 +46,48 @@ function App() {
       <div className="logo-move-container">
         <img src="/logo.png" alt="SSN Mart" className="logo-animated logo-rainbow-glow logo-slide-across" />
       </div>
-      {/* 🔽 Pass isAdmin to TopToolBar */}
-      <TopToolBar onLogout={handleLogout} isAdmin={isLoggedIn && JSON.parse(localStorage.getItem('user'))?.username === 'admin'} />
+      <TopToolBar
+        onLogout={handleLogout}
+        isAdmin={isLoggedIn && JSON.parse(localStorage.getItem('user'))?.username === 'admin'}
+      />
       <hr />
-      <Routes>
-        <Route path="/login" element={<Login onLogin={handleLogin} />} />
-        <Route path="/register" element={<Register />} />
-        <Route
-          path="/admin"
-          element={
-            <AdminRoute>
-              <Admin />
-            </AdminRoute>
-          }
-        />
-        <Route path="/" element={<Home />} />
-        <Route path="/products" element={<Products />} />
-        <Route path="/category/:category" element={<CategoryProducts />} />
-        <Route path="/product/:id" element={<ProductDetail />} />
-        <Route
-          path="/cart"
-          element={
-            <PrivateRoute>
-              <Cart />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/payment"
-          element={
-            <PrivateRoute>
-              <Payment />
-            </PrivateRoute>
-          }
-        />
-      </Routes>
+
+      <div className="app-content">
+        <Routes>
+          <Route path="/login" element={<Login onLogin={handleLogin} />} />
+          <Route path="/register" element={<Register />} />
+          <Route
+            path="/admin"
+            element={
+              <AdminRoute>
+                <Admin />
+              </AdminRoute>
+            }
+          />
+          <Route path="/" element={<Home />} />
+          <Route path="/products" element={<Products />} />
+          <Route path="/category/:category" element={<CategoryProducts />} />
+          <Route path="/product/:id" element={<ProductDetail />} />
+          <Route
+            path="/cart"
+            element={
+              <PrivateRoute>
+                <Cart />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/payment"
+            element={
+              <PrivateRoute>
+                <Payment />
+              </PrivateRoute>
+            }
+          />
+        </Routes>
+      </div>
+
+      <Footer /> {/* ✅ Always shown at bottom */}
     </div>
   );
 }

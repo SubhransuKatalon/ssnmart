@@ -92,3 +92,24 @@ button {
 .logo-slide-across:hover {
   animation-play-state: paused;
 }
+
+/* Sticky footer layout */
+.app-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Full height of the viewport */
+}
+
+.app-content {
+  flex: 1;
+}
+
+/* Footer styling */
+.app-footer {
+  text-align: right;
+  padding: 8px 20px;
+  font-size: 0.85rem;
+  background-color: #f0f0f0;
+  border-top: 1px solid #ccc;
+  color: #555;
+}

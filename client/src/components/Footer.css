@@ -1,0 +1,13 @@
+/* client/src/components/Footer.css */
+.app-footer {
+  width: 100%;
+  background-color: #f0f0f0;
+  text-align: center;
+  padding: 10px 0;
+  font-size: 0.9rem;
+  color: #555;
+  position: relative;
+  bottom: 0;
+  left: 0;
+  box-shadow: 0 -1px 3px rgba(0,0,0,0.05);
+}
