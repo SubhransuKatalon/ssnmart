@@ -9,7 +9,6 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   width: 100%;
   box-sizing: border-box;
-  flex-wrap: wrap;
 }
 
 /* Left and Right Sections */
@@ -17,7 +16,6 @@
   display: flex;
   gap: 20px;
   align-items: center;
-  flex-wrap: wrap;
 }
 
 .nav-right {
@@ -62,91 +60,43 @@
   color: #0056b3;
 }
 
-/* --------------------- */
-/* 🔍 Search Bar Styles */
-/* --------------------- */
+/* Mobile Responsiveness */
+@media (max-width: 600px) {
+  .top-toolbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
 
-.search-wrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
-  border: 1px solid #ccc;
-  border-radius: 20px;
-  padding: 4px 10px;
-  margin-left: 20px;
-  background-color: #fff;
-  width: 240px;
-  transition: box-shadow 0.2s ease;
+  .nav-left,
+  .nav-right {
+    width: 100%;
+    justify-content: flex-start;
+  }
 }
 
-.search-wrapper:focus-within {
-  box-shadow: 0 0 0 2px #007bff33;
+/* Dark Mode Support */
+body.dark {
+  background-color: #121212;
+  color: #f0f0f0;
 }
 
-.search-input {
-  border: none;
-  outline: none;
-  font-size: 14px;
-  flex: 1;
-  padding: 6px;
-  background: transparent;
+body.dark .top-toolbar {
+  background-color: #1e1e1e;
+  border-bottom: 1px solid #444;
 }
 
-.search-icon {
-  margin-right: 6px;
+body.dark .top-toolbar a,
+body.dark .top-toolbar button {
+  color: #ccc;
 }
 
-.clear-icon {
-  cursor: pointer;
-  margin-left: 6px;
+body.dark .top-toolbar a.active {
+  background-color: #333;
+  color: #00aaff;
 }
 
-.suggestions {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  z-index: 999;
-  background-color: white;
-  border: 1px solid #ddd;
-  width: 100%;
-  border-radius: 6px;
-  margin-top: 4px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  list-style: none;
-  padding: 0;
-  max-height: 220px;
-  overflow-y: auto;
-}
-
-.suggestion-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 8px 12px;
-  cursor: pointer;
-}
-
-.suggestion-item:hover {
-  background-color: #f5f5f5;
-}
-
-.suggestion-image {
-  width: 40px;
-  height: 40px;
-  object-fit: cover;
-  border-radius: 4px;
-}
-
-.no-results {
-  padding: 10px;
-  color: #999;
-  font-style: italic;
-}
-
-/* --------------------- */
-/* 🔳 Dropdown Menu */
-/* --------------------- */
-
+/* Dropdown Menu */
 .dropdown {
   position: relative;
 }
@@ -176,72 +126,6 @@
   border-radius: 4px;
 }
 
-/* --------------------- */
-/* 🌘 Dark Mode Support */
-/* --------------------- */
-
-body.dark {
-  background-color: #121212;
-  color: #f0f0f0;
-}
-
-body.dark .top-toolbar {
-  background-color: #1e1e1e;
-  border-bottom: 1px solid #444;
-}
-
-body.dark .top-toolbar a,
-body.dark .top-toolbar button {
-  color: #ccc;
-}
-
-body.dark .top-toolbar a.active {
-  background-color: #333;
-  color: #00aaff;
-}
-
-body.dark .search-wrapper {
-  background-color: #333;
-  border: 1px solid #555;
-}
-
-body.dark .search-input {
-  color: #eee;
-}
-
-body.dark .suggestions {
+body.dark .dropdown-content a:hover {
   background-color: #222;
-  border-color: #444;
-}
-
-body.dark .suggestion-item:hover {
-  background-color: #2a2a2a;
-}
-
-body.dark .no-results {
-  color: #aaa;
-}
-
-/* --------------------- */
-/* 📱 Mobile Responsiveness */
-/* --------------------- */
-
-@media (max-width: 600px) {
-  .top-toolbar {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-  }
-
-  .nav-left,
-  .nav-right {
-    width: 100%;
-    justify-content: flex-start;
-    flex-wrap: wrap;
-  }
-
-  .search-wrapper {
-    width: 100%;
-    margin-left: 0;
-  }
 }
