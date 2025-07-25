@@ -1,5 +1,4 @@
 /* ========== General Layout ========== */
-
 .home {
   max-width: 1200px;
   margin: auto;
@@ -132,120 +131,6 @@
   color: #555;
 }
 
-/* ========== Search Section ========== */
-.search-section {
-  margin: 20px auto;
-  max-width: 500px;
-  position: relative;
-  z-index: 5;
-  padding: 0 10px;
-}
-
-.search-wrapper {
-  position: relative;
-  width: 100%;
-}
-
-.search-input {
-  width: 100%;
-  padding: 10px 40px 10px 40px;
-  border: 1px solid #aaa;
-  border-radius: 6px;
-  font-size: 1rem;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-}
-
-.search-input:focus {
-  border-color: #6c63ff;
-  outline: none;
-  box-shadow: 0 0 4px #6c63ff44;
-}
-
-.search-icon {
-  position: absolute;
-  top: 50%;
-  left: 12px;
-  transform: translateY(-50%);
-  pointer-events: none;
-  opacity: 0.7;
-  transition: transform 0.3s ease;
-}
-
-.clear-icon {
-  position: absolute;
-  top: 50%;
-  right: 12px;
-  transform: translateY(-50%) scale(1);
-  transition: transform 0.2s ease, stroke 0.3s ease;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.clear-icon:hover {
-  transform: translateY(-50%) scale(1.2);
-}
-
-.clear-icon svg {
-  stroke: #888;
-  transition: stroke 0.3s;
-}
-
-.clear-icon:hover svg {
-  stroke: #ff4444;
-}
-
-/* ========== Suggestions Dropdown ========== */
-.suggestions {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  background: white;
-  border: 1px solid #ccc;
-  max-height: 220px;
-  overflow-y: auto;
-  position: absolute;
-  width: 100%;
-  z-index: 10;
-  border-radius: 0 0 6px 6px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  animation: fadeIn 0.2s ease-in-out;
-}
-
-.suggestion-item {
-  display: flex;
-  align-items: center;
-  padding: 10px 14px;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.suggestion-item:hover {
-  background-color: #f5f5f5;
-}
-
-.suggestion-image {
-  width: 40px;
-  height: 40px;
-  object-fit: contain;
-  margin-right: 12px;
-  border-radius: 4px;
-}
-
-.highlight {
-  font-weight: bold;
-  color: #6c63ff;
-}
-
-.no-results {
-  padding: 10px;
-  color: #999;
-  text-align: center;
-  font-style: italic;
-}
-
 /* ========== Blink Text Animation ========== */
 @keyframes blinkColorful {
   0% { color: #e91e63; }
@@ -315,24 +200,6 @@
 
   .product-card img {
     height: 110px;
-  }
-
-  .search-section {
-    padding: 0 10px;
-    margin-top: 15px;
-    max-width: 100%;
-    box-sizing: border-box;
-  }
-
-  .suggestion-image {
-    width: 32px;
-    height: 32px;
-  }
-
-  .search-input {
-    width: 100%;
-    box-sizing: border-box;
-    padding: 10px 38px 10px 36px;
   }
 
   .testimonials blockquote {

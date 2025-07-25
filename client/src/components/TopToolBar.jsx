@@ -1,5 +1,6 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useState, useRef, useEffect } from 'react';
+import axios from 'axios';
 import {
   FaHome,
   FaBoxOpen,
@@ -13,9 +14,18 @@ import './TopToolBar.css';
 
 export default function TopToolBar({ onLogout, isAdmin }) {
   const location = useLocation();
+  const navigate = useNavigate();
   const user = localStorage.getItem('user');
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef(null);
+
+  // 🔍 Global Search
+  const [search, setSearch] = useState('');
+  const [suggestions, setSuggestions] = useState([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [noResults, setNoResults] = useState(false);
+  const debounceRef = useRef(null);
+  const wrapperRef = useRef(null);
 
   const categories = [
     'Electronics',
@@ -28,13 +38,74 @@ export default function TopToolBar({ onLogout, isAdmin }) {
   // ✅ Hide dropdown on outside click
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      if (
+        dropdownRef.current && !dropdownRef.current.contains(event.target) &&
+        wrapperRef.current && !wrapperRef.current.contains(event.target)
+      ) {
         setShowDropdown(false);
+        setShowSuggestions(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
+
+  // Clear search on route change
+  useEffect(() => {
+    setSearch('');
+    setSuggestions([]);
+    setShowSuggestions(false);
+    setNoResults(false);
+  }, [location.pathname]);
+
+  // 🔍 Live search logic
+  const handleSearchChange = (e) => {
+    const value = e.target.value;
+    setSearch(value);
+    setNoResults(false);
+    clearTimeout(debounceRef.current);
+
+    debounceRef.current = setTimeout(() => {
+      if (value.trim()) {
+        axios.get(`${import.meta.env.VITE_API_URL}/api/products`)
+          .then(res => {
+            const filtered = res.data.filter(p =>
+              p.name.toLowerCase().includes(value.toLowerCase())
+            );
+            setSuggestions(filtered.slice(0, 6));
+            setShowSuggestions(true);
+            setNoResults(filtered.length === 0);
+          })
+          .catch(() => {
+            setSuggestions([]);
+            setShowSuggestions(true);
+            setNoResults(true);
+          });
+      } else {
+        setSuggestions([]);
+        setShowSuggestions(false);
+        setNoResults(false);
+      }
+    }, 300);
+  };
+
+  const handleSelectSuggestion = (item) => {
+    setSearch('');
+    setSuggestions([]);
+    setShowSuggestions(false);
+    navigate(`/product/${item._id}`);
+  };
+
+  const highlightMatch = (text, query) => {
+    const index = text.toLowerCase().indexOf(query.toLowerCase());
+    if (index === -1) return text;
+    const before = text.slice(0, index);
+    const match = text.slice(index, index + query.length);
+    const after = text.slice(index + query.length);
+    return <>{before}<strong className="highlight">{match}</strong>{after}</>;
+  };
+
+  const hideSearchRoutes = ['/login', '/register'];
 
   return (
     <div className="top-toolbar">
@@ -44,7 +115,6 @@ export default function TopToolBar({ onLogout, isAdmin }) {
           <FaHome /> <span>Home</span>
         </Link>
 
-        {/* Dropdown Menu for Products */}
         <div className="dropdown" ref={dropdownRef}>
           <button
             name="product-dropdown"
@@ -72,13 +142,54 @@ export default function TopToolBar({ onLogout, isAdmin }) {
           <FaShoppingCart /> <span>Cart</span>
         </Link>
 
-        {/* ✅ Admin Link */}
         {isAdmin && (
           <Link to="/admin" className={location.pathname === '/admin' ? 'active' : ''}>
             <FaTools /> <span>Admin</span>
           </Link>
         )}
       </div>
+
+      {/* 🔍 Search bar (hidden on login/register) */}
+      {!hideSearchRoutes.includes(location.pathname) && (
+        <div className="toolbar-search-section" ref={wrapperRef}>
+          <div className="search-wrapper">
+            <span className="search-icon">🔍</span>
+            <input
+              type="text"
+              placeholder="Search products..."
+              value={search}
+              onChange={handleSearchChange}
+              onFocus={() => {
+                if (suggestions.length > 0 || noResults) {
+                  setShowSuggestions(true);
+                }
+              }}
+            />
+            {search && (
+              <span
+                className="clear-icon"
+                onClick={() => {
+                  setSearch('');
+                  setSuggestions([]);
+                  setShowSuggestions(false);
+                  setNoResults(false);
+                }}
+              >✖</span>
+            )}
+          </div>
+          {showSuggestions && (
+            <ul className="suggestions">
+              {suggestions.map(item => (
+                <li key={item._id} onClick={() => handleSelectSuggestion(item)}>
+                  <img src={item.image} alt={item.name} className="suggestion-image" />
+                  <span>{highlightMatch(item.name, search)}</span>
+                </li>
+              ))}
+              {noResults && <li className="no-results">No results found</li>}
+            </ul>
+          )}
+        </div>
+      )}
 
       {/* Right auth links */}
       <div className="nav-right">
