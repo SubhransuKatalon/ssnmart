@@ -48,6 +48,7 @@ export default function Login({ onLogin }) {
       <form onSubmit={handleSubmit}>
         <input
           name="Username"
+          type = "username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           placeholder="Username"
