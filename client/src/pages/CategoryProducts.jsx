@@ -20,6 +20,11 @@ export default function CategoryProducts() {
       .catch(err => {
         console.error('❌ API error:', err);
       });
+    if (category === 'Electronics') {
+      TrueTest.setSessionAttributes({
+        CategoryProducts: "Electronics",
+      });
+    }
   }, [category]);
 
   const bannerMap = {
