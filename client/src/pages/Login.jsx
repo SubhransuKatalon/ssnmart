@@ -17,14 +17,14 @@ export default function Login({ onLogin }) {
         username,
         password
       });
-      
+
       if (res.status === 200 && res.data.user) {
         localStorage.setItem('user', JSON.stringify(res.data.user));
         alert('✅ Login successful');
         onLogin(); // trigger parent update
-        if (res.data.user === 'admin'){
+        if (res.data.user.username === 'admin') {
           TrueTest.setSessionAttributes({
-          userRole: "admin", 
+            userRole: "admin",
           });
         }
       } else {
