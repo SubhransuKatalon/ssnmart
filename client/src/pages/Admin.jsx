@@ -179,15 +179,38 @@ export default function Admin() {
               <input
                 value={defaultCard[field]}
                 onChange={e => {
-                  let val = e.target.value.replace(/\D/g, '');
-                  if (field === 'number') val = val.slice(0, 16).replace(/(.{4})/g, '$1-').replace(/-$/, '');
+                  let val = e.target.value;
+
+                  if (field === 'name') {
+                    // ✅ Allow letters, spaces, dots (e.g. "A. K. Nayak")
+                    val = val.replace(/[^a-zA-Z\s.]/g, '');
+                  }
+
+                  if (field === 'number') {
+                    val = val.replace(/\D/g, '').slice(0, 16);
+                    val = val.replace(/(.{4})/g, '$1-').replace(/-$/, '');
+                  }
+
                   if (field === 'expiry') {
-                    val = val.slice(0, 4);
+                    val = val.replace(/\D/g, '').slice(0, 4);
                     if (val.length >= 3) val = val.slice(0, 2) + '/' + val.slice(2);
                   }
+
+                  if (field === 'cvv') {
+                    val = val.replace(/\D/g, '').slice(0, 3);
+                  }
+
                   setDefaultCard({ ...defaultCard, [field]: val });
                 }}
-                placeholder={field === 'number' ? '1234-5678-9012-3456' : field === 'expiry' ? 'MM/YY' : ''}
+                placeholder={
+                  field === 'number'
+                    ? '1234-5678-9012-3456'
+                    : field === 'expiry'
+                    ? 'MM/YY'
+                    : field === 'cvv'
+                    ? '123'
+                    : 'Card Holder Name'
+                }
               />
             </>
           ))}
